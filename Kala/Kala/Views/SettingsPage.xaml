@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Kala.SettingsPage"
+             Title="Settings">
+  <ContentPage.Icon>
+    <OnPlatform x:TypeArguments="FileImageSource" iOS="ic_linked_camera_white_48dp.png" />
+  </ContentPage.Icon>
+  
+  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+  
+  <StackLayout Padding="25">
+
+    <Entry Placeholder="Protocol" Text="{Binding Protocol}"/>
+    <Entry Placeholder="Server" Text="{Binding Server}"/>
+    <Entry Placeholder="Port" Text="{Binding Port, StringFormat='{0:F0}'}"/>
+    <Entry Placeholder="Username" Text="{Binding Username}"/>
+    <Entry IsPassword="true" Placeholder="Password" Text="{Binding Password}"/>
+    <Entry Placeholder="Sitemap" Text="{Binding Sitemap}"/>
+
+  </StackLayout>
+</ContentPage>
