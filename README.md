@@ -19,8 +19,8 @@ GUI used here is inspired by that client, but distributed for free.
 * https://material.io/ & https://material.google.com/
 * https://developer.xamarin.com
 * https://github.com/chrispellett/Xamarin-Forms-Shape
-* https://github.com/jamesmontemagno/monodroidtoolkit
-* https://github.com/jamesmontemagno/SettingsPlugin
+* https://github.com/jamesmontemagno/ (Multiple)
+* https://erikflowers.github.io/weather-icons/
 
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.
