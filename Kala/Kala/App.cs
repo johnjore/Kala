@@ -27,7 +27,7 @@ namespace Kala
             public string type { get; set; }
             public string link { get; set; }
         }
-
+        
         public class Configuration
         {
             public Models.Sitemaps.Sitemap sitemap;
@@ -37,6 +37,7 @@ namespace Kala
             public Color TextColor = Color.FromHex("ffffff"); // Color.White;
             public DateTime LastActivity = DateTime.Now;
             public List<trackItem> items = new List<trackItem>();
+            public List<Label> labels = new List<Label>();
         }
         public static Configuration config = null;
 

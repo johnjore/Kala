@@ -23,6 +23,7 @@ namespace Kala.Models.Sitemap
         public string label { get; set; }
         public string icon { get; set; }
         public Item item { get; set; }
+        public object widget { get; set; }
     }
 
     public class Widget2

@@ -154,6 +154,10 @@ namespace Kala
             return grid;
         }
 
+        /// <summary>
+        /// Configures grid with columns and rows
+        /// </summary>
+        /// <returns>nothing</returns>
         public static void CreateGrid(Grid grid, int columns, int rows)
         {
             grid.RowDefinitions = new RowDefinitionCollection();

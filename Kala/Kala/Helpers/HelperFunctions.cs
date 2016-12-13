@@ -33,6 +33,18 @@ namespace Kala
             return _rdm.Next(_min, _max);
         }
 
+        //Update label
+        public static void Label_Update(Models.Sitemap.Item item)
+        {
+            foreach (Label lbl in App.config.labels)
+            {
+                if (lbl.StyleId.Equals(item.link))
+                {
+                    lbl.Text = lbl.AutomationId + item.state + lbl.ClassId;
+                }
+            }
+        }
+        
         /**///RunOnUiThread(() => mylabel.Text = "Updated from other thread");
     }
 }

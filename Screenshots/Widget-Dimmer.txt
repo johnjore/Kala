@@ -1,0 +1,1 @@
+Frame label="Dimmer {widget=dimmer}"	{ Setpoint item=Light_Dimmer	label="{px=4,py=1,unit=%,icon=ic_wb_incandescent_white_48dp}" }

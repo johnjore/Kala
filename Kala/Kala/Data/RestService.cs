@@ -19,13 +19,15 @@ namespace Kala
 
 		public RestService()
 		{
-			var authData = string.Format("{0}:{1}", Settings.Username, Settings.Password);
-			var authHeaderValue = Convert.ToBase64String (Encoding.UTF8.GetBytes(authData));
-
             client = new HttpClient();
-            
             client.MaxResponseContentBufferSize = 256000;
-			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+
+            if (Settings.Username != String.Empty)
+            {
+                var authData = string.Format("{0}:{1}", Settings.Username, Settings.Password);
+                var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+            }
         }
         
         public Models.Sitemaps.Sitemaps ListSitemaps()
@@ -158,6 +160,17 @@ namespace Kala
                                     {
                                         /**/ //Fix  this...
                                         itemData = JsonConvert.DeserializeObject<Models.Sitemap.Item>(updates[i] + "}");
+
+                                        //Check and update all labels
+                                        foreach (Label lbl in App.config.labels)
+                                        {
+                                            if (itemData.link.Equals(lbl.StyleId))
+                                            {
+                                                Helpers.Label_Update(itemData);
+                                            }
+                                        }
+
+                                        //Specials
                                         foreach (App.trackItem item in App.config.items)
                                         {
                                             if (item.link.Equals(itemData.link))
@@ -173,6 +186,9 @@ namespace Kala
                                                         break;
                                                     case "SwitchItem":
                                                         Widgets.Switch_update(false, item.grid, item.px, item.py, item.header, item.state, item.icon, item.link);
+                                                        break;
+                                                    default:
+                                                        Debug.WriteLine("Not processed: " + item.ToString());
                                                         break;
                                                 }
 
