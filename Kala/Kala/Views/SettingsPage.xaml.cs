@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 
-namespace Kala
+namespace Kala.Views
 {
-    public partial class SettingsPage : ContentPage
+    public partial class Page1 : ContentPage
     {
-        public SettingsPage()
+        public Page1()
         {
             InitializeComponent();
             BindingContext = new SettingsViewModel();

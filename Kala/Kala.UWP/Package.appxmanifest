@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="6864cd20-6a02-439d-8e89-723ea2bf6782"
+    Name="ea47a8ed-9036-4ebd-896f-9977000ee302"
     Publisher="CN=john.jore"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="6864cd20-6a02-439d-8e89-723ea2bf6782" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ea47a8ed-9036-4ebd-896f-9977000ee302" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Kala.UWP</DisplayName>

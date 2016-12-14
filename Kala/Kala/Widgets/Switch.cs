@@ -9,7 +9,7 @@ namespace Kala
 {
     public partial class Widgets
     {
-        public static void Switch(Grid grid, string header, JObject data)
+        public static void Switch(Grid grid, string x1, string y1, string header, JObject data)
         {
             int px = 0;
             int py = 0;
@@ -23,8 +23,8 @@ namespace Kala
                 widgetKeyValuePairs = Helpers.SplitCommand(item.label);
                 Debug.WriteLine("Label: " + widgetKeyValuePairs["label"]);
 
-                px = Convert.ToInt16(widgetKeyValuePairs["px"]);
-                py = Convert.ToInt16(widgetKeyValuePairs["py"]);
+                px = Convert.ToInt16(x1);
+                py = Convert.ToInt16(y1);
             }
             catch (Exception ex)
             {

@@ -1,1 +1,1 @@
-Frame label="Switch {widget=switch}"	{ Switch item=Light_Switch	label="{px=4,py=0,icon=ic_power_settings_new_white_48dp}" }
+Frame label="Switch {widget=switch,px=4,py=0}"	{ Switch item=Light_Switch	label="{icon=ic_power_settings_new_white_48dp}" }

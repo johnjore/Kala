@@ -33,10 +33,13 @@ namespace Kala
                 Minimum = 0.0f,
                 Maximum = 100.0f,
                 Value = value,
+                HeightRequest = 30,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                StyleId = item.link
+                VerticalOptions = LayoutOptions.Center,
+                TranslationY = 100,
+                StyleId = item.link,
             };
+            slider.Effects.Add(Effect.Resolve("Effects.SliderEffect"));
             slider.ValueChanged += OnSliderValueChanged;
 
             Button button = new Button
@@ -46,10 +49,9 @@ namespace Kala
                 TextColor = App.config.TextColor,
                 BackgroundColor = App.config.BackGroundColor,
                 HorizontalOptions= LayoutOptions.End,
-                VerticalOptions= LayoutOptions.Center
+                VerticalOptions= LayoutOptions.End,
+                TranslationY = 200
             };
-            //button.Clicked += OnCloseButtonClicked;
-
             button.Clicked += (sender, e) => {
                 Application.Current.MainPage = PreviousPage;
             };
@@ -69,12 +71,7 @@ namespace Kala
 
             return cp;
         }
-
-        public static void OnCloseButtonClicked(object sender, EventArgs e)
-        {
-            Application.Current.MainPage = PreviousPage;
-        }
-
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         static void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
         {

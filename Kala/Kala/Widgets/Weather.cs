@@ -8,30 +8,10 @@ namespace Kala
 {
     public partial class Widgets
     {
-        static Dictionary<string, int> wind_direction = new Dictionary<string, int>
-        {
-            {"n",     -0},
-            {"e",    -90},
-            {"s",   -180},
-            {"w",   -270},
-            {"nne",  -23},
-            {"ese", -113},
-            {"ssw", -203},
-            {"wnw", -193},
-            {"ne",   -45},
-            {"se",  -135},
-            {"sw",  -225},
-            {"nw",  -313},
-            {"ene",  -68},
-            {"sse", -158},
-            {"wsw", -248},
-            {"nnw", -336}
-        };
-
         public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
             Debug.WriteLine("Weather: " + data.ToString());
-            
+
             try
             {
                 //Size of Weather widget
@@ -247,7 +227,7 @@ namespace Kala
                                     switch (windKeyValuePairs["item"].ToUpper())
                                     {
                                         case "WIND-DIRECTION":
-                                            wind_direction.TryGetValue(wind.item.state.ToLower(), out w_direction);
+                                            Helpers.wind_direction.TryGetValue(wind.item.state.ToLower(), out w_direction);
                                             wind_direction_url = wind.item.link;
                                             break;
                                         case "WIND-SPEED":
@@ -262,6 +242,7 @@ namespace Kala
 
                                 ItemLabel l_winddirection = new ItemLabel
                                 {
+                                    Type = Models.Itemtypes.Winddirection,   //Special. Rotate label, depending on item value
                                     Text = "\uf0b1",
                                     FontSize = 30,
                                     FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
@@ -311,7 +292,7 @@ namespace Kala
                             VerticalOptions = LayoutOptions.Center,
                             Pre = widgetKeyValuePairs["font"] + "  ",
                             Link = item.item.link,
-                            Post = " " + widgetKeyValuePairs["unit"]                        
+                            Post = " " + widgetKeyValuePairs["unit"]
                         };
                         App.config.itemlabels.Add(l1);
                         t_grid.Children.Add(l1, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
@@ -326,6 +307,28 @@ namespace Kala
                 Debug.WriteLine("Weather crashed:" + ex.ToString());
             }
             Debug.WriteLine("Nr Labels " + App.config.itemlabels.Count.ToString());
+        }
+
+
+        public static void WindDirectionUpdate()
+        {
+            /*
+            ItemLabel l_winddirection = new ItemLabel
+            {
+                Text = "\uf0b1",
+                FontSize = 30,
+                FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
+                TextColor = App.config.TextColor,
+                Rotation = w_direction,
+                BackgroundColor = App.config.CellColor,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                TranslationX = -45,
+                Link = wind_direction_url
+            };
+            App.config.itemlabels.Add(l_winddirection);
+            */
+
         }
     }
 }

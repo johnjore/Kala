@@ -1,0 +1,3 @@
+Frame label="{widget=image,px=0,py=1,sx=1,sy=1,aspect=aspectfill}"	{ Image url="https://source.unsplash.com/category/technology/1600x900" refresh=5000 }
+Frame label="{widget=image,px=1,py=1,sx=1,sy=1,aspect=aspectfit}"	{ Image url="https://source.unsplash.com/category/technology/1600x900" refresh=5000 }
+Frame label="{widget=image,px=0,py=2,sx=1,sy=1,aspect=fill}"		{ Image url="https://source.unsplash.com/category/technology/1600x900" refresh=5000 }

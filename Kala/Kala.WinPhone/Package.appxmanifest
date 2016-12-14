@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="6864cd20-6a02-439d-8e89-723ea2bf6782"
+  <Identity Name="ea47a8ed-9036-4ebd-896f-9977000ee302"
             Publisher="CN=john.jore"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="6864cd20-6a02-439d-8e89-723ea2bf6782" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ea47a8ed-9036-4ebd-896f-9977000ee302" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Kala.WinPhone</DisplayName>

@@ -16,6 +16,10 @@ namespace Kala
         //Pages
         public static TabbedPage tp = null;
 
+        /// <summary>
+        /// Create GUI
+        /// </summary>
+        /// <returns>nothing</returns>
         public void CreateSitemap()
         {
             Models.Sitemap.Sitemap items = new RestService().LoadItemsFromSitemap(App.config.sitemap);
@@ -78,65 +82,146 @@ namespace Kala
             }
         }
 
+        /// <summary>
+        /// Parse Sitemap file
+        /// </summary>
+        /// <returns>nothing</returns>
         private void ParseSitemap(Models.Sitemap.Sitemap items)
         {
             tp = new TabbedPage();
             tp.BackgroundColor = Color.Accent;
             tp.BarBackgroundColor = App.config.BackGroundColor;
             tp.BarTextColor = App.config.TextColor;
-            tp.WidthRequest = 400;
+            //tp.WidthRequest = 400;
 
             foreach (Models.Sitemap.Widget page in items.homepage.widget)
             {
                 //Create Page
                 Debug.WriteLine("Label: " + page.label);
 
-                Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.label);
-                Debug.WriteLine("Label: " + pageKeyValuePairs["label"]);
+                //Populate Page, if it contains elements to parse
+                if (page.linkedPage != null && page.label != string.Empty)
+                { 
+                    Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.label);
+                    Debug.WriteLine("Label: " + pageKeyValuePairs["label"]);
+                    Grid grid = null;
 
-                Grid grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], pageKeyValuePairs["icon"]);
-
-                //Populate Page
-                foreach (Models.Sitemap.Widget2 item in page.linkedPage.widget)
-                {
-                    Debug.WriteLine("Widget : " + item.widget + ", ID: " + item.widgetId);
-                    Dictionary<string, string> itemKeyValuePairs = Helpers.SplitCommand(item.label);
-                    
-                    /*Dictionary<string, string> widgetKeyValuePairs = null;
-                    if (item.widget != null)
+                    if (pageKeyValuePairs.ContainsKey("sx") && pageKeyValuePairs.ContainsKey("sy"))
                     {
-                        widgetKeyValuePairs = Helpers.SplitCommand(item.widget.label);
-                        Debug.WriteLine("Label: " + widgetKeyValuePairs["label"]);
-                    }*/
+                        if (pageKeyValuePairs.ContainsKey("icon"))
+                        {
+                            grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], pageKeyValuePairs["icon"]);
+                        }
+                        else
+                        {
+                            grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], null);
+                        }
+                    }
 
+                    //Shortcut
+                    var w = page.linkedPage.widget;
+                    
+                    //If more than one item page frame
+                    if (w.GetType() == typeof(JArray))
+                    {
+                        List<Models.Sitemap.Widget3> w_items = ((JArray)w).ToObject<List<Models.Sitemap.Widget3>>();
+                        foreach (Models.Sitemap.Widget3 item in w_items)
+                        {
+                            ParseWidgets(grid, item);
+                        }
+                    }
+                    //If one item in page frame
+                    else if (w.GetType() == typeof(JObject))
+                    {
+                        Models.Sitemap.Widget3 item = ((JObject)w).ToObject<Models.Sitemap.Widget3>();
+                        ParseWidgets(grid, item);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Parses / creates Widgets
+        /// </summary>
+        /// <returns>nothing</returns>
+        private void ParseWidgets(Grid grid, Models.Sitemap.Widget3 item)
+        {
+            Debug.WriteLine("Widget : " + item.widget + ", ID: " + item.widgetId);
+            Dictionary<string, string> itemKeyValuePairs = Helpers.SplitCommand(item.label);
+
+            if (itemKeyValuePairs != null && itemKeyValuePairs.ContainsKey("widget")) 
+            {
+                switch (itemKeyValuePairs["widget"].ToUpper())
+                {
+                    case "SITEMAP":
+                        Debug.WriteLine("Sitemap");
+                        break;
+                }
+
+                #region Widgets
+                if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py"))
+                {
                     switch (itemKeyValuePairs["widget"].ToUpper())
                     {
                         case "GAUGE":
-                            Widgets.Gauge(grid, itemKeyValuePairs["label"], (JObject)item.widget);
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                            }
                             break;
                         case "CLOCK":
-                            Widgets.Clock(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"]);
+                            if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                            {
+                                Widgets.Clock(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"]);
+                            }
                             break;
                         case "BLANK":
                             Widgets.Blank(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"]);
                             break;
                         case "DIMMER":
-                            Widgets.Dimmer(grid, itemKeyValuePairs["label"], (JObject)item.widget);
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                            }
                             break;
                         case "SWITCH":
-                            Widgets.Switch(grid, itemKeyValuePairs["label"], (JObject)item.widget);
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Switch(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                            }
                             break;
                         case "WEATHER":
-                            Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
+                            if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
+                            }
+                            break;
+                        case "IMAGE":
+                            if (!itemKeyValuePairs.ContainsKey("aspect"))
+                            {
+                                itemKeyValuePairs.Add("aspect", "aspectfill");
+                            }
+                            if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.widget);
+                            }
+                            break;
+                        case "AVATAR":
+                            Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widget);
+                            break;
+                        default:
+                            Debug.WriteLine("Failed to parse widget. Unknown type: " + item.ToString());
                             break;
                     }
                 }
-
-                
+                #endregion Widgets
             }
         }
 
-        public bool a = true;
+        /// <summary>
+        /// Creates content page with full screen grid
+        /// </summary>
+        /// <returns>nothing</returns>
         private Grid CreatePage(string title, string sx, string sy, string icon)
         {
             Grid grid = new Grid();
@@ -144,9 +229,12 @@ namespace Kala
             CreateGrid(grid, Convert.ToInt16(sx), Convert.ToInt16(sy)); //Grid, Columns, Rows
 
             ContentPage cp = new ContentPage();
+            if (icon != null)
+            {
+                cp.Icon = icon;
+            }
             cp.BackgroundColor = App.config.BackGroundColor;
             cp.Title = title;
-            /**///cp.Icon = icon;
             cp.Content = grid;
             cp.Padding = new Thickness(0, Device.OnPlatform(20, 0, 0), 0, 0);
             tp.Children.Add(cp);

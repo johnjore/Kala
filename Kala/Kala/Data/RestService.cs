@@ -22,7 +22,7 @@ namespace Kala
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
 
-            if (Settings.Username != String.Empty)
+            if (Settings.Username != string.Empty)
             {
                 var authData = string.Format("{0}:{1}", Settings.Username, Settings.Password);
                 var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
@@ -93,7 +93,7 @@ namespace Kala
 
         public async Task SendCommand(string link, string command)
         {
-            Debug.WriteLine("Link: '" + link, "', Command: '" + command + "'");
+            Debug.WriteLine("Link: '" + link + "', Command: '" + command + "'");
             App.config.LastActivity = DateTime.Now; //Update lastactivity to reset Screensaver timer
 
             try
@@ -105,18 +105,18 @@ namespace Kala
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Success");
+                    Debug.WriteLine("SendCommand - Success");
                     return;
                 }
                 else
                 {
-                    Debug.WriteLine("Failed: " + response.ToString());
+                    Debug.WriteLine("Sendcommand - Failed: " + response.ToString());
                 }
                 
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Failed: " + ex.ToString());
+                Debug.WriteLine("SendCommand - Failed: " + ex.ToString());
                 return;
             }
         }
@@ -143,23 +143,20 @@ namespace Kala
                     {
                         while (!reader.EndOfStream)
                         {
-                            //Debug.WriteLine("Got update");
                             try
                             {
-                                /**/ //Can this be optimized a little?
-                                string update = reader.ReadLine();
-                                //Debug.WriteLine("Update: " + update);
                                 //Occasionally we get multiple updates on a single line
-                                string[] updates = update.Split('}');
+                                string[] updates = reader.ReadLine().Split('}');
 
                                 //Loop through each update.
                                 for (int i= 0; i < updates.Count()-1; i++)
                                 {
-                                    Models.Sitemap.Item itemData = null;
+                                    Debug.WriteLine("Got update:" + updates[i].ToString());
+                                    Models.Item itemData = null;
+
                                     try
                                     {
-                                        /**/ //Fix  this...
-                                        itemData = JsonConvert.DeserializeObject<Models.Sitemap.Item>(updates[i] + "}");
+                                        itemData = JsonConvert.DeserializeObject<Models.Item>(updates[i] + "}");
 
                                         //Check and update all labels
                                         foreach (ItemLabel lbl in App.config.itemlabels)
@@ -176,6 +173,8 @@ namespace Kala
                                             if (item.link.Equals(itemData.link))
                                             {
                                                 item.state = itemData.state;
+                                                Debug.WriteLine("Found: " + item.link + ", New State: " + item.state);
+
                                                 switch (item.type)
                                                 {
                                                     case "NumberItem":
@@ -190,16 +189,13 @@ namespace Kala
                                                     default:
                                                         Debug.WriteLine("Not processed: " + item.ToString());
                                                         break;
-                                                }
-
-                                                Debug.WriteLine("Found: " + item.link + ", New State: " + item.state);
+                                                }                                                
                                             }
                                         }
-
                                     }
                                     catch (Exception ex)
                                     {
-                                        Debug.WriteLine("Error parsing update string:" + update + ", Ex: " + ex.ToString());
+                                        Debug.WriteLine("Error parsing update string: " + updates[i] + ", Ex: " + ex.ToString());
                                         //await Application.Current.MainPage.DisplayAlert("Alert", update.ToString(), "OK");
                                     }
                                 }

@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using FFImageLoading.Forms.Droid;
 
 namespace Kala.Droid
 {
@@ -43,6 +44,9 @@ namespace Kala.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             //App.Speech = new Speech();
+
+            //Library for Image handling as XF does not support authentication
+            CachedImageRenderer.Init();
 
             LoadApplication(new App());
         }

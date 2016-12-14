@@ -50,7 +50,8 @@ namespace Kala
             Debug.WriteLine("Button Pressed");
             active = false;
             Application.Current.MainPage = PreviousPage;
-            App.config.LastActivity = DateTime.Now; //Update lastactivity to reset Screensaver timer
+            Sitemap.tp.CurrentPage = Sitemap.tp.Children[0];        //Revert to first tab when resuming
+            App.config.LastActivity = DateTime.Now;                 //Update lastactivity to reset Screensaver timer
 
             IDim dim = DependencyService.Get<IDim>();
             dim.SetBacklight(0.8f);

@@ -9,20 +9,12 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
     /// </summary>
     public class CircularProgressBarView : View
     {
-        public static readonly BindableProperty ProgressProperty = BindableProperty.Create<CircularProgressBarView, float>(p => p.Progress, 0);
-        //public static readonly BindableProperty ProgressProperty = BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircularProgressBarView), null);
-
-        public static readonly BindableProperty StrokeThicknessProperty = BindableProperty.Create<CircularProgressBarView, int>(p => p.StrokeThickness, 10);
-        //public static readonly BindableProperty StrokeThicknessProperty = BindableProperty.Create(nameof(StrokeThickness), typeof(int), typeof(CircularProgressBarView), null);
-
-        public static readonly BindableProperty ProgressBackgroundColorProperty = BindableProperty.Create<CircularProgressBarView, Color>(p => p.ProgressBackgroundColor, Color.Transparent);
-        //public static readonly BindableProperty ProgressBackgroundColorProperty = BindableProperty.Create(nameof(ProgressBackgroundColor), typeof(Color), typeof(CircularProgressBarView), null);
-
-        public static readonly BindableProperty ProgressColorProperty = BindableProperty.Create<CircularProgressBarView, Color>(p => p.ProgressColor, Color.Transparent);
-        //public static readonly BindableProperty ProgressColorProperty = BindableProperty.Create(nameof(ProgressColor), typeof(Color), typeof(CircularProgressBarView), null);
-
-        public static readonly BindableProperty SizeProperty = BindableProperty.Create<CircularProgressBarView, float>(p => p.Size, 1);
-        //public static readonly BindableProperty ScaleProperty= BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircularProgressBarView), null);
+        public static readonly BindableProperty ProgressProperty = BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircularProgressBarView), 0.0f);
+        public static readonly BindableProperty StrokeThicknessProperty = BindableProperty.Create(nameof(StrokeThickness), typeof(int), typeof(CircularProgressBarView), 10);
+        public static readonly BindableProperty ProgressBackgroundColorProperty = BindableProperty.Create(nameof(ProgressBackgroundColor), typeof(Color), typeof(CircularProgressBarView), Color.Transparent);
+        public static readonly BindableProperty ProgressColorProperty = BindableProperty.Create(nameof(ProgressColor), typeof(Color), typeof(CircularProgressBarView), Color.Transparent);
+        public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(float), typeof(CircularProgressBarView), 1.0f);
+        //public static readonly BindableProperty ScaleProperty = BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircularProgressBarView), 1.0f);
 
         /// <summary>
         /// Gets or sets the current progress

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Kala
@@ -27,7 +22,7 @@ namespace Kala
             public string type { get; set; }
             public string link { get; set; }
         }
-        
+
         public class Configuration
         {
             public Models.Sitemaps.Sitemap sitemap;
@@ -59,10 +54,13 @@ namespace Kala
                 Debug.WriteLine(@"Sitemap Settings: '" + Settings.Sitemap + "'");
             }
 
+            //Initialize FFImageLoading with Authentication
+            FFImageLoading.AuthenticatedHttpImageClientHandler.Initialize();
+
             /**/ //Show a busy signal here as we can't display anything until we have downloaded the sitemap with its items. No async. Pointless..
             if (GetActiveSitemap() == false)
             {
-                MainPage = new SettingsPage();
+                MainPage = new Views.Page1();
             }
             else
             {
@@ -73,7 +71,7 @@ namespace Kala
                 Debug.WriteLine("Got ActiveSitemap");
 
                 //Add settings tab last
-                Sitemap.tp.Children.Add(new SettingsPage());
+                Sitemap.tp.Children.Add(new Views.Page1());
                 MainPage = Sitemap.tp;
 
                 sitemap.GetUpdates();
@@ -84,23 +82,27 @@ namespace Kala
         {
             Models.Sitemaps.Sitemaps sitemaps = new RestService().ListSitemaps();
 
-            if (sitemaps != null)
+            if (sitemaps.sitemap != null)
             {
                 foreach (Models.Sitemaps.Sitemap s in sitemaps.sitemap)
                 {
-                    Debug.WriteLine("Name: " + s.name);
-
-                    if (s.name.Equals(Settings.Sitemap))
+                    Dictionary<string, string> keywords = Helpers.SplitCommand(s.label);
+                    if (keywords != null && keywords.ContainsKey("kala") && keywords["kala"].Contains("true"))
                     {
-                        /**/ //Filter-out non-kala=true sitemaps
-                        config.sitemap = s;
-                        Debug.WriteLine("Label: " + s.label);
                         Debug.WriteLine("Name: " + s.name);
-                        Debug.WriteLine("Link: " + s.link);
 
-                        Debug.WriteLine("Link (link): " + config.sitemap.link);
+                        if (s.name.Equals(Settings.Sitemap))
+                        {
+                            /**/ //Filter-out non-kala=true sitemaps
+                            config.sitemap = s;
+                            Debug.WriteLine("Label: " + s.label);
+                            Debug.WriteLine("Name: " + s.name);
+                            Debug.WriteLine("Link: " + s.link);
 
-                        return true;
+                            Debug.WriteLine("Link (link): " + config.sitemap.link);
+
+                            return true;
+                        }
                     }
                 }
             }

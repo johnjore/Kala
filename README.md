@@ -5,13 +5,11 @@ Xamarin.Forms based client for openHAB (Android, iOS, Universal Windows, Windows
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Sitemap%2C%205x3.png)
 
 # History
-A non-official Android client went commercial with a rather hefty price tag.
-GUI used here is inspired by that client, but distributed for free.
+A non-official Android client went commercial with a rather large price tag.
+GUI used here is inspired by that client, but distributed for free
 
 # Roadmap
-* REST API (Receive updates and send commands)
-* Additional "widgets" like Map
-* Screensaver
+* Add "widgets"
 * Update the non-Android clients with the same functionality as the Android version
 
 # Libraries / references
@@ -21,6 +19,8 @@ GUI used here is inspired by that client, but distributed for free.
 * https://github.com/chrispellett/Xamarin-Forms-Shape
 * https://github.com/jamesmontemagno/ (Multiple)
 * https://erikflowers.github.io/weather-icons/
+* https://github.com/luberda-molinet/FFImageLoading
+* https://github.com/amay077/Xamarin.Forms.GoogleMaps
 
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.
