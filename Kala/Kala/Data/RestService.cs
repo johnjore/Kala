@@ -162,9 +162,9 @@ namespace Kala
                                         itemData = JsonConvert.DeserializeObject<Models.Sitemap.Item>(updates[i] + "}");
 
                                         //Check and update all labels
-                                        foreach (Label lbl in App.config.labels)
+                                        foreach (ItemLabel lbl in App.config.itemlabels)
                                         {
-                                            if (itemData.link.Equals(lbl.StyleId))
+                                            if (itemData.link.Equals(lbl.Link))
                                             {
                                                 Helpers.Label_Update(itemData);
                                             }
@@ -178,7 +178,7 @@ namespace Kala
                                                 item.state = itemData.state;
                                                 switch (item.type)
                                                 {
-                                                    case "GaugeItem":
+                                                    case "NumberItem":
                                                         Widgets.Gauge_update(false, item.grid, item.px, item.py, item.header, item.min, item.max, item.state, item.unit, item.icon, item.link);
                                                         break;
                                                     case "DimmerItem":

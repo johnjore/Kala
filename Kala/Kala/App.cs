@@ -37,7 +37,7 @@ namespace Kala
             public Color TextColor = Color.FromHex("ffffff"); // Color.White;
             public DateTime LastActivity = DateTime.Now;
             public List<trackItem> items = new List<trackItem>();
-            public List<Label> labels = new List<Label>();
+            public List<ItemLabel> itemlabels = new List<ItemLabel>();
         }
         public static Configuration config = null;
 

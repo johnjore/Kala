@@ -109,7 +109,7 @@ namespace Kala
             AddImageCenter(grid, px, py, icon, Color.Transparent);
 
             //Status
-            Label l_status = new Label
+            ItemLabel l_status = new ItemLabel
             {
                 Text = status.ToUpper(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
@@ -118,7 +118,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                StyleId = link
+                Link = link
             };
             grid.Children.Add(l_status, px, py);
         }

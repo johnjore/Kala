@@ -50,12 +50,12 @@ namespace Kala
                     header = header,
                     unit = widgetKeyValuePairs["unit"],
                     icon = widgetKeyValuePairs["icon"],
-                    type = "GaugeItem"
+                    type = "NumberItem"
                 };
                 App.config.items.Add(i);
                 
                 //Center text
-                Label l_value = new Label
+                ItemLabel l_value = new ItemLabel
                 {
                     Text = i.state,
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
@@ -64,9 +64,9 @@ namespace Kala
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     TranslationY = -10,
-                    StyleId = i.link
+                    Link = i.link
                 };
-                App.config.labels.Add(l_value);
+                App.config.itemlabels.Add(l_value);
                 grid.Children.Add(l_value, px, py);
                 
                 //Center unit

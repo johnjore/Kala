@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="CustomControls\CircularProgressBar.cs" />
+    <Compile Include="CustomControls\ItemLabel.cs" />
     <Compile Include="CustomControls\ShapeView.cs" />
     <Compile Include="PlatformSpecifics\IDim.cs" />
     <Compile Include="Widgets\Image.cs" />

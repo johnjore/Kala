@@ -119,7 +119,7 @@ namespace Kala
 
                 #region Header
                 //Header (Location)
-                Label l_header = new Label
+                ItemLabel l_header = new ItemLabel
                 {
                     Text = header,
                     FontSize = 30,
@@ -143,7 +143,7 @@ namespace Kala
                         switch (widgetKeyValuePairs["item"].ToUpper())
                         {
                             case "CONDITION-CAPTION":
-                                Label l_condition = new Label
+                                ItemLabel l_condition = new ItemLabel
                                 {
                                     Text = item.item.state,
                                     FontSize = 20,
@@ -151,14 +151,14 @@ namespace Kala
                                     BackgroundColor = App.config.CellColor,
                                     HorizontalOptions = LayoutOptions.Start,
                                     VerticalOptions = LayoutOptions.Start,
-                                    StyleId = item.item.link
+                                    Link = item.item.link
                                 };
-                                App.config.labels.Add(l_condition);
+                                App.config.itemlabels.Add(l_condition);
                                 w_grid.Children.Add(l_condition, 1, 1);
                                 break;
                             case "TEMPERATURE":
                                 double temp = Math.Round(Convert.ToDouble(item.item.state), 1, MidpointRounding.AwayFromZero);
-                                Label l_temperature = new Label
+                                ItemLabel l_temperature = new ItemLabel
                                 {
                                     Text = temp.ToString() + "\u00B0" + widgetKeyValuePairs["unit"] + " ",
                                     FontSize = 40,
@@ -166,10 +166,10 @@ namespace Kala
                                     BackgroundColor = App.config.CellColor,
                                     HorizontalOptions = LayoutOptions.End,
                                     VerticalOptions = LayoutOptions.FillAndExpand,
-                                    StyleId = item.item.link,
-                                    ClassId = "\u00B0" + widgetKeyValuePairs["unit"] + " ",
+                                    Link = item.item.link,
+                                    Post = "\u00B0" + widgetKeyValuePairs["unit"] + " ",
                                 };
-                                App.config.labels.Add(l_temperature);
+                                App.config.itemlabels.Add(l_temperature);
                                 w_grid.Children.Add(l_temperature, 2, 2 + 1, 0, 0 + 2);
                                 break;
                             case "CONDITION":
@@ -209,7 +209,7 @@ namespace Kala
                                     case "scattered-thundershowers": strImage = "\uf01d"; break;
                                     default: strImage = "\uf07b"; break;
                                 }
-                                Label l_image = new Label
+                                ItemLabel l_image = new ItemLabel
                                 {
                                     Text = strImage,
                                     TextColor = App.config.TextColor,
@@ -217,9 +217,9 @@ namespace Kala
                                     FontSize = 68,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.StartAndExpand,
-                                    StyleId = item.item.link,
+                                    Link = item.item.link
                                 };
-                                App.config.labels.Add(l_image);
+                                App.config.itemlabels.Add(l_image);
                                 w_grid.Children.Add(l_image, 0, 0 + 1, 0, 0 + 2);
                                 break;
                             case "default":
@@ -260,7 +260,7 @@ namespace Kala
                                     }
                                 }
 
-                                Label l_winddirection = new Label
+                                ItemLabel l_winddirection = new ItemLabel
                                 {
                                     Text = "\uf0b1",
                                     FontSize = 30,
@@ -271,12 +271,12 @@ namespace Kala
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = -45,
-                                    StyleId = wind_direction_url
+                                    Link = wind_direction_url
                                 };
-                                App.config.labels.Add(l_winddirection);
+                                App.config.itemlabels.Add(l_winddirection);
                                 t_grid.Children.Add(l_winddirection, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
 
-                                Label l_windspeed = new Label
+                                ItemLabel l_windspeed = new ItemLabel
                                 {
                                     Text = wind_speed,
                                     FontSize = 20,
@@ -285,9 +285,9 @@ namespace Kala
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = 20,
-                                    StyleId = wind_speed_url,
+                                    Link = wind_speed_url
                                 };
-                                App.config.labels.Add(l_windspeed);
+                                App.config.itemlabels.Add(l_windspeed);
                                 t_grid.Children.Add(l_windspeed, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
 
                                 break;
@@ -300,7 +300,7 @@ namespace Kala
                     }
                     else
                     {
-                        Label l1 = new Label
+                        ItemLabel l1 = new ItemLabel
                         {
                             Text = widgetKeyValuePairs["font"] + "  " + item.item.state + " " + widgetKeyValuePairs["unit"],
                             FontSize = 20,
@@ -309,11 +309,11 @@ namespace Kala
                             BackgroundColor = App.config.CellColor,
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.Center,
-                            AutomationId = widgetKeyValuePairs["font"] + "  ",
-                            StyleId = item.item.link,
-                            ClassId = " " + widgetKeyValuePairs["unit"]                        
+                            Pre = widgetKeyValuePairs["font"] + "  ",
+                            Link = item.item.link,
+                            Post = " " + widgetKeyValuePairs["unit"]                        
                         };
-                        App.config.labels.Add(l1);
+                        App.config.itemlabels.Add(l1);
                         t_grid.Children.Add(l1, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
 
                         Debug.WriteLine("No item defined: " + counter++.ToString() + ", font:"  + widgetKeyValuePairs["font"] + ", pos: " + widgetKeyValuePairs["px"]);
@@ -325,7 +325,7 @@ namespace Kala
             {
                 Debug.WriteLine("Weather crashed:" + ex.ToString());
             }
-            Debug.WriteLine("Nr Labels " + App.config.labels.Count.ToString());
+            Debug.WriteLine("Nr Labels " + App.config.itemlabels.Count.ToString());
         }
     }
 }

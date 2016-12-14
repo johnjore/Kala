@@ -36,11 +36,11 @@ namespace Kala
         //Update label
         public static void Label_Update(Models.Sitemap.Item item)
         {
-            foreach (Label lbl in App.config.labels)
+            foreach (ItemLabel lbl in App.config.itemlabels)
             {
-                if (lbl.StyleId.Equals(item.link))
+                if (lbl.Link.Equals(item.link))
                 {
-                    lbl.Text = lbl.AutomationId + item.state + lbl.ClassId;
+                    lbl.Text = lbl.Pre + item.state + lbl.Post;
                 }
             }
         }

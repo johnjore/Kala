@@ -30,14 +30,8 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
         /// <value>The progress.</value>
         public float Progress
         {
-            get
-            {
-                return (float)GetValue(ProgressProperty);
-            }
-            set
-            {
-                SetValue(ProgressProperty, value);
-            }
+            get { return (float)GetValue(ProgressProperty); }
+            set { SetValue(ProgressProperty, value); }
         }
         
         /// <summary>
@@ -45,14 +39,8 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
         /// </summary>
         public int StrokeThickness
         {
-            get
-            {
-                return (int)GetValue(StrokeThicknessProperty);
-            }
-            set
-            {
-                SetValue(StrokeThicknessProperty, value);
-            }
+            get { return (int)GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
         }
 
         /// <summary>
@@ -61,14 +49,8 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
         /// <value>The color of the ProgressBackgroundColorProperty.</value>
         public Color ProgressBackgroundColor
         {
-            get
-            {
-                return (Color)GetValue(ProgressBackgroundColorProperty);
-            }
-            set
-            {
-                SetValue(ProgressBackgroundColorProperty, value);
-            }
+            get { return (Color)GetValue(ProgressBackgroundColorProperty); }
+            set { SetValue(ProgressBackgroundColorProperty, value); }
         }
         
         /// <summary>
@@ -77,14 +59,8 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
         /// <value>The color of the progress.</value>
         public Color ProgressColor
         {
-            get
-            {
-                return (Color)GetValue(ProgressColorProperty);
-            }
-            set
-            {
-                SetValue(ProgressColorProperty, value);
-            }
+            get { return (Color)GetValue(ProgressColorProperty); }
+            set { SetValue(ProgressColorProperty, value); }
         }
 
         /// <summary>
@@ -93,14 +69,8 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
         /// <value>The scale.</value>
         public float Size
         {
-            get
-            {
-                return (float)GetValue(SizeProperty);
-            }
-            set
-            {
-                SetValue(SizeProperty, value);
-            }
+            get { return (float)GetValue(SizeProperty); }
+            set { SetValue(SizeProperty, value); }
         }
     }
 }

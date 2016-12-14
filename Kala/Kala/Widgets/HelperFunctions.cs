@@ -21,7 +21,7 @@ namespace Kala
 
         public static void AddStatusText(Grid grid, int x, int y, string Label, string Unit, string link)
         {
-            Label l_status = new Label
+            ItemLabel l_status = new ItemLabel
             {
                 Text = Label,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
@@ -30,12 +30,12 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                StyleId = link
+                Link = link
             };
 
             l_status.HorizontalOptions = LayoutOptions.End;
 
-            Label l_unit = new Label
+            ItemLabel l_unit = new ItemLabel
             {
                 Text = Unit,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
@@ -44,7 +44,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                StyleId = link
+                Link = link
             };
 
             //Grid for status text at the bottom
