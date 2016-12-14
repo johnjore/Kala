@@ -17,16 +17,15 @@ namespace Kala.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            //base.SetTheme(global::Android.Resource.Style.ThemeHolo);
-            base.OnCreate(bundle);
-
             //Fullscreen
             if (Settings.Fullscreen)
             {
                 this.Window.AddFlags(WindowManagerFlags.Fullscreen);
+                base.SetTheme(global::Android.Resource.Style.ThemeBlackNoTitleBar);
             }
             else
             {
+                base.SetTheme(global::Android.Resource.Style.ThemeHolo);
                 this.Window.ClearFlags(WindowManagerFlags.Fullscreen);
             }
 
@@ -39,6 +38,8 @@ namespace Kala.Droid
             {
                 this.Window.ClearFlags(WindowManagerFlags.KeepScreenOn);
             }
+
+            base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             //App.Speech = new Speech();
