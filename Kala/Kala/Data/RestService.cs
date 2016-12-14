@@ -178,7 +178,7 @@ namespace Kala
                                                 item.state = itemData.state;
                                                 switch (item.type)
                                                 {
-                                                    case "NumericItem":
+                                                    case "GaugeItem":
                                                         Widgets.Gauge_update(false, item.grid, item.px, item.py, item.header, item.min, item.max, item.state, item.unit, item.icon, item.link);
                                                         break;
                                                     case "DimmerItem":

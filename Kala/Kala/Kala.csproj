@@ -41,6 +41,7 @@
     <Compile Include="CustomControls\CircularProgressBar.cs" />
     <Compile Include="CustomControls\ShapeView.cs" />
     <Compile Include="PlatformSpecifics\IDim.cs" />
+    <Compile Include="Widgets\Image.cs" />
     <Compile Include="Widgets\Slider.cs" />
     <Compile Include="Widgets\Screensaver.cs" />
     <Compile Include="Helpers\Constants.cs" />

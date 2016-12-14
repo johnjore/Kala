@@ -65,38 +65,7 @@ namespace Kala
 
             grid.Children.Add(g, x, y);
         }
-
-        public static void AddCenterText(bool Create, Grid grid, int x, int y, string value, string unit, string link)
-        {
-            Label l = new Label
-            {
-                Text = value,
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                TranslationY = -10,
-                StyleId = link
-            };
-
-            grid.Children.Add(l, x, y);
-
-            if (Create)
-            {
-                grid.Children.Add(new Label
-                {
-                    Text = unit,
-                    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    TranslationY = 20
-                }, x, y);
-            }
-        }
-
+    
         public static void AddImageEnd(Grid grid, int x, int y, string strImage)
         {
             grid.Children.Add(new Image

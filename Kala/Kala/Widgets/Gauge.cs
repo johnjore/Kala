@@ -30,13 +30,13 @@ namespace Kala
             {
                 Debug.WriteLine("Widgets.Gauge crashed: " + ex.ToString());
             }
+            
+            AddHeaderText(grid, px, py, header);
 
             try
             {
                 double start = Convert.ToDouble(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator));
                 double end = Convert.ToDouble(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator));
-
-                AddHeaderText(grid, px, py, header);
 
                 App.trackItem i = new App.trackItem
                 {
@@ -50,9 +50,36 @@ namespace Kala
                     header = header,
                     unit = widgetKeyValuePairs["unit"],
                     icon = widgetKeyValuePairs["icon"],
-                    type = "NumericItem"
+                    type = "GaugeItem"
                 };
                 App.config.items.Add(i);
+                
+                //Center text
+                Label l_value = new Label
+                {
+                    Text = i.state,
+                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                    TextColor = App.config.TextColor,
+                    BackgroundColor = App.config.CellColor,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    TranslationY = -10,
+                    StyleId = i.link
+                };
+                App.config.labels.Add(l_value);
+                grid.Children.Add(l_value, px, py);
+                
+                //Center unit
+                grid.Children.Add(new Label
+                {
+                    Text = i.unit,
+                    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                    TextColor = App.config.TextColor,
+                    BackgroundColor = App.config.CellColor,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    TranslationY = 20
+                }, px, py);
 
                 Gauge_update(true, grid, px, py, i.header, i.min, i.max, i.state, i.unit, i.icon, i.link);
             }
@@ -69,8 +96,9 @@ namespace Kala
             {
                 double start = Convert.ToInt16(s_min);
                 double end = Convert.ToInt16(s_max);
-
                 double value = Convert.ToDouble(s_state.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator));
+
+                //Handle negative ranges
                 if (start < 0)
                 {
                     end = end + Math.Abs(start);
@@ -90,8 +118,7 @@ namespace Kala
             {
                 Debug.WriteLine("Widgets.Gauge crashed: " + ex.ToString());
             }
-
-            AddCenterText(Create, grid, px, py, s_state, unit, link);
+            
             AddImageEnd(grid, px, py, icon);
         }
     }
