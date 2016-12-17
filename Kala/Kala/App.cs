@@ -35,6 +35,7 @@ namespace Kala
             public List<ItemLabel> itemlabels = new List<ItemLabel>();
         }
         public static Configuration config = null;
+        public static TabbedPage tp = new TabbedPage();
 
         /**/ //Future
         //public static ITextToSpeech Speech { get; set; }
@@ -52,62 +53,37 @@ namespace Kala
                 Debug.WriteLine(@"URL Settings: '" + Settings.Protocol + "://" + Settings.Server + ":" + Settings.Port.ToString() + "'");
                 Debug.WriteLine(@"Auth Settings: '" + Settings.Username + " / " + Settings.Password + "'");
                 Debug.WriteLine(@"Sitemap Settings: '" + Settings.Sitemap + "'");
-            }
+            };
 
+            //TabbedPage setup
+            tp.BackgroundColor = Color.Accent;
+            tp.BarBackgroundColor = App.config.BackGroundColor;
+            tp.BarTextColor = App.config.TextColor;
+            
             //Initialize FFImageLoading with Authentication
             FFImageLoading.AuthenticatedHttpImageClientHandler.Initialize();
 
             /**/ //Show a busy signal here as we can't display anything until we have downloaded the sitemap with its items. No async. Pointless..
-            if (GetActiveSitemap() == false)
+            Models.Sitemaps.Sitemap sitemaps = Sitemap.GetActiveSitemap(Settings.Sitemap);
+
+            //Selected sitemap was not found, display settings page to make change
+            if (sitemaps == null)
             {
+                //Add settings tab
                 MainPage = new Views.Page1();
             }
             else
             {
                 Sitemap sitemap = new Sitemap();
-                sitemap.CreateSitemap();
-
-                Debug.WriteLine("Config - Sitemap : " + config.sitemap.name);
-                Debug.WriteLine("Got ActiveSitemap");
+                sitemap.CreateSitemap(sitemaps);
+                Debug.WriteLine("Got Sitemaps");
 
                 //Add settings tab last
-                Sitemap.tp.Children.Add(new Views.Page1());
-                MainPage = Sitemap.tp;
+                App.tp.Children.Add(new Views.Page1());
+                MainPage = App.tp;
 
                 sitemap.GetUpdates();
             }
-        }
-
-        public bool GetActiveSitemap()
-        {
-            Models.Sitemaps.Sitemaps sitemaps = new RestService().ListSitemaps();
-
-            if (sitemaps.sitemap != null)
-            {
-                foreach (Models.Sitemaps.Sitemap s in sitemaps.sitemap)
-                {
-                    Dictionary<string, string> keywords = Helpers.SplitCommand(s.label);
-                    if (keywords != null && keywords.ContainsKey("kala") && keywords["kala"].Contains("true"))
-                    {
-                        Debug.WriteLine("Name: " + s.name);
-
-                        if (s.name.Equals(Settings.Sitemap))
-                        {
-                            /**/ //Filter-out non-kala=true sitemaps
-                            config.sitemap = s;
-                            Debug.WriteLine("Label: " + s.label);
-                            Debug.WriteLine("Name: " + s.name);
-                            Debug.WriteLine("Link: " + s.link);
-
-                            Debug.WriteLine("Link (link): " + config.sitemap.link);
-
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         protected override void OnStart()

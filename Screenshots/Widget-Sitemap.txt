@@ -1,0 +1,1 @@
+Text label="{widget=sitemap,name=NameOfNextSitemap}"
