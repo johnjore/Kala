@@ -59,7 +59,13 @@ namespace Kala
             tp.BackgroundColor = Color.Accent;
             tp.BarBackgroundColor = App.config.BackGroundColor;
             tp.BarTextColor = App.config.TextColor;
-            
+            tp.CurrentPageChanged += (sender, e) =>
+            {                
+                //Reset screensaver timer
+                App.config.LastActivity = DateTime.Now;
+                Debug.WriteLine("Reset Screensaver timer");
+            };
+
             //Initialize FFImageLoading with Authentication
             FFImageLoading.AuthenticatedHttpImageClientHandler.Initialize();
 
@@ -85,7 +91,7 @@ namespace Kala
                 sitemap.GetUpdates();
             }
         }
-
+        
         protected override void OnStart()
         {
         }
