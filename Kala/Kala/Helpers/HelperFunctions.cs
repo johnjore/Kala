@@ -69,16 +69,20 @@ namespace Kala
             {
                 if (lbl.Link.Equals(item.link))
                 {
-                    //Special cases
-                    if (lbl.Type == Models.Itemtypes.Winddirection)
+                    //Manage special cases
+                    switch (lbl.Type)
                     {
-                        int w_direction = 0;
-                        wind_direction.TryGetValue(item.state.ToLower(), out w_direction);
-                        lbl.Rotation = w_direction;
-                    }
-                    else
-                    {
-                        lbl.Text = lbl.Pre + item.state + lbl.Post;
+                        case Models.Itemtypes.Winddirection:
+                            int w_direction = 0;
+                            wind_direction.TryGetValue(item.state.ToLower(), out w_direction);
+                            lbl.Rotation = w_direction;
+                            break;
+                        case Models.Itemtypes.Weathericon:
+                            lbl.Text = Widgets.WeatherCondition(item.state);
+                            break;
+                        default:
+                            lbl.Text = lbl.Pre + item.state + lbl.Post;
+                            break;
                     }
                 }
             }

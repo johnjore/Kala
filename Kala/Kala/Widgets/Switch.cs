@@ -85,8 +85,8 @@ namespace Kala
                         grid.Children.Add(new ShapeView()
                         {
                             ShapeType = ShapeType.Circle,
-                            StrokeColor = Color.Accent,
-                            Color = Color.Accent,
+                            StrokeColor = App.config.ValueColor,
+                            Color = App.config.ValueColor,
                             StrokeWidth = 10.0f,
                             Scale = 2,
                             HorizontalOptions = LayoutOptions.Center,

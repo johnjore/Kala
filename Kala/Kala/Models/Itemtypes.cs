@@ -9,6 +9,7 @@ namespace Kala.Models
     public enum Itemtypes
     {
         Notused = 0,
-        Winddirection = 1
+        Winddirection = 1,
+        Weathericon = 2
     };
 }

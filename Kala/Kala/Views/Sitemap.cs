@@ -61,7 +61,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert Fullscreen value: '", entry["fullscreen"] + "'");
+                    Debug.WriteLine("Failed to convert 'fullscreen' value: '", entry["fullscreen"] + "'");
                 }
             }
 
@@ -74,7 +74,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert screensaver timeout value: '", entry["screensaver"] + "'");
+                    Debug.WriteLine("Failed to convert 'screensaver' value: '", entry["screensaver"] + "'");
                 }
             }
 
@@ -89,6 +89,53 @@ namespace Kala
                     Debug.WriteLine("Failed to convert 'kala' identifier: '", entry["kala"] + "'");
                 }                
             }
+
+            if (entry.ContainsKey("background"))
+            {
+                try
+                {
+                    App.config.BackGroundColor = Color.FromHex(entry["background"]);
+                }
+                catch
+                {
+                    Debug.WriteLine("Failed to convert 'background' value: '", entry["background"] + "'");
+                }
+            }
+
+            if (entry.ContainsKey("cell"))
+            {
+                try
+                {
+                    App.config.CellColor = Color.FromHex(entry["cell"]);
+                }
+                catch
+                {
+                    Debug.WriteLine("Failed to convert 'cell' value: '", entry["cell"] + "'");
+                }
+            }
+            if (entry.ContainsKey("text"))
+            {
+                try
+                {
+                    App.config.TextColor = Color.FromHex(entry["text"]);
+                }
+                catch
+                {
+                    Debug.WriteLine("Failed to convert 'text' value: '", entry["text"] + "'");
+                }
+            }
+            if (entry.ContainsKey("value"))
+            {
+                try
+                {
+                    App.config.ValueColor = Color.FromHex(entry["value"]);
+                }
+                catch
+                {
+                    Debug.WriteLine("Failed to convert 'value' value: '", entry["value"] + "'");
+                }
+            }
+
 
             Debug.WriteLine("Fullscreen : " + Settings.Fullscreen.ToString());
             Debug.WriteLine("Screensaver: " + Settings.Screensaver.ToString());
@@ -232,6 +279,12 @@ namespace Kala
                         if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
                         {
                             Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
+                        }
+                        break;
+                    case "WEATHERFORECAST":
+                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
+                        {
+                            Widgets.WeatherForecast(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
                         }
                         break;
                     case "IMAGE":

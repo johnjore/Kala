@@ -72,6 +72,7 @@
     <Compile Include="Widgets\Screensaver.cs" />
     <Compile Include="Widgets\Slider.cs" />
     <Compile Include="Widgets\Switch.cs" />
+    <Compile Include="Widgets\WeatherForecast.cs" />
     <Compile Include="Widgets\Weather.cs" />
   </ItemGroup>
   <ItemGroup>

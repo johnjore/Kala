@@ -30,12 +30,14 @@ namespace Kala
             public Color BackGroundColor = Color.FromHex("212121");
             public Color CellColor = Color.FromHex("424242");
             public Color TextColor = Color.FromHex("ffffff"); // Color.White;
+            public Color ValueColor = Color.Blue;
             public DateTime LastActivity = DateTime.Now;
             public List<trackItem> items = new List<trackItem>();
             public List<ItemLabel> itemlabels = new List<ItemLabel>();
         }
         public static Configuration config = null;
         public static TabbedPage tp = new TabbedPage();
+        public static Models.Sitemaps.Sitemap sitemaps = null;
 
         /**/ //Future
         //public static ITextToSpeech Speech { get; set; }
@@ -55,40 +57,47 @@ namespace Kala
                 Debug.WriteLine(@"Sitemap Settings: '" + Settings.Sitemap + "'");
             };
 
-            //TabbedPage setup
-            tp.BackgroundColor = Color.Accent;
-            tp.BarBackgroundColor = App.config.BackGroundColor;
-            tp.BarTextColor = App.config.TextColor;
-            tp.CurrentPageChanged += (sender, e) =>
-            {                
-                //Reset screensaver timer
-                App.config.LastActivity = DateTime.Now;
-                Debug.WriteLine("Reset Screensaver timer");
-            };
-
             //Initialize FFImageLoading with Authentication
             FFImageLoading.AuthenticatedHttpImageClientHandler.Initialize();
 
-            /**/ //Show a busy signal here as we can't display anything until we have downloaded the sitemap with its items. No async. Pointless..
-            Models.Sitemaps.Sitemap sitemaps = Sitemap.GetActiveSitemap(Settings.Sitemap);
-
-            //Selected sitemap was not found, display settings page to make change
-            if (sitemaps == null)
+            //TabbedPage setup
+            if (tp.Children.Count == 0)
             {
-                //Add settings tab
-                MainPage = new Views.Page1();
+                tp.BackgroundColor = App.config.BackGroundColor;
+                tp.BarBackgroundColor = App.config.BackGroundColor;
+                tp.BarTextColor = App.config.TextColor;
+
+                tp.CurrentPageChanged += (sender, e) =>
+                {
+                    //Reset screensaver timer
+                    App.config.LastActivity = DateTime.Now;
+                    Debug.WriteLine("Reset Screensaver timer");
+                };
+
+                /**/ //Show a busy signal here as we can't display anything until we have downloaded the sitemap with its items. No async. Pointless..
+                sitemaps = Sitemap.GetActiveSitemap(Settings.Sitemap);
+
+                //Selected sitemap was not found, display settings page to make change
+                if (sitemaps == null)
+                {
+                    //Add settings tab
+                    MainPage = new Views.Page1();
+                }
+                else
+                {
+                    Sitemap sitemap = new Sitemap();
+                    sitemap.CreateSitemap(sitemaps);
+                    Debug.WriteLine("Got Sitemaps");
+
+                    //Add settings tab last
+                    App.tp.Children.Add(new Views.Page1());
+                    sitemap.GetUpdates();
+                    MainPage = App.tp;
+                }
             }
             else
             {
-                Sitemap sitemap = new Sitemap();
-                sitemap.CreateSitemap(sitemaps);
-                Debug.WriteLine("Got Sitemaps");
-
-                //Add settings tab last
-                App.tp.Children.Add(new Views.Page1());
                 MainPage = App.tp;
-
-                sitemap.GetUpdates();
             }
         }
         
