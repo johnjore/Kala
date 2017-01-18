@@ -21,3 +21,6 @@ Switch (On)
 
 Weather
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Weather%2C%202x1.png)
+
+Weather forecast
+![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Weather%20forecast%2C3x1.png)

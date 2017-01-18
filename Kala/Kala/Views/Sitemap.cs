@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -27,9 +28,9 @@ namespace Kala
                     {
                         if (s.name.Equals(SitemapName))
                         {
-                            Debug.WriteLine("Label: " + s.label);
-                            Debug.WriteLine("Name: " + s.name);
-                            Debug.WriteLine("Link: " + s.link);
+                            CrossLogger.Current.Info("Kala", "Label: " + s.label);
+                            CrossLogger.Current.Info("Kala", "Name: " + s.name);
+                            CrossLogger.Current.Info("Kala", "Link: " + s.link);
 
                             return s;
                         }
@@ -61,7 +62,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'fullscreen' value: '", entry["fullscreen"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'fullscreen' value: '" + entry["fullscreen"] + "'");
                 }
             }
 
@@ -74,7 +75,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'screensaver' value: '", entry["screensaver"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'screensaver' value: '" + entry["screensaver"] + "'");
                 }
             }
 
@@ -86,7 +87,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'kala' identifier: '", entry["kala"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'kala' identifier: '" + entry["kala"] + "'");
                 }                
             }
 
@@ -98,7 +99,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'background' value: '", entry["background"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'background' value: '" + entry["background"] + "'");
                 }
             }
 
@@ -110,7 +111,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'cell' value: '", entry["cell"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'cell' value: '" + entry["cell"] + "'");
                 }
             }
             if (entry.ContainsKey("text"))
@@ -121,7 +122,7 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'text' value: '", entry["text"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'text' value: '" + entry["text"] + "'");
                 }
             }
             if (entry.ContainsKey("value"))
@@ -132,14 +133,14 @@ namespace Kala
                 }
                 catch
                 {
-                    Debug.WriteLine("Failed to convert 'value' value: '", entry["value"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'value' value: '" + entry["value"] + "'");
                 }
             }
 
 
-            Debug.WriteLine("Fullscreen : " + Settings.Fullscreen.ToString());
-            Debug.WriteLine("Screensaver: " + Settings.Screensaver.ToString());
-            Debug.WriteLine("Kala Sitemap: " + Settings.Fullscreen.ToString());
+            CrossLogger.Current.Info("Kala", "Fullscreen : " + Settings.Fullscreen.ToString());
+            CrossLogger.Current.Info("Kala", "Screensaver: " + Settings.Screensaver.ToString());
+            CrossLogger.Current.Info("Kala", "Sitemap: " + Settings.Fullscreen.ToString());
 
             if (App.config.Valid)
             {
@@ -161,13 +162,13 @@ namespace Kala
         {
             foreach (Models.Sitemap.Widget page in items.homepage.widget)
             {
-                Debug.WriteLine("Label: " + page.label);
+                CrossLogger.Current.Debug("Kala", "Label: " + page.label);
 
                 //Populate Page, if it contains elements to parse
                 if (page.label != string.Empty)
                 {
                     Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.label);
-                    Debug.WriteLine("Label: " + pageKeyValuePairs["label"]);
+                    CrossLogger.Current.Debug("Kala", "Label: " + pageKeyValuePairs["label"]);
 
                     #region page
                     if (page.linkedPage != null)
@@ -206,18 +207,18 @@ namespace Kala
                         }
                         else
                         {
-                            Debug.WriteLine("Unknown: " + w.ToString());
+                            CrossLogger.Current.Warn("Kala", "Unknown: " + w.ToString());
                         }
                     }
                     #endregion page
                     else
                     {
-                        Debug.WriteLine("Unknown: " + ToString());
+                        CrossLogger.Current.Warn("Kala", "Unknown: " + ToString());
 
                         switch (pageKeyValuePairs["widget"].ToUpper())
                         {
                             case "SITEMAP":
-                                Debug.WriteLine("Sitemap:" + pageKeyValuePairs["name"]);
+                                CrossLogger.Current.Debug("Kala", "Sitemap:" + pageKeyValuePairs["name"]);
 
                                 Models.Sitemaps.Sitemap sitemaps = GetActiveSitemap(pageKeyValuePairs["name"]);
                                 if (sitemaps != null)
@@ -225,7 +226,7 @@ namespace Kala
                                     Sitemap sitemap = new Sitemap();
                                     sitemap.CreateSitemap(sitemaps);
 
-                                    Debug.WriteLine("Got ActiveSitemap");
+                                    CrossLogger.Current.Debug("Kala", "Got ActiveSitemap");
                                 }
                                 break;
                         }
@@ -241,7 +242,7 @@ namespace Kala
         /// <returns>nothing</returns>
         private void ParseWidgets(Grid grid, Models.Sitemap.Widget3 item)
         {
-            Debug.WriteLine("Widget : " + item.widget + ", ID: " + item.widgetId);
+            CrossLogger.Current.Debug("Kala", "Widget : " + item.widget + ", ID: " + item.widgetId);
             Dictionary<string, string> itemKeyValuePairs = Helpers.SplitCommand(item.label);
 
             if (itemKeyValuePairs != null && itemKeyValuePairs.ContainsKey("widget") && itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py"))
@@ -298,10 +299,19 @@ namespace Kala
                         }
                         break;
                     case "AVATAR":
-                        Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widget);
+                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                        {
+                            Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widget);
+                        }
+                        break;
+                    case "CALENDAR":
+                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                        {
+                            Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JArray)item.widget);
+                        }
                         break;
                     default:
-                        Debug.WriteLine("Failed to parse widget. Unknown type: " + item.ToString());
+                        CrossLogger.Current.Warn("Kala", "Failed to parse widget. Unknown type: " + item.ToString());
                         break;
                 }
             }

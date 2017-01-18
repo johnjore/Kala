@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using FFImageLoading.Forms;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -13,7 +14,7 @@ namespace Kala
     {
         public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JObject data)
         {
-            Debug.WriteLine("Creating Avatar Widget");
+            CrossLogger.Current.Debug("Avatar", "Creating Avatar Widget");
 
             int px = 0;
             int py = 0;
@@ -30,7 +31,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Avatar crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Avatar", "Crashed: " + ex.ToString());
             }
 
             try
@@ -92,7 +93,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Avatar crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Avatar", "Crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }

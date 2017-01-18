@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using DrawShape;
 using Newtonsoft.Json.Linq;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -21,14 +22,14 @@ namespace Kala
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
                 widgetKeyValuePairs = Helpers.SplitCommand(item.label);
-                Debug.WriteLine("Label: " + widgetKeyValuePairs["label"]);
+                CrossLogger.Current.Debug("Switch", "Label: " + widgetKeyValuePairs["label"]);
 
                 px = Convert.ToInt16(x1);
                 py = Convert.ToInt16(y1);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Switch crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Switch", "Crashed: " + ex.ToString());
             }
 
             try
@@ -42,7 +43,7 @@ namespace Kala
                     StyleId = item.item.link //StyleID is not used on buttons
                 };
                 switchButton.Clicked += OnSwitchButtonClicked;
-                Debug.WriteLine("Button ID: " + switchButton.Id + " created.");
+                CrossLogger.Current.Debug("Switch", "Button ID: " + switchButton.Id + " created.");
                 grid.Children.Add(switchButton, px, py);
 
                 App.trackItem i = new App.trackItem
@@ -62,7 +63,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Switch crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Switch", "Widgets.Switch crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }
@@ -136,11 +137,11 @@ namespace Kala
                 if (item.link.Equals(link))
                 {
                     state = item.state;
-                    Debug.WriteLine("Found: " + item.link + ", New State: " + state);
+                    CrossLogger.Current.Debug("Switch", "Found: " + item.link + ", New State: " + state);
                  }
             }
 
-            Debug.WriteLine("Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + state + "'");
+            CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + state + "'");
 
 
             if (!state.Equals("Uninitialized"))

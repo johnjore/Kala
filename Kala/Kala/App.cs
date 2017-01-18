@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xamarin.Forms;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -49,12 +50,12 @@ namespace Kala
             {
                 config = new Configuration();
                 IPlatformInfo platformInfo = DependencyService.Get<IPlatformInfo>();
-                Debug.WriteLine("Model: " + platformInfo.GetModel());
-                Debug.WriteLine("Version: " + platformInfo.GetVersion());
+                CrossLogger.Current.Info("Kala", "Model: " + platformInfo.GetModel());
+                CrossLogger.Current.Info("Kala", "Version: " + platformInfo.GetVersion());
 
-                Debug.WriteLine(@"URL Settings: '" + Settings.Protocol + "://" + Settings.Server + ":" + Settings.Port.ToString() + "'");
-                Debug.WriteLine(@"Auth Settings: '" + Settings.Username + " / " + Settings.Password + "'");
-                Debug.WriteLine(@"Sitemap Settings: '" + Settings.Sitemap + "'");
+                CrossLogger.Current.Debug("Kala", @"URL Settings: '" + Settings.Protocol + "://" + Settings.Server + ":" + Settings.Port.ToString() + "'");
+                CrossLogger.Current.Debug("Kala", @"Auth Settings: '" + Settings.Username + " / " + Settings.Password + "'");
+                CrossLogger.Current.Debug("Kala", @"Sitemap Settings: '" + Settings.Sitemap + "'");
             };
 
             //Initialize FFImageLoading with Authentication
@@ -71,7 +72,7 @@ namespace Kala
                 {
                     //Reset screensaver timer
                     App.config.LastActivity = DateTime.Now;
-                    Debug.WriteLine("Reset Screensaver timer");
+                    CrossLogger.Current.Debug("Kala", "Reset Screensaver timer");
                 };
 
                 /**/ //Show a busy signal here as we can't display anything until we have downloaded the sitemap with its items. No async. Pointless..
@@ -87,7 +88,7 @@ namespace Kala
                 {
                     Sitemap sitemap = new Sitemap();
                     sitemap.CreateSitemap(sitemaps);
-                    Debug.WriteLine("Got Sitemaps");
+                    CrossLogger.Current.Debug("Kala", "Got Sitemaps");
 
                     //Add settings tab last
                     App.tp.Children.Add(new Views.Page1());

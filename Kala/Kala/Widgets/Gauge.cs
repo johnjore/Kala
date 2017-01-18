@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Newtonsoft.Json.Linq;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -21,14 +22,14 @@ namespace Kala
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
                 widgetKeyValuePairs = Helpers.SplitCommand(item.label);
-                Debug.WriteLine("Label: " + widgetKeyValuePairs["label"]);
+                CrossLogger.Current.Debug("Gauge", "Label: " + widgetKeyValuePairs["label"]);
 
                 px = Convert.ToInt16(x1);
                 py = Convert.ToInt16(y1);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Gauge crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Gauge", "Crashed: " + ex.ToString());
             }
             
             AddHeaderText(grid, px, py, header);
@@ -85,7 +86,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Gauge crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Gauge", "Crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }
@@ -116,7 +117,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Gauge crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Gauge", "Crashed: " + ex.ToString());
             }
             
             AddImageEnd(grid, px, py, icon);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -20,14 +21,14 @@ namespace Kala
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
                 widgetKeyValuePairs = Helpers.SplitCommand(item.label);
-                Debug.WriteLine("Label: " + widgetKeyValuePairs["label"]);
+                CrossLogger.Current.Debug("Dimmer", "Label: " + widgetKeyValuePairs["label"]);
 
                 px = Convert.ToInt16(x1);
                 py = Convert.ToInt16(y1);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Switch crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Dimmer", "Widgets.Switch crashed: " + ex.ToString());
             }
 
             try
@@ -41,7 +42,7 @@ namespace Kala
                     StyleId = item.item.link //StyleID is not used on buttons
                 };
                 dimmerButton.Clicked += OnDimmerButtonClicked;
-                Debug.WriteLine("Button ID: " + dimmerButton.Id + " created.");
+                CrossLogger.Current.Debug("Dimmer", "Button ID: " + dimmerButton.Id + " created.");
                 grid.Children.Add(dimmerButton, px, py);
 
                 App.trackItem i = new App.trackItem
@@ -62,7 +63,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Switch crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Dimmer", "Widgets.Switch crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }
@@ -99,7 +100,7 @@ namespace Kala
                 }
             }
 
-            Debug.WriteLine("Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + item.state + "'");
+            CrossLogger.Current.Debug("Dimmer", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + item.state + "'");
 
             PreviousPage = Application.Current.MainPage;
             Application.Current.MainPage = CreateSliderPage(item);

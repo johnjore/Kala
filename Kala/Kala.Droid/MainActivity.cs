@@ -7,6 +7,8 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using FFImageLoading.Forms.Droid;
+using Plugin.Logger;
+using Plugin.Logger.Abstractions;
 
 namespace Kala.Droid
 {
@@ -48,6 +50,11 @@ namespace Kala.Droid
             //Library for Image handling as XF does not support authentication
             CachedImageRenderer.Init();
 
+            //Logger
+            CrossLogger.Current.Configure("Kala.log", 3, 100, LogLevel.Debug, true);
+            CrossLogger.Current.Log(LogLevel.Info, "Kala", "Log Started");
+            CrossLogger.Current.Log(LogLevel.Info, "Kala", CrossLogger.Current.GetLocalStoragePath());
+            
             LoadApplication(new App());
         }
     }

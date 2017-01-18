@@ -10,6 +10,7 @@ using System.Linq;
 using Xamarin.Forms;
 using System.Threading;
 using System.IO;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -34,7 +35,7 @@ namespace Kala
 		{
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Sitemaps, string.Empty));
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-            Debug.WriteLine(@"URI: '" + uri.ToString() + "'");
+            CrossLogger.Current.(@"URI: '" + uri.ToString() + "'");
             
             try
             {
@@ -47,10 +48,10 @@ namespace Kala
                 }
 
                 string resultString = response.Content.ReadAsStringAsync().Result;
-                
-                //Debug.WriteLine(@"Content Response: '" + resultString.ToString() + "'");
+
+                //CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
                 Models.Sitemaps.Sitemaps sitemaps = JsonConvert.DeserializeObject<Models.Sitemaps.Sitemaps>(resultString);
-                //Debug.WriteLine("Sitemaps: " + sitemaps.sitemap.Count().ToString());
+                //CrossLogger.Current.Debug("Kala", "Sitemaps: " + sitemaps.sitemap.Count().ToString());
                 return sitemaps;
             }
             catch
@@ -63,7 +64,7 @@ namespace Kala
         {
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             var uri = new Uri(sitemap.link);
-            Debug.WriteLine(@"URI: '" + uri.ToString() + "'");
+            CrossLogger.Current.Debug("Kala", @"URI: '" + uri.ToString() + "'");
 
             try
             {
@@ -77,7 +78,7 @@ namespace Kala
 
                 string resultString = response.Content.ReadAsStringAsync().Result;
 
-                Debug.WriteLine(@"Content Response: '" + resultString.ToString() + "'");
+                CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
 
                 Models.Sitemap.Sitemap items = JsonConvert.DeserializeObject<Models.Sitemap.Sitemap>(resultString);
 
@@ -85,7 +86,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(@"Exception : '" + ex.ToString() + "'");
+                CrossLogger.Current.Debug("Kala", @"Exception : '" + ex.ToString() + "'");
                 Application.Current.MainPage.DisplayAlert("Alert", ex.Message, "OK");
                 return null;
             }
@@ -93,7 +94,7 @@ namespace Kala
 
         public async Task SendCommand(string link, string command)
         {
-            Debug.WriteLine("Link: '" + link + "', Command: '" + command + "'");
+            CrossLogger.Current.Debug("Kala", "Link: '" + link + "', Command: '" + command + "'");
             App.config.LastActivity = DateTime.Now; //Update lastactivity to reset Screensaver timer
 
             try
@@ -105,18 +106,18 @@ namespace Kala
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("SendCommand - Success");
+                    CrossLogger.Current.Debug("Kala", "SendCommand - Success");
                     return;
                 }
                 else
                 {
-                    Debug.WriteLine("Sendcommand - Failed: " + response.ToString());
+                    CrossLogger.Current.Debug("Kala", "Sendcommand - Failed: " + response.ToString());
                 }
                 
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("SendCommand - Failed: " + ex.ToString());
+                CrossLogger.Current.Error("Kala", "SendCommand - Failed: " + ex.ToString());
                 return;
             }
         }
@@ -134,10 +135,10 @@ namespace Kala
             while (true)
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, uri);
-                //Debug.WriteLine("Waiting for connect");
+                //CrossLogger.Current.Debug("Kala", "Waiting for connect");
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    //Debug.WriteLine("Waiting for update");
+                    //CrossLogger.Current.Debug("Kala", "Waiting for update");
                     using (var body = await response.Content.ReadAsStreamAsync())
                     using (var reader = new StreamReader(body))
                     {
@@ -151,7 +152,7 @@ namespace Kala
                                 //Loop through each update.
                                 for (int i= 0; i < updates.Count()-1; i++)
                                 {
-                                    Debug.WriteLine("Got update:" + updates[i].ToString());
+                                    CrossLogger.Current.Debug("Kala", "Got update:" + updates[i].ToString());
                                     Models.Item itemData = null;
 
                                     try
@@ -173,7 +174,7 @@ namespace Kala
                                             if (item.link.Equals(itemData.link))
                                             {
                                                 item.state = itemData.state;
-                                                Debug.WriteLine("Found: " + item.link + ", New State: " + item.state);
+                                                CrossLogger.Current.Debug("Kala", "Found: " + item.link + ", New State: " + item.state);
 
                                                 switch (item.type)
                                                 {
@@ -187,7 +188,7 @@ namespace Kala
                                                         Widgets.Switch_update(false, item.grid, item.px, item.py, item.header, item.state, item.icon, item.link);
                                                         break;
                                                     default:
-                                                        Debug.WriteLine("Not processed: " + item.ToString());
+                                                        CrossLogger.Current.Warn("Kala", "Not processed: " + item.ToString());
                                                         break;
                                                 }                                                
                                             }
@@ -195,14 +196,14 @@ namespace Kala
                                     }
                                     catch (Exception ex)
                                     {
-                                        Debug.WriteLine("Error parsing update string: " + updates[i] + ", Ex: " + ex.ToString());
+                                        CrossLogger.Current.Error"Kala", "Error parsing update string: " + updates[i] + ", Ex: " + ex.ToString());
                                         //await Application.Current.MainPage.DisplayAlert("Alert", update.ToString(), "OK");
                                     }
                                 }
                             }
                             catch (Exception ex)
                             {
-                                Debug.WriteLine("Error in GetUpdate() : " + ex.ToString());
+                                CrossLogger.Current.Error("Kala", "Error in GetUpdate() : " + ex.ToString());
                                 await Application.Current.MainPage.DisplayAlert("Alert", ex.ToString(), "OK");
                             }
                         }

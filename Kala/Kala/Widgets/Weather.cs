@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -10,7 +11,7 @@ namespace Kala
     {
         public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
-            Debug.WriteLine("Weather: " + data.ToString());
+            CrossLogger.Current.Debug("Weather", "Weather: " + data.ToString());
 
             try
             {
@@ -22,7 +23,7 @@ namespace Kala
 
                 //Items in Weather widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
-                Debug.WriteLine("Weather: " + items.Count.ToString());
+                CrossLogger.Current.Debug("Weather", "Items: " + items.Count.ToString());
 
                 #region w_grid
                 //Create grid layout
@@ -88,7 +89,7 @@ namespace Kala
                 w_grid.Children.Add(t_grid, 0, 0 + 3, 3, 3 + 1); //Add in bottom row, across all columns in w_grid
                 #endregion Child Grids
 
-                #region Separatur
+                #region Separator
                 //Boxview (Line)
                 BoxView bv = new BoxView
                 {
@@ -176,7 +177,7 @@ namespace Kala
                         switch (widgetKeyValuePairs["widget"].ToUpper())
                         {
                             case "WIND":
-                                Debug.WriteLine("Wind");
+                                CrossLogger.Current.Debug("Weather", "Wind");
                                 List<Models.Sitemap.Widget3> winds = ((JArray)item.widget).ToObject<List<Models.Sitemap.Widget3>>();
 
                                 //Wind direction and speed
@@ -199,7 +200,7 @@ namespace Kala
                                             wind_speed_url = wind.item.link;
                                             break;
                                         default:
-                                            Debug.WriteLine("Unknown item");
+                                            CrossLogger.Current.Warn("Weather", "Unknown item");
                                             break;
                                     }
                                 }
@@ -237,11 +238,11 @@ namespace Kala
 
                                 break;
                             default:
-                                Debug.WriteLine("Unknown frame type");
+                                CrossLogger.Current.Warn("Weather", "Unknown frame type");
                                 break;
                         }
-                        
-                        Debug.WriteLine("Weather: " + items.Count.ToString());
+
+                        CrossLogger.Current.Debug("Weather", "Items: " + items.Count.ToString());
                     }
                     else
                     {
@@ -261,14 +262,14 @@ namespace Kala
                         App.config.itemlabels.Add(l1);
                         t_grid.Children.Add(l1, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
 
-                        Debug.WriteLine("No item defined: " + counter++.ToString() + ", font:"  + widgetKeyValuePairs["font"] + ", pos: " + widgetKeyValuePairs["px"]);
+                        CrossLogger.Current.Debug("Weather", "No item defined: " + counter++.ToString() + ", font:"  + widgetKeyValuePairs["font"] + ", pos: " + widgetKeyValuePairs["px"]);
                     }
                 }
                 #endregion Fields
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Weather crashed:" + ex.ToString());
+                CrossLogger.Current.Error("Weather", "Crashed:" + ex.ToString());
             }
         }
     }

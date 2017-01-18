@@ -1,0 +1,21 @@
+Frame label="London {widget=weatherforecast,px=2,py=0,sx=3,sy=1}" {
+	Text item=Weather_CommonId_London    label="{item=day0-condition}"
+	Text item=Weather_Temp_Max_London_D0 label="{item=day0-temperature-high}"
+	Text item=Weather_Temp_Min_London_D0 label="{item=day0-temperature-low}"
+
+	Text item=Weather_CommonId_London_D1 label="{item=day1-condition}"
+	Text item=Weather_Temp_Max_London_D1 label="{item=day1-temperature-high}"
+	Text item=Weather_Temp_Min_London_D1 label="{item=day1-temperature-low}"			
+			
+	Text item=Weather_CommonId_London_D2 label="{item=day2-condition}"
+	Text item=Weather_Temp_Max_London_D2 label="{item=day2-temperature-high}"
+	Text item=Weather_Temp_Min_London_D2 label="{item=day2-temperature-low}"
+
+	Text item=Weather_CommonId_London_D3 label="{item=day3-condition}"
+	Text item=Weather_Temp_Max_London_D3 label="{item=day3-temperature-high}"
+	Text item=Weather_Temp_Min_London_D3 label="{item=day3-temperature-low}"
+	
+	Text item=Weather_CommonId_London_D4 label="{item=day4-condition}"
+	Text item=Weather_Temp_Max_London_D4 label="{item=day4-temperature-high}"
+	Text item=Weather_Temp_Min_London_D4 label="{item=day4-temperature-low}"
+}

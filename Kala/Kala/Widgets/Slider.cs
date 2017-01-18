@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using Xamarin.Forms;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -79,7 +80,7 @@ namespace Kala
             string link = slider.StyleId;
             string state = Convert.ToInt16(Math.Round(e.NewValue, MidpointRounding.AwayFromZero)).ToString();
 
-            Debug.WriteLine("New state: " + state);
+            CrossLogger.Current.Debug("Slider", "New state: " + state);
             new RestService().SendCommand(link, state);
         }
     }

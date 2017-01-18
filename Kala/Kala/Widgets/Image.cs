@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using FFImageLoading;
 using FFImageLoading.Forms;
 using FFImageLoading.Cache;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -16,7 +17,7 @@ namespace Kala
         /// <returns>nothing</returns>
         public static void Image(Grid grid, string x1, string y1, string x2, string y2, string header, string straspect, JObject data)
         {
-            Debug.WriteLine("Creating Image Widget");
+            CrossLogger.Current.Debug("Image", "Creating Image Widget");
 
             int px = 0; 
             int py = 0;
@@ -34,13 +35,13 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Image crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Image", "Crashed: " + ex.ToString());
             }
 
             try
             {
                 Models.image item = data.ToObject<Models.image>();
-                Debug.WriteLine("URL: " + item.url);
+                CrossLogger.Current.Debug("Image", "URL: " + item.url);
 
                 //Aspect ratio
                 switch (straspect.ToLower())
@@ -90,14 +91,14 @@ namespace Kala
                             //If not clearing the cache, image does not refresh
                             ImageService.Instance.InvalidateCacheAsync(CacheType.All);
 
-                            Debug.WriteLine("Refresh Image: " + image.Id.ToString());
+                            CrossLogger.Current.Debug("Image", "Refresh Image: " + image.Id.ToString());
                             try
                             {
                                 /**///image.ReloadImage();
                             }
                             catch (Exception ex)
                             {
-                                Debug.WriteLine("Failed to refresh Image: " + ex.ToString());
+                                CrossLogger.Current.Error("Image", "Failed to refresh Image: " + ex.ToString());
                             }
                             return true;
                         });
@@ -106,7 +107,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.Image crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Image", "Widgets.Image crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }

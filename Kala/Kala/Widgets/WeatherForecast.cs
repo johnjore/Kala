@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -10,7 +11,7 @@ namespace Kala
     {
         public static void WeatherForecast(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
-            Debug.WriteLine("WeatherForecast: " + data.ToString());
+            CrossLogger.Current.Debug("WeatherForecast", "Creating Weather forecast :" + data.ToString());
 
             List<Models.Sitemap.Widget3> items = null;
             int px = 0;
@@ -28,11 +29,11 @@ namespace Kala
 
                 //Items
                 items = data.ToObject<List<Models.Sitemap.Widget3>>();
-                Debug.WriteLine("WeatherForecast: " + items.Count.ToString());
+                CrossLogger.Current.Debug("WeatherForecast", "Nr of items: " + items.Count.ToString());
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("WeatherForecast crashed:" + ex.ToString());
+                CrossLogger.Current.Error("WeatherForecast", "Crashed:" + ex.ToString());
             }
 
             try
@@ -147,7 +148,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Widgets.WeatherForecast crashed: " + ex.ToString());
+                CrossLogger.Current.Error("WeatherForecast", "Crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }

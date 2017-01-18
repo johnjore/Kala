@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Plugin.Logger;
 
 namespace Kala
 {
@@ -20,15 +21,15 @@ namespace Kala
 
         public static void Screensaver(int timeOut)
         {
-            Debug.WriteLine("Configuring screensaver, using timeout of " + timeOut.ToString());
+            CrossLogger.Current.Debug("Screensaver", "Configuring screensaver, using timeout of " + timeOut.ToString());
 
             Device.StartTimer(TimeSpan.FromSeconds(10), () =>
             {
-                Debug.WriteLine("Check if time to show screensaver");
+                CrossLogger.Current.Debug("Screensaver", "Check if time to show screensaver");
 
                 if (App.config.LastActivity.AddSeconds(timeOut) < DateTime.Now && active==false)
                 {
-                    Debug.WriteLine("Enable Screensaver");
+                    CrossLogger.Current.Debug("Screensaver", "Enable Screensaver");
                     PreviousPage = Application.Current.MainPage;
 
                     IDim dim = DependencyService.Get<IDim>();
@@ -47,7 +48,7 @@ namespace Kala
 
         private static void OnResumeButtonClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Button Pressed");
+            CrossLogger.Current.Debug("Screensaver", "Button Pressed");
             active = false;
             Application.Current.MainPage = PreviousPage;
             App.tp.CurrentPage = App.tp.Children[0];        //Revert to first tab when resuming
