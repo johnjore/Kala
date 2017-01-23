@@ -18,7 +18,7 @@ namespace Kala
         {
             Models.Sitemaps.Sitemaps sitemaps = new RestService().ListSitemaps();
 
-            if (sitemaps.sitemap != null)
+            if (sitemaps != null && sitemaps.sitemap != null)
             {
                 //Loop through each sitemap
                 foreach (Models.Sitemaps.Sitemap s in sitemaps.sitemap)

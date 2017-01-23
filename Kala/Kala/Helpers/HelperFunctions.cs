@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using Xamarin.Forms;
-using System;
-using System.Threading.Tasks;
-using System.Net.Http;
 using Plugin.Logger;
 
 namespace Kala
 {
+    public static class DateTimeExtensions
+    {
+        public static string ToShortTimeString(this DateTime dateTime)
+        {
+            return dateTime.ToString("t", DateTimeFormatInfo.CurrentInfo);
+        }
+    }
+
     public class Helpers : Application
     {
         public static Dictionary<string, int> wind_direction = new Dictionary<string, int>
@@ -44,7 +49,7 @@ namespace Kala
                 string label = instructions.Substring(0, start - 1).Trim();
                 string command = instructions.Substring(start, end - start);
 
-                CrossLogger.Current.Debug("Kala", "Label: " + label + ", Command: " + command);
+                //CrossLogger.Current.Debug("Kala", "Label: " + label + ", Command: " + command);
 
                 item_keyValuePairs = command.Split(',').Select(value => value.Split('=')).ToDictionary(pair => pair[0], pair => pair[1]);
                 item_keyValuePairs.Add("label", label);
@@ -66,6 +71,7 @@ namespace Kala
         //Update label
         public static void Label_Update(Models.Item item)
         {
+            //Generic labels
             foreach (ItemLabel lbl in App.config.itemlabels)
             {
                 if (lbl.Link.Equals(item.link))
@@ -85,6 +91,15 @@ namespace Kala
                             lbl.Text = lbl.Pre + item.state + lbl.Post;
                             break;
                     }
+                }
+            }
+
+            //Calendar
+            foreach (Models.calItems lbl in Widgets.itemCalendar)
+            {
+                if (lbl.Link.Equals(item.link))
+                {
+                    Widgets.Calendar_Update(item);
                 }
             }
         }

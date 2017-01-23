@@ -46,8 +46,9 @@
     <Compile Include="Helpers\FFImageLoading.cs" />
     <Compile Include="Helpers\HelperFunctions.cs" />
     <Compile Include="Models\Avatar.cs" />
-    <Compile Include="Models\image.cs" />
-    <Compile Include="Models\item.cs" />
+    <Compile Include="Models\Calendar.cs" />
+    <Compile Include="Models\Image.cs" />
+    <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Itemtypes.cs" />
     <Compile Include="Models\Sitemap.cs" />
     <Compile Include="Models\Sitemaps.cs" />

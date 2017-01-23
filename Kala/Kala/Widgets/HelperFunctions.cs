@@ -161,6 +161,7 @@ namespace Kala
                 case "partly-cloudy-night": strImage = "\uf083"; break;
                 case "partly-cloudy-day": strImage = "\uf00c"; break;
                 case "clear-night": strImage = "\uf02e"; break;
+                case "clear": strImage = "\uf00d"; break;
                 case "sunny": strImage = "\uf00d"; break;
                 case "hot": strImage = "\uf072"; break;
                 case "scattered-thunder": strImage = "\uf01e"; break;

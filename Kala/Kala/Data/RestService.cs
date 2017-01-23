@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Linq;
-using Xamarin.Forms;
 using System.Threading;
-using System.IO;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using Xamarin.Forms;
 using Plugin.Logger;
 
 namespace Kala
@@ -35,7 +35,7 @@ namespace Kala
 		{
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Sitemaps, string.Empty));
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-            CrossLogger.Current.(@"URI: '" + uri.ToString() + "'");
+            CrossLogger.Current.Debug(@"URI: '" + uri.ToString() + "'");
             
             try
             {
@@ -158,17 +158,9 @@ namespace Kala
                                     try
                                     {
                                         itemData = JsonConvert.DeserializeObject<Models.Item>(updates[i] + "}");
+                                        Helpers.Label_Update(itemData);
 
-                                        //Check and update all labels
-                                        foreach (ItemLabel lbl in App.config.itemlabels)
-                                        {
-                                            if (itemData.link.Equals(lbl.Link))
-                                            {
-                                                Helpers.Label_Update(itemData);
-                                            }
-                                        }
-
-                                        //Specials
+                                        //Specials. To be removed and cleaned up later
                                         foreach (App.trackItem item in App.config.items)
                                         {
                                             if (item.link.Equals(itemData.link))
@@ -196,7 +188,7 @@ namespace Kala
                                     }
                                     catch (Exception ex)
                                     {
-                                        CrossLogger.Current.Error"Kala", "Error parsing update string: " + updates[i] + ", Ex: " + ex.ToString());
+                                        CrossLogger.Current.Error("Kala", "Error parsing update string: " + updates[i] + ", Ex: " + ex.ToString());
                                         //await Application.Current.MainPage.DisplayAlert("Alert", update.ToString(), "OK");
                                     }
                                 }
