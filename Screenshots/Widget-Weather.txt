@@ -3,12 +3,14 @@ Frame label="London {widget=weather,px=2,py=0,sx=2,sy=1}" {
 	Text item=Weather_Condition label="{item=condition-caption}"
 	Text item=Weather_Temperature label="{item=temperature,unit=C}"
 						
-	Text item=Weather_Precip_Probability label="{px=1,py=0,font=\uf006,unit=%}"
-	Text item=Weather_Humidity label="{px=2,py=0,font=\uf07a,unit=%}"
+	Text item=Weather_Precip_Probability label="{px=1,py=0,font=\uf006,unit=%,digits=0}"
+	Text item=Weather_Humidity label="{px=2,py=0,font=\uf07a,unit=%,digits=0}"
 
 	Frame label="{widget=wind,px=0,py=0}"
 	{
 		Text item=Weather_Wind_Direction label="{item=wind-direction}"
-		Text item=Weather_Wind_Speed label="{item=wind-speed,unit=Km/h}"
+		Text item=Weather_Wind_Speed label="{item=wind-speed,unit=Km/h,digits=0}"
 	}
 }
+
+'Digits' is optional

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
@@ -47,9 +46,13 @@ namespace Kala
                 t_grid.VerticalOptions = LayoutOptions.FillAndExpand;
                 t_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
 
-                //Row
-                t_grid.RowDefinitions = new RowDefinitionCollection();
-                t_grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                //Rows
+                t_grid.RowDefinitions = new RowDefinitionCollection
+                {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    //new RowDefinition { Height = GridLength.Auto },
+                    //new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                };
                 
                 //Columns
                 for (int i = 0; i < items.Count; i++)            //Each day has 3 items
@@ -60,6 +63,7 @@ namespace Kala
                     {
                         day = Convert.ToInt16(widgetKeyValuePairs["item"].Substring(3,1));
                     }
+                    var digits = Digits(widgetKeyValuePairs, items[i].item.state);
 
                     #region Header
                     if (i % 3 == 0)
@@ -101,7 +105,7 @@ namespace Kala
                         App.config.itemlabels.Add(l_image);
                         t_grid.Children.Add(l_image, day, 0);
                     }
-                    #endregion Child Grids
+                    #endregion Condition
 
                     #region Temperature
                     if (items[i].label.Contains("temperature-high"))
@@ -111,19 +115,19 @@ namespace Kala
                             FontSize = 20,
                             TextColor = App.config.TextColor,
                             BackgroundColor = App.config.CellColor,
-                            HorizontalOptions = LayoutOptions.Start,
+                            HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.End,
+                            TranslationX = -30,
                             Link = items[i].item.link,
                             Pre = "   ",
                             Post = "\u00B0",
-                            Text = items[i].item.state + " \u00B0",
+                            Text = digits.Item1 + " \u00B0",
+                            Digits = digits.Item2
                         };
                         App.config.itemlabels.Add(l_temp_high);
                         t_grid.Children.Add(l_temp_high, day, 0);
                     }
-                    #endregion Header
 
-                    #region Temperature
                     if (items[i].label.Contains("temperature-low"))
                     {
                         ItemLabel l_temp_low = new ItemLabel
@@ -131,20 +135,22 @@ namespace Kala
                             FontSize = 20,
                             TextColor = App.config.TextColor,
                             BackgroundColor = App.config.CellColor,
-                            HorizontalOptions = LayoutOptions.End,
+                            HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.End,
+                            TranslationX = 30,
                             Link = items[i].item.link,
                             Post = " \u00B0",
-                            Text = items[i].item.state + " \u00B0  ",
+                            Text = digits.Item1 + " \u00B0  ",
+                            Digits = digits.Item2
                         };
                         App.config.itemlabels.Add(l_temp_low);
                         t_grid.Children.Add(l_temp_low, day, 0);
                     }
-                    #endregion Header
+                    #endregion Temperature
                 }
 
                 grid.Children.Add(t_grid, px, px + sx, py, py + sy);
-                #endregion Condition
+                #endregion t_grid
             }
             catch (Exception ex)
             {

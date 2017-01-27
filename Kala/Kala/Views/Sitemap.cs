@@ -1,12 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 using Plugin.Logger;
 
@@ -249,10 +243,19 @@ namespace Kala
             {
                 switch (itemKeyValuePairs["widget"].ToUpper())
                 {
-                    case "GAUGE":
-                        if (itemKeyValuePairs.ContainsKey("label"))
+                    case "AVATAR":
+                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                         {
-                            Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                            Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widget);
+                        }
+                        break;
+                    case "BLANK":
+                        Widgets.Blank(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"]);
+                        break;
+                    case "CALENDAR":
+                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                        {
+                            Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JArray)item.widget);
                         }
                         break;
                     case "CLOCK":
@@ -261,13 +264,48 @@ namespace Kala
                             Widgets.Clock(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"]);
                         }
                         break;
-                    case "BLANK":
-                        Widgets.Blank(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"]);
-                        break;
                     case "DIMMER":
                         if (itemKeyValuePairs.ContainsKey("label"))
                         {
                             Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                        }
+                        break;
+                    case "GAUGE":
+                        if (itemKeyValuePairs.ContainsKey("label"))
+                        {
+                            Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                        }
+                        break;
+                    case "GAUGE-GROUP":
+                        if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                        {
+                            var token = JToken.Parse(item.widget.ToString());
+                            if (token is JArray)
+                            {
+                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
+                            }
+                            else if (token is JObject)
+                            {
+                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widget);
+                            }
+                        }
+                        break;
+                    case "IMAGE":
+                        //Parameters
+                        if (!itemKeyValuePairs.ContainsKey("aspect")) { itemKeyValuePairs.Add("aspect", "aspectfill"); }
+
+                        if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
+                        {
+                            Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.widget);
+                        }
+                        break;
+                    case "MAP":
+                        //Parameters
+                        if (!itemKeyValuePairs.ContainsKey("type")) { itemKeyValuePairs.Add("type", "street"); }
+
+                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                        {
+                            Widgets.Map(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["type"], (JArray)item.widget);
                         }
                         break;
                     case "SWITCH":
@@ -286,28 +324,6 @@ namespace Kala
                         if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
                         {
                             Widgets.WeatherForecast(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
-                        }
-                        break;
-                    case "IMAGE":
-                        if (!itemKeyValuePairs.ContainsKey("aspect"))
-                        {
-                            itemKeyValuePairs.Add("aspect", "aspectfill");
-                        }
-                        if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
-                        {
-                            Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.widget);
-                        }
-                        break;
-                    case "AVATAR":
-                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
-                        {
-                            Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widget);
-                        }
-                        break;
-                    case "CALENDAR":
-                        if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
-                        {
-                            Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JArray)item.widget);
                         }
                         break;
                     default:

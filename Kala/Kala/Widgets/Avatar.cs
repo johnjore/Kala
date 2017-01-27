@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Xamarin.Forms;
 using Newtonsoft.Json.Linq;
 using FFImageLoading.Forms;

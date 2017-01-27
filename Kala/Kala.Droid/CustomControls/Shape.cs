@@ -1,9 +1,10 @@
 ﻿using System;
 using Android.Views;
 using Android.Graphics;
-using Xamarin.Forms.Platform.Android;
 using Android.Content;
 using Android.Util;
+using Xamarin.Forms.Platform.Android;
+using Plugin.Logger;
 
 namespace DrawShape.Android
 {
@@ -54,8 +55,10 @@ namespace DrawShape.Android
 			// We need to account for offsetting the coordinates based on the padding
 			var x = GetX () + Resize (this.ShapeView.Padding.Left);
 			var y = GetY () + Resize (this.ShapeView.Padding.Top);
+            var x1 = this.Width;
+            var y1 = this.Height;
 
-			switch (ShapeView.ShapeType) {
+            switch (ShapeView.ShapeType) {
 			case ShapeType.Box:
 				HandleStandardDraw (canvas, p => {
 					var rect = new RectF (x, y, x + this.Width, y + this.Height);
@@ -74,8 +77,14 @@ namespace DrawShape.Android
 				HandleStandardDraw (canvas, p => canvas.DrawCircle (x + this.Width / 2, y + this.Height / 2, (this.Width - 10) / 2, p), drawFill: false);
 				HandleStandardDraw (canvas, p => canvas.DrawArc (new RectF (x, y, x + this.Width, y + this.Height), QuarterTurnCounterClockwise, 360 * (ShapeView.IndicatorPercentage / 100), false, p), ShapeView.StrokeWidth + 3, false);
 				break;
-			}
-		}
+            case ShapeType.Arc:
+                    //Arc with space at the bottom where icon is located. Approx 60' opening
+                    HandleStandardDraw(canvas, p => canvas.DrawArc(new RectF(x, y, x + this.Width, y + this.Height), -240f, (360 - 60) * ShapeView.IndicatorPercentage / 100, false, p), ShapeView.StrokeWidth, false);
+                    //HandleStandardDraw(canvas, p => canvas.DrawArc(new RectF(1, 1, 38, 38), -240f, (360 - 60) * ShapeView.IndicatorPercentage / 100, false, p), ShapeView.StrokeWidth, false);
+                    //CrossLogger.Current.Error("Update", x.ToString() + ", " + y.ToString() + ", " + x1.ToString() + ", " + y1.ToString());
+                    break;
+            }
+        }
 
 		/// <summary>
 		/// A simple method that handles drawing our shape with the various colours we need
@@ -90,13 +99,14 @@ namespace DrawShape.Android
 			strokePaint.SetStyle (Paint.Style.Stroke);
 			strokePaint.StrokeWidth = Resize (lineWidth ?? ShapeView.StrokeWidth);
 			strokePaint.StrokeCap = Paint.Cap.Round;
-			strokePaint.Color = ShapeView.StrokeColor.ToAndroid ();
-			var fillPaint = new Paint ();
+			strokePaint.Color = ShapeView.StrokeColor.ToAndroid();
+			var fillPaint = new Paint();
 			fillPaint.SetStyle (Paint.Style.Fill);
-			fillPaint.Color = ShapeView.Color.ToAndroid ();
+			fillPaint.Color = ShapeView.Color.ToAndroid();
 
 			if (drawFill)
 				drawShape (fillPaint);
+
 			drawShape (strokePaint);
 		}
 

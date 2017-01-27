@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Xamarin.Forms;
 using Newtonsoft.Json.Linq;
 using FFImageLoading;
@@ -80,7 +79,7 @@ namespace Kala
                 };
                 grid.Children.Add(l_header, px, px + sx, py, py + sy);
 
-                              // Start the refresh time
+                // Start the refresh time
                 if (item.refresh != string.Empty)
                 {
                     int refresh = Convert.ToInt32(item.refresh);
@@ -107,7 +106,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Image", "Widgets.Image crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Image", "Image crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }

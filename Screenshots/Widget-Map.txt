@@ -1,0 +1,9 @@
+Frame label="{widget=map,type=street,px=3,py=1,sx=2,sy=2}"
+{
+	Text label="Home {lat=52.00,lon=1.23,color=aqua}"
+	Text item=strLocation1 label="1 {color=pink}"
+	Text item=strLocation2 label="2 {color=green}"
+}
+
+Type is optional and can be street, hybrid or satellite. Default is street.
+Color is option. Default is Red.

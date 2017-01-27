@@ -5,7 +5,6 @@ using Android.Views;
 using Android.App;
 
 [assembly: Dependency(typeof(Kala.Droid.PlatformInfo))]
-
 namespace Kala.Droid
 {
     public class PlatformInfo : IPlatformInfo

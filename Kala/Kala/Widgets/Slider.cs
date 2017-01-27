@@ -1,6 +1,5 @@
 ﻿/**/ //Ugly. Replace this with a popup of some description
 using System;
-using System.Diagnostics;
 using Xamarin.Forms;
 using Plugin.Logger;
 

@@ -11,8 +11,11 @@ namespace DrawShape
         public static readonly BindableProperty IndicatorPercentageProperty = BindableProperty.Create(nameof(IndicatorPercentage), typeof(float), typeof(ShapeView), 0f);
         public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(float), typeof(ShapeView), 0f);
         public static readonly BindableProperty PaddingProperty = BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(ShapeView), default(Thickness));
+        public static readonly BindableProperty LinkProperty = BindableProperty.Create(nameof(Link), typeof(string), typeof(ItemLabel), null);
+        public static readonly BindableProperty MinProperty = BindableProperty.Create(nameof(Min), typeof(double), typeof(ItemLabel), 0.0);
+        public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(ItemLabel), 100.0);
 
-		public ShapeType ShapeType {
+        public ShapeType ShapeType {
 			get{ return (ShapeType)GetValue (ShapeTypeProperty); }
 			set{ SetValue (ShapeTypeProperty, value); }
 		}
@@ -30,7 +33,7 @@ namespace DrawShape
 		public float IndicatorPercentage {
 			get{ return (float)GetValue (IndicatorPercentageProperty); }
 			set {
-				if (ShapeType != ShapeType.CircleIndicator)
+				if (ShapeType != ShapeType.CircleIndicator && ShapeType != ShapeType.Arc)
 					throw new ArgumentException ("Can only specify this property with CircleIndicator");
 				SetValue (IndicatorPercentageProperty, value);
 			}
@@ -53,12 +56,31 @@ namespace DrawShape
 		public ShapeView ()
 		{
 		}
-	}
 
-	public enum ShapeType
+        public string Link
+        {
+            get { return (string)GetValue(LinkProperty); }
+            set { SetValue(LinkProperty, value); }
+        }
+
+        public double Min
+        {
+            get { return (double)GetValue(MinProperty); }
+            set { SetValue(MinProperty, value); }
+        }
+
+        public double Max
+        {
+            get { return (double)GetValue(MaxProperty); }
+            set { SetValue(MaxProperty, value); }
+        }
+    }
+
+    public enum ShapeType
 	{
 		Box,
 		Circle,
-		CircleIndicator
+		CircleIndicator,
+        Arc
 	}
 }

@@ -1,13 +1,8 @@
 ﻿// https://github.com/xamarin/xamarin-forms-book-samples/tree/master/Chapter20/TaskDelayClock
 
 using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xamarin.Forms;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 using Plugin.Logger;
 
 namespace Kala

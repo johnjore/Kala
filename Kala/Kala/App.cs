@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Xamarin.Forms;
 using Plugin.Logger;
 
@@ -35,13 +34,12 @@ namespace Kala
             public DateTime LastActivity = DateTime.Now;
             public List<trackItem> items = new List<trackItem>();
             public List<ItemLabel> itemlabels = new List<ItemLabel>();
+            public List<DrawShape.ShapeView> itemShapeViews = new List<DrawShape.ShapeView>();
         }
         public static Configuration config = null;
         public static TabbedPage tp = new TabbedPage();
         public static Models.Sitemaps.Sitemap sitemaps = null;
 
-        /**/ //Future
-        //public static ITextToSpeech Speech { get; set; }
         #endregion Variables
 
         public App()

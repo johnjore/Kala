@@ -1,1 +1,3 @@
-Frame label="Number {widget=gauge,px=2,py=1}"	{ Text item=Sensor	label="{min=10,max=40,unit=Degrees,icon=ic_opacity_white_48dp}" }
+Frame label="Number {widget=gauge,px=2,py=1}"	{ Text item=Sensor	label="{min=10,max=40,unit=Degrees,icon=ic_opacity_white_48dp,digits=1}" }
+
+'Digits' is optional

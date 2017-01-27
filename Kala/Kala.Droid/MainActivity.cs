@@ -47,14 +47,17 @@ namespace Kala.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
             //App.Speech = new Speech();
 
-            //Library for Image handling as XF does not support authentication
+            // Library for Image handling as XF does not support authentication
             CachedImageRenderer.Init();
+
+            // Xamarin.Forms.GoogleMaps initialization
+            Xamarin.FormsGoogleMaps.Init(this, bundle);
 
             //Logger
             CrossLogger.Current.Configure("Kala.log", 3, 100, LogLevel.Debug, true);
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Log Started");
             CrossLogger.Current.Log(LogLevel.Info, "Kala", CrossLogger.Current.GetLocalStoragePath());
-            
+
             LoadApplication(new App());
         }
     }

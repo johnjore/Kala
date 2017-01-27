@@ -69,8 +69,10 @@
     <Compile Include="Widgets\Dimmer.cs" />
     <Compile Include="Widgets\Error.cs" />
     <Compile Include="Widgets\Gauge.cs" />
+    <Compile Include="Widgets\Gauge_Group.cs" />
     <Compile Include="Widgets\HelperFunctions.cs" />
     <Compile Include="Widgets\Image.cs" />
+    <Compile Include="Widgets\Map.cs" />
     <Compile Include="Widgets\Screensaver.cs" />
     <Compile Include="Widgets\Slider.cs" />
     <Compile Include="Widgets\Switch.cs" />

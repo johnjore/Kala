@@ -1,6 +1,8 @@
 ﻿using System;
 using Xamarin.Forms;
 using CircularProgressBar.FormsPlugin.Abstractions;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Kala
 {
@@ -172,6 +174,26 @@ namespace Kala
                 default: strImage = "\uf07b"; break;
             }
             return strImage;
+        }
+
+        public static Tuple<string, int> Digits(Dictionary<string, string> dict, string state)
+        {
+            string s_value = string.Empty;
+            int digits = -1;
+
+            if (dict.ContainsKey("digits"))
+            {               
+                int.TryParse(dict["digits"], out digits);
+                double v1 = 0.0;
+                Double.TryParse(state.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out v1);
+                s_value = (Math.Round(v1, digits)).ToString();
+            }
+            else
+            {
+                s_value = state;
+            }
+
+            return Tuple.Create(s_value, digits);
         }
     }
 }

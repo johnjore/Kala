@@ -6,6 +6,7 @@ public class ItemLabel : Label
     public static readonly BindableProperty PreProperty = BindableProperty.Create(nameof(Pre), typeof(string), typeof(ItemLabel), null);
     public static readonly BindableProperty PostProperty = BindableProperty.Create(nameof(Post), typeof(string), typeof(ItemLabel), null);
     public static readonly BindableProperty TypeProperty = BindableProperty.Create(nameof(Type), typeof(Kala.Models.Itemtypes), typeof(ItemLabel), Kala.Models.Itemtypes.Notused);
+    public static readonly BindableProperty DigitsProperty = BindableProperty.Create(nameof(Digits), typeof(int), typeof(ItemLabel), -1);
 
     public string Link
     {
@@ -30,4 +31,11 @@ public class ItemLabel : Label
         get { return (Kala.Models.Itemtypes)GetValue(TypeProperty); }
         set { SetValue(TypeProperty, value); }
     }
+
+    public int Digits
+    {
+        get { return (int)GetValue(DigitsProperty); }
+        set { SetValue(DigitsProperty, value); }
+    }
+
 }

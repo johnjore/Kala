@@ -1,0 +1,8 @@
+Frame label="Kala's walks (Average, Yesterday, Today) {widget=gauge-group,px=0,py=2,sx=3,sy=1}"
+{
+	Text item=whistle_av	label="{min=0,max=150,unit=Minutes,icon=ic_pets_white_48dp,digits=0}"
+	Text item=whistle_01	label="{min=0,max=150,unit=Minutes,icon=ic_pets_white_48dp,digits=0}"
+	Text item=whistle_02	label="{min=0,max=150,unit=Minutes,icon=ic_pets_white_48dp,digits=0}"
+}
+
+'Digits' is optional

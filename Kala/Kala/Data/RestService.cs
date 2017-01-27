@@ -170,9 +170,6 @@ namespace Kala
 
                                                 switch (item.type)
                                                 {
-                                                    case "NumberItem":
-                                                        Widgets.Gauge_update(false, item.grid, item.px, item.py, item.header, item.min, item.max, item.state, item.unit, item.icon, item.link);
-                                                        break;
                                                     case "DimmerItem":
                                                         Widgets.Dimmer_update(false, item.grid, item.px, item.py, item.header, item.state, item.unit, item.icon, item.link);
                                                         break;

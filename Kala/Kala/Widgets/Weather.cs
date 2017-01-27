@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-using Xamarin.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Xamarin.Forms;
 using Plugin.Logger;
 
 namespace Kala
@@ -185,6 +184,8 @@ namespace Kala
                                 string wind_direction_url = string.Empty;
                                 string wind_speed = string.Empty;
                                 string wind_speed_url = string.Empty;
+                                int digits = -1;
+                                string wind_speed_post = string.Empty;
 
                                 foreach (Models.Sitemap.Widget3 wind in winds)
                                 {
@@ -196,8 +197,11 @@ namespace Kala
                                             wind_direction_url = wind.item.link;
                                             break;
                                         case "WIND-SPEED":
-                                            wind_speed = wind.item.state + " " + windKeyValuePairs["unit"];
+                                            var tmpdigits = Digits(windKeyValuePairs, wind.item.state);
+                                            digits = tmpdigits.Item2;
+                                            wind_speed = tmpdigits.Item1;
                                             wind_speed_url = wind.item.link;
+                                            wind_speed_post = " " + windKeyValuePairs["unit"];
                                             break;
                                         default:
                                             CrossLogger.Current.Warn("Weather", "Unknown item");
@@ -224,14 +228,16 @@ namespace Kala
 
                                 ItemLabel l_windspeed = new ItemLabel
                                 {
-                                    Text = wind_speed,
+                                    Text = wind_speed + wind_speed_post,
                                     FontSize = 20,
                                     TextColor = App.config.TextColor,
                                     BackgroundColor = App.config.CellColor,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = 20,
-                                    Link = wind_speed_url
+                                    Link = wind_speed_url,
+                                    Post = wind_speed_post,
+                                    Digits = digits
                                 };
                                 App.config.itemlabels.Add(l_windspeed);
                                 t_grid.Children.Add(l_windspeed, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
@@ -246,9 +252,11 @@ namespace Kala
                     }
                     else
                     {
+                        var digits = Digits(widgetKeyValuePairs, item.item.state);
+
                         ItemLabel l1 = new ItemLabel
                         {
-                            Text = widgetKeyValuePairs["font"] + "  " + item.item.state + " " + widgetKeyValuePairs["unit"],
+                            Text = widgetKeyValuePairs["font"] + "  " + digits.Item1 + " " + widgetKeyValuePairs["unit"],
                             FontSize = 20,
                             FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
                             TextColor = App.config.TextColor,
@@ -257,7 +265,8 @@ namespace Kala
                             VerticalOptions = LayoutOptions.Center,
                             Pre = widgetKeyValuePairs["font"] + "  ",
                             Link = item.item.link,
-                            Post = " " + widgetKeyValuePairs["unit"]
+                            Post = " " + widgetKeyValuePairs["unit"],
+                            Digits = digits.Item2
                         };
                         App.config.itemlabels.Add(l1);
                         t_grid.Children.Add(l1, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));

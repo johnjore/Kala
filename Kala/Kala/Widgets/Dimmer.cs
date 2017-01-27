@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 using Plugin.Logger;
