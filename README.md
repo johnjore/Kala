@@ -22,6 +22,7 @@ GUI used here is inspired by that client, but distributed for free
 * https://github.com/luberda-molinet/FFImageLoading
 * https://github.com/amay077/Xamarin.Forms.GoogleMaps
 * https://github.com/wpbest/Plugin.Logger
+* https://materialdesignicons.com/
 
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.

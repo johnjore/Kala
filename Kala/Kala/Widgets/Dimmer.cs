@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 using Plugin.Logger;
+using CircularProgressBar.FormsPlugin.Abstractions;
 
 namespace Kala
 {
@@ -70,13 +71,30 @@ namespace Kala
         public static void Dimmer_update(bool Create, Grid grid, int px, int py, string header, string s_state, string unit, string icon, string link)
         {
             AddHeaderText(grid, px, py, header);
-            AddImageCenter(grid, px, py, icon, App.config.CellColor);
+
+            grid.Children.Add(new Image
+            {
+                Source = Device.OnPlatform(icon, icon, "Assets/" + icon),
+                Aspect = Aspect.AspectFill,
+                BackgroundColor = App.config.CellColor,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }, px, px + 1, py, py + 1);
+
             AddStatusText(grid, px, py, s_state, unit, link);
 
             //Capturs non-initialized item
             try
             {
-                ProgressCircle(grid, px, py, Convert.ToInt16(s_state), 0.5f);
+                grid.Children.Add(new CircularProgressBarView
+                {
+                    Progress = Convert.ToInt16(s_state),
+                    StrokeThickness = Device.OnPlatform(2, 4, 16),
+                    BackgroundColor = Color.Transparent,
+                    ProgressBackgroundColor = App.config.BackGroundColor,
+                    ProgressColor = App.config.ValueColor,
+                    Scale = 0.5f
+                }, px, py);
             }
             catch { }
         }

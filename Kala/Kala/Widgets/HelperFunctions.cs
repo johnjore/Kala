@@ -1,6 +1,5 @@
 ﻿using System;
 using Xamarin.Forms;
-using CircularProgressBar.FormsPlugin.Abstractions;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -67,72 +66,6 @@ namespace Kala
 
             grid.Children.Add(g, x, y);
         }
-    
-        public static void AddImageEnd(Grid grid, int x, int y, string strImage)
-        {
-            grid.Children.Add(new Image
-            {
-                Source = Device.OnPlatform(strImage, strImage, "Assets/" + strImage),
-                Aspect = Aspect.AspectFill,
-                BackgroundColor = App.config.CellColor,
-                VerticalOptions = LayoutOptions.End,
-                HorizontalOptions = LayoutOptions.Center
-            },
-                x,          // left
-                x + 1,        // right
-                y,          // top
-                y + 1);       // bottom
-        }
-
-        public static void AddImageCenter(Grid grid, int x, int y, string strImage, Color BackGround)
-        {
-            grid.Children.Add(new Image
-            {
-                Source = Device.OnPlatform(strImage, strImage, "Assets/" + strImage),
-                Aspect = Aspect.AspectFill,
-                BackgroundColor = BackGround,
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center
-            },
-                x,          // left
-                x + 1,        // right
-                y,          // top
-                y + 1);       // bottom
-        }
-
-        public static void ProgressCircle(Grid grid, int x, int y, int value, float scale)
-        {
-            if (value >= 0 && value <= 100)
-            {
-                grid.Children.Add(new CircularProgressBarView
-                {
-                    Progress = value,
-                    StrokeThickness = Device.OnPlatform(2, 4, 16),
-                    BackgroundColor = Color.Transparent,
-                    ProgressBackgroundColor = App.config.BackGroundColor,
-                    ProgressColor = App.config.ValueColor,
-                    Scale = scale
-                }, x, y);
-            }
-        }
-
-        public static void ProgressArc(Grid grid, int x, int y, int value, float scale)
-        {
-            if (value >= 0 && value <= 100)
-            {
-                //Not drawing a full circle, but an arc, 85% of a circle
-                value = (int)((float)value / 100.0 * 85.0);
-                grid.Children.Add(new CircularProgressBarView
-                {
-                    Progress = value,
-                    StrokeThickness = Device.OnPlatform(2, 4, 16),
-                    BackgroundColor = Color.Transparent,
-                    ProgressBackgroundColor = App.config.BackGroundColor,
-                    ProgressColor = App.config.ValueColor,
-                    Scale = scale
-                }, x, y);
-            }
-        }
 
         public static string WeatherCondition(string state)
         {
@@ -186,7 +119,7 @@ namespace Kala
                 int.TryParse(dict["digits"], out digits);
                 double v1 = 0.0;
                 Double.TryParse(state.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out v1);
-                s_value = (Math.Round(v1, digits)).ToString();
+                s_value = (Math.Round(v1, digits, MidpointRounding.AwayFromZero)).ToString("f" + digits);
             }
             else
             {

@@ -12,6 +12,7 @@ namespace Kala
     {
         //Keep track of calendar items. GUI needs a complete redraw on each update
         public static List<Models.calItems> itemCalendar = new List<Models.calItems>();
+        public static List<Models.calendar> SortedList = null;
 
         //Intial creation
         public static void Calendar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
@@ -49,7 +50,28 @@ namespace Kala
                     itemCalendar.Add(a);
                 }
 
-                Create_Calendar();
+                lock (itemCalendar)
+                {
+                    Create_Calendar();
+                }
+
+                // Check if we've crossed midnight as first entry is now yesterday
+                Device.StartTimer(TimeSpan.FromSeconds(60), () =>
+                {
+                    if (SortedList != null && SortedList.Count > 0)
+                    {
+                        if (DateTime.Today.Date != SortedList[0].Start.Date)
+                        {
+                            CrossLogger.Current.Debug("Calendar", "Update Calendar as we've crossed midnight");
+                            lock (itemCalendar)
+                            {
+                                Create_Calendar();
+                            }
+                        }
+                    }
+
+                    return true;
+                });
             }
             catch (Exception ex)
             {
@@ -71,7 +93,10 @@ namespace Kala
                 }
             }
 
-            Create_Calendar();
+            lock (itemCalendar)
+            {
+                Create_Calendar();
+            }
         }
 
         //Create / Update GUI
@@ -168,7 +193,7 @@ namespace Kala
                 }
 
                 //Sort the list
-                List<Models.calendar> SortedList = guiEvents.OrderBy(x => x.Start).ToList();
+                SortedList = guiEvents.OrderBy(x => x.Start).ToList();
 
                 for (int i = 0; i < SortedList.Count; i++)
                 {
@@ -189,9 +214,11 @@ namespace Kala
                 if (SortedList[0].Start != DateTime.Now)
                 {
                     Models.calendar a = new Models.calendar();
+                    DateTime dt = DateTime.Now;
 
-                    a.Day = DateTime.Now.Day.ToString();
-                    a.DayOfWeek = DateTime.Now.DayOfWeek.ToString().Substring(0, 3);
+                    a.Start = dt;
+                    a.Day = dt.Day.ToString();
+                    a.DayOfWeek = dt.DayOfWeek.ToString().Substring(0, 3);
                     a.Title = "Today";
 
                     SortedList.Insert(0, a);
@@ -300,7 +327,7 @@ namespace Kala
                 };
 
                 grid.Children.Add(lvCalendar, px, px + sx, py, py + sy);
-                #endregion Render
+                #endregion Render               
             }
             catch (Exception ex)
             {

@@ -137,17 +137,19 @@ namespace Kala
                                 w_grid.Children.Add(l_condition, 1, 1);
                                 break;
                             case "TEMPERATURE":
-                                double temp = Math.Round(Convert.ToDouble(item.item.state), 1, MidpointRounding.AwayFromZero);
+                                var temp = Digits(widgetKeyValuePairs, item.item.state);
+
                                 ItemLabel l_temperature = new ItemLabel
                                 {
-                                    Text = temp.ToString() + "\u00B0" + widgetKeyValuePairs["unit"] + " ",
+                                    Post = "\u00B0" + widgetKeyValuePairs["unit"] + " ",
+                                    Text = temp.Item1.ToString() + "\u00B0" + widgetKeyValuePairs["unit"] + " ",
                                     FontSize = 40,
                                     TextColor = App.config.TextColor,
                                     BackgroundColor = App.config.CellColor,
                                     HorizontalOptions = LayoutOptions.End,
                                     VerticalOptions = LayoutOptions.FillAndExpand,
-                                    Link = item.item.link,
-                                    Post = "\u00B0" + widgetKeyValuePairs["unit"] + " ",
+                                    Digits = temp.Item2,
+                                    Link = item.item.link                                    
                                 };
                                 App.config.itemlabels.Add(l_temperature);
                                 w_grid.Children.Add(l_temperature, 2, 2 + 1, 0, 0 + 2);
@@ -161,7 +163,9 @@ namespace Kala
                                     FontSize = 68,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.StartAndExpand,
-                                    Link = item.item.link
+                                    Link = item.item.link,
+                                    Type = Models.Itemtypes.Weathericon,
+                                    TranslationY = -5
                                 };
                                 App.config.itemlabels.Add(l_image);
                                 w_grid.Children.Add(l_image, 0, 0 + 1, 0, 0 + 2);

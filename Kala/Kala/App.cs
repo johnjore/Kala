@@ -27,6 +27,7 @@ namespace Kala
         {
             public Models.Sitemaps.Sitemap sitemap;
             public bool Valid = false;
+            public bool Initialized = false;
             public Color BackGroundColor = Color.FromHex("212121");
             public Color CellColor = Color.FromHex("424242");
             public Color TextColor = Color.FromHex("ffffff"); // Color.White;
@@ -85,12 +86,12 @@ namespace Kala
                 else
                 {
                     Sitemap sitemap = new Sitemap();
+                    sitemap.GetUpdates();
                     sitemap.CreateSitemap(sitemaps);
                     CrossLogger.Current.Debug("Kala", "Got Sitemaps");
 
                     //Add settings tab last
                     App.tp.Children.Add(new Views.Page1());
-                    sitemap.GetUpdates();
                     MainPage = App.tp;
                 }
             }
@@ -98,6 +99,7 @@ namespace Kala
             {
                 MainPage = App.tp;
             }
+            App.config.Initialized = true;
         }
         
         protected override void OnStart()

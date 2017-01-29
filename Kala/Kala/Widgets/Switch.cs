@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using DrawShape;
 using Newtonsoft.Json.Linq;
 using Plugin.Logger;
+using CircularProgressBar.FormsPlugin.Abstractions;
 
 namespace Kala
 {
@@ -78,25 +79,28 @@ namespace Kala
             {
                 try
                 {
-                    int stat = Convert.ToInt16(s_state);
-                    if (stat > 0)
+                    int stat;
+                    if (int.TryParse(s_state, out stat))
                     {
-                        status = "ON";
-                        grid.Children.Add(new ShapeView()
+                        if (stat > 0)
                         {
-                            ShapeType = ShapeType.Circle,
-                            StrokeColor = App.config.ValueColor,
-                            Color = App.config.ValueColor,
-                            StrokeWidth = 10.0f,
-                            Scale = 2,
-                            HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Center
-                        }, px, py);
+                            status = Switch_On(grid, px, py);
+                        }
+                        else
+                        {
+                            status = Switch_Off(grid, px, py);
+                        }
                     }
                     else
                     {
-                        status = "OFF";
-                        ProgressCircle(grid, px, py, 100, 0.5f);
+                        if (s_state.ToUpper().Equals("OFF"))
+                        {
+                            status = Switch_Off(grid, px, py);
+                        }
+                        else
+                        {
+                            status = Switch_On(grid, px, py);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -106,7 +110,14 @@ namespace Kala
             }
 
             //Image
-            AddImageCenter(grid, px, py, icon, Color.Transparent);
+            grid.Children.Add(new Image
+            {
+                Source = Device.OnPlatform(icon, icon, "Assets/" + icon),
+                Aspect = Aspect.AspectFill,
+                BackgroundColor = Color.Transparent,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }, px, px + 1, py, py + 1);
 
             //Status
             ItemLabel l_status = new ItemLabel
@@ -123,51 +134,68 @@ namespace Kala
             grid.Children.Add(l_status, px, py);
         }
 
+        public static string Switch_On(Grid grid, int px, int py)
+        {
+            grid.Children.Add(new ShapeView()
+            {
+                ShapeType = ShapeType.Circle,
+                StrokeColor = App.config.ValueColor,
+                Color = App.config.ValueColor,
+                StrokeWidth = 10.0f,
+                Scale = 2,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            }, px, py);
+            return "ON";
+        }
+
+        public static string Switch_Off(Grid grid, int px, int py)
+        {
+            grid.Children.Add(new CircularProgressBarView
+            {
+                Progress = 100,
+                StrokeThickness = Device.OnPlatform(2, 4, 16),
+                BackgroundColor = Color.Transparent,
+                ProgressBackgroundColor = App.config.BackGroundColor,
+                ProgressColor = App.config.ValueColor,
+                Scale = 0.5f
+            }, px, py);
+
+            return "OFF";
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public static void OnSwitchButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
-
             string link = button.StyleId;
-            string state = "100";
 
             foreach (App.trackItem item in App.config.items)
             {
                 if (item.link.Equals(link))
                 {
-                    state = item.state;
-                    CrossLogger.Current.Debug("Switch", "Found: " + item.link + ", New State: " + state);
-                 }
-            }
-
-            CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + state + "'");
-
-
-            if (!state.Equals("Uninitialized"))
-            {
-                try
-                {
-
-                    if (Convert.ToInt16(state) > 0)
+                    if (!item.state.ToLower().Equals("uninitialized"))
                     {
-                        state = "0";
+                        int stat;
+                        if (int.TryParse(item.state, out stat))
+                        {
+                            item.state = (stat > 0) ? "OFF" : "ON";
+                        }
+                        else
+                        {
+                            item.state = (item.state.ToUpper().Equals("ON")) ? "OFF" : "ON";
+                        }
                     }
                     else
                     {
-                        state = "100";
+                        item.state = "ON";
                     }
-                }
-                catch
-                {
-                }
-            }
-            else
-            {
-                state = "100";
-            }
 
-            new RestService().SendCommand(link, state);
+                    CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.state + "'");
+                    Switch_update(false, item.grid, item.px, item.py, item.header, item.state, item.icon, item.link);
+                    new RestService().SendCommand(link, item.state);
+                 }
+            }
         }
     }
 }
-

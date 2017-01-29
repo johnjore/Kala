@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Plugin.Logger;
+using Windows.System.Threading;
 
 namespace Kala
 {
@@ -18,7 +18,11 @@ namespace Kala
 	{
         HttpClient client;
 
-		public RestService()
+        //Keep track of updates
+        public static Queue<string> queueUpdates = new Queue<string>();
+        public static bool boolExit = true;
+
+        public RestService()
 		{
             client = new HttpClient();
             client.MaxResponseContentBufferSize = 256000;
@@ -123,6 +127,7 @@ namespace Kala
         }
 
         /**///This works, but is probably not the best way. Please fix me?
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public async Task GetUpdate()
         {
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Items, string.Empty));
@@ -142,6 +147,7 @@ namespace Kala
                     using (var body = await response.Content.ReadAsStreamAsync())
                     using (var reader = new StreamReader(body))
                     {
+                        //Loop through this as quickly as possible to not loose any messages
                         while (!reader.EndOfStream)
                         {
                             try
@@ -149,53 +155,38 @@ namespace Kala
                                 //Occasionally we get multiple updates on a single line
                                 string[] updates = reader.ReadLine().Split('}');
 
-                                //Loop through each update.
-                                for (int i= 0; i < updates.Count()-1; i++)
+                                lock (queueUpdates)
                                 {
-                                    CrossLogger.Current.Debug("Kala", "Got update:" + updates[i].ToString());
-                                    Models.Item itemData = null;
-
-                                    try
+                                    //Loop through each update.
+                                    for (int i = 0; i < updates.Count() - 1; i++)
                                     {
-                                        itemData = JsonConvert.DeserializeObject<Models.Item>(updates[i] + "}");
-                                        Helpers.Label_Update(itemData);
-
-                                        //Specials. To be removed and cleaned up later
-                                        foreach (App.trackItem item in App.config.items)
-                                        {
-                                            if (item.link.Equals(itemData.link))
-                                            {
-                                                item.state = itemData.state;
-                                                CrossLogger.Current.Debug("Kala", "Found: " + item.link + ", New State: " + item.state);
-
-                                                switch (item.type)
-                                                {
-                                                    case "DimmerItem":
-                                                        Widgets.Dimmer_update(false, item.grid, item.px, item.py, item.header, item.state, item.unit, item.icon, item.link);
-                                                        break;
-                                                    case "SwitchItem":
-                                                        Widgets.Switch_update(false, item.grid, item.px, item.py, item.header, item.state, item.icon, item.link);
-                                                        break;
-                                                    default:
-                                                        CrossLogger.Current.Warn("Kala", "Not processed: " + item.ToString());
-                                                        break;
-                                                }                                                
-                                            }
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        CrossLogger.Current.Error("Kala", "Error parsing update string: " + updates[i] + ", Ex: " + ex.ToString());
-                                        //await Application.Current.MainPage.DisplayAlert("Alert", update.ToString(), "OK");
+                                        queueUpdates.Enqueue(updates[i] + "}");
                                     }
                                 }
                             }
                             catch (Exception ex)
                             {
-                                CrossLogger.Current.Error("Kala", "Error in GetUpdate() : " + ex.ToString());
-                                await Application.Current.MainPage.DisplayAlert("Alert", ex.ToString(), "OK");
+                                CrossLogger.Current.Debug("Kala", "Error in GetUpdate() : " + ex.ToString());
                             }
+
+                            CrossLogger.Current.Debug("Update", "Updates in queue:" + queueUpdates.Count.ToString());
                         }
+
+                        if (boolExit == true && App.config.Initialized == true)
+                        {
+                            CrossLogger.Current.Debug("Update", "Creating Updates() thread");
+                            boolExit = false;
+
+                            Task.Run(async () =>
+                            {
+                                await Helpers.Updates();
+                            });
+                        }
+                        else
+                        {
+                            CrossLogger.Current.Debug("Update", "Updates() already running, or not initialized");
+                        }
+                        CrossLogger.Current.Debug("Update", "Waiting for next update");
                     }
                 }
             }

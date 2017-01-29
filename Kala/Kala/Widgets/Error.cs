@@ -9,7 +9,15 @@ namespace Kala
         {
             try
             {
-                AddImageCenter(grid, px, py, "ic_error_white_48dp", App.config.CellColor);
+                string strImage = "ic_error_white_48dp";
+                grid.Children.Add(new Image
+                {
+                    Source = Device.OnPlatform(strImage, strImage, "Assets/" + strImage),
+                    Aspect = Aspect.AspectFill,
+                    BackgroundColor = App.config.CellColor,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center
+                }, px, px + 1, py, py + 1);
 
                 grid.Children.Add(new Label
                 {

@@ -6,6 +6,9 @@ using Xamarin.Forms;
 using Plugin.Logger;
 using DrawShape;
 using Xamarin.Forms.GoogleMaps;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Kala
 {
@@ -21,22 +24,22 @@ namespace Kala
     {
         public static Dictionary<string, int> wind_direction = new Dictionary<string, int>
         {
-            {"n",     -0},
-            {"e",    -90},
-            {"s",   -180},
-            {"w",   -270},
-            {"nne",  -23},
-            {"ese", -113},
-            {"ssw", -203},
-            {"wnw", -193},
-            {"ne",   -45},
-            {"se",  -135},
-            {"sw",  -225},
-            {"nw",  -313},
-            {"ene",  -68},
-            {"sse", -158},
-            {"wsw", -248},
-            {"nnw", -336}
+            {"n",      0},
+            {"nne",   23},
+            {"ne",    45},
+            {"ene",   68},
+            {"e",     90},
+            {"ese",  113},
+            {"se",   135},
+            {"sse",  158},
+            {"s",    180},
+            {"ssw",  203},
+            {"sw",   225},
+            {"wsw",  248},
+            {"w",    270},
+            {"wnw",  293},
+            {"nw",   315},
+            {"nnw",  338}
         };
 
         public static Dictionary<string, string> SplitCommand(string instructions)
@@ -70,8 +73,78 @@ namespace Kala
             return _rdm.Next(_min, _max);
         }
 
-        //Update label
-        public static void Label_Update(Models.Item item)
+
+        //Process Update Messages
+        public static async Task Updates()
+        {
+            bool debug = false;
+            try
+            {
+                if (debug) Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Processing updates"));
+
+                while (RestService.boolExit == false)
+                {
+                    lock (RestService.queueUpdates)
+                    {
+                        while (RestService.queueUpdates.Count > 0)
+                        {
+                            string tmpS = String.Empty;
+                            try
+                            {
+                                tmpS = RestService.queueUpdates.Dequeue();
+                                Models.Item itemData = JsonConvert.DeserializeObject<Models.Item>(tmpS);
+                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Found: " + itemData.link + ", New State: " + itemData.state));
+                                Device.BeginInvokeOnMainThread(() => Helpers.GUI_Update(itemData));
+
+                                //Specials. To be removed and cleaned up later
+                                foreach (App.trackItem item in App.config.items)
+                                {
+                                    if (item.link.Equals(itemData.link))
+                                    {
+                                        switch (item.type)
+                                        {
+                                            case "DimmerItem":
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Dimmer_update(false, item.grid, item.px, item.py, item.header, itemData.state, item.unit, item.icon, item.link));
+                                                break;
+                                            case "SwitchItem":
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Switch_update(false, item.grid, item.px, item.py, item.header, itemData.state, item.icon, item.link));
+                                                break;
+                                            default:
+                                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Warn("Updates", "Not processed: " + item.ToString()));
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Crashed on " + tmpS + ", " + ex.ToString()));
+                            }
+
+                            if (debug) Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Messages in queue: " + RestService.queueUpdates.Count.ToString()));
+
+                            //Get out of here asap if exit signal is sent
+                            if (RestService.boolExit)
+                            {
+                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Info("Updates", "Asked to exit"));
+                                return;
+                            }
+                        }
+
+                        RestService.boolExit = true;
+                        if (debug) Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "No more messages to send. Task will now end"));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Updates", "Crashed: " + ex.ToString()));
+            }
+            return;
+        }
+      
+        //Update GUI
+        public static void GUI_Update(Models.Item item)
         {
             #region Generic labels
             foreach (ItemLabel lbl in App.config.itemlabels)
@@ -93,7 +166,7 @@ namespace Kala
                             //If Digits is set, round off the value
                             if (lbl.Digits > -1)
                             {
-                                item.state = Math.Round(Convert.ToDouble(item.state), lbl.Digits).ToString();
+                                item.state = Math.Round(Convert.ToDouble(item.state), lbl.Digits).ToString("f" + lbl.Digits);
                             }
 
                             lbl.Text = lbl.Pre + item.state + lbl.Post;
