@@ -101,13 +101,18 @@ namespace Kala
                                 {
                                     if (item.link.Equals(itemData.link))
                                     {
+                                        item.state = itemData.state;
+
                                         switch (item.type)
                                         {
-                                            case "DimmerItem":
-                                                Device.BeginInvokeOnMainThread(() => Widgets.Dimmer_update(false, item.grid, item.px, item.py, item.header, itemData.state, item.unit, item.icon, item.link));
+                                            case Models.Itemtypes.Dimmer:
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Dimmer_update(false, item));
                                                 break;
-                                            case "SwitchItem":
-                                                Device.BeginInvokeOnMainThread(() => Widgets.Switch_update(false, item.grid, item.px, item.py, item.header, itemData.state, item.icon, item.link));
+                                            case Models.Itemtypes.Switch:
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Switch_update(false, item));
+                                                break;
+                                            case Models.Itemtypes.Sensor:
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Sensor_update(false, item));
                                                 break;
                                             default:
                                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Warn("Updates", "Not processed: " + item.ToString()));
@@ -194,47 +199,44 @@ namespace Kala
                 {
                     try
                     {
-                        //if (item.link.Contains("Sensor_MasterBedroom_Temperature"))
+                        float state = float.Parse(item.state);
+
+                        //Basic sanity checks
+                        if (state > sv.Max) sv.Max = state;
+                        if (state < sv.Min) sv.Min = state;
+
+                        //Handle negative ranges
+                        if (sv.Min < 0)
                         {
-                            float state = float.Parse(item.state);
-
-                            //Basic sanity checks
-                            if (state > sv.Max) sv.Max = state;
-                            if (state < sv.Min) sv.Min = state;
-
-                            //Handle negative ranges
-                            if (sv.Min < 0)
-                            {
-                                sv.Max += Math.Abs(sv.Min);
-                                state += (float)Math.Abs(sv.Min);
-                                sv.Min = 0;
-                            }
-
-                            ShapeView progressArc = new ShapeView
-                            {
-                                ShapeType = ShapeType.Arc,
-                                StrokeColor = App.config.ValueColor,
-                                StrokeWidth = 1.0f,
-                                Scale = 3.0,
-                                Padding = 1,
-                                IndicatorPercentage = (float)((state - sv.Min) / (sv.Max - sv.Min) * 100.0f),   //Calculate indicator percentage
-                                HorizontalOptions = LayoutOptions.Center,
-                                VerticalOptions = LayoutOptions.Center,
-                                Min = sv.Min,
-                                Max = sv.Max,
-                                Link = sv.Link,
-                                TranslationY = 78   /**///Why is a TranslationY needed?!?
-                            };
-
-                            //Update list with new ShapeView object
-                            App.config.itemShapeViews.Remove(sv);
-                            App.config.itemShapeViews.Add(progressArc);
-
-                            //Update GUI
-                            Grid g = (Grid)sv.Parent;
-                            g.Children.Remove(sv);
-                            g.Children.Add(progressArc);
+                            sv.Max += Math.Abs(sv.Min);
+                            state += (float)Math.Abs(sv.Min);
+                            sv.Min = 0;
                         }
+
+                        ShapeView progressArc = new ShapeView
+                        {
+                            ShapeType = ShapeType.Arc,
+                            StrokeColor = App.config.ValueColor,
+                            StrokeWidth = 1.0f,
+                            Scale = 3.0,
+                            Padding = 1,
+                            IndicatorPercentage = (float)((state - sv.Min) / (sv.Max - sv.Min) * 100.0f),   //Calculate indicator percentage
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.Center,
+                            Min = sv.Min,
+                            Max = sv.Max,
+                            Link = sv.Link,
+                            TranslationY = 78   /**///Why is a TranslationY needed?!?
+                        };
+
+                        //Update list with new ShapeView object
+                        App.config.itemShapeViews.Remove(sv);
+                        App.config.itemShapeViews.Add(progressArc);
+
+                        //Update GUI
+                        Grid g = (Grid)sv.Parent;
+                        g.Children.Remove(sv);
+                        g.Children.Add(progressArc);
                     }
                     catch (Exception ex)
                     {

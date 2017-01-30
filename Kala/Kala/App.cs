@@ -13,13 +13,15 @@ namespace Kala
             public Grid grid { get; set; }
             public int px { get; set; }
             public int py { get; set; }
+            public int sx { get; set; }
+            public int sy { get; set; }
             public string min { get; set; }
             public string max { get; set; }
             public string state { get; set; }
             public string icon { get; set; }
             public string header { get; set; }
             public string unit { get; set; }
-            public string type { get; set; }
+            public Models.Itemtypes type { get; set; }
             public string link { get; set; }
         }
 

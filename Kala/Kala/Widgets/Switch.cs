@@ -55,11 +55,11 @@ namespace Kala
                     header = header,
                     icon = widgetKeyValuePairs["icon"],
                     state = item.item.state,
-                    type = "SwitchItem"
+                    type = Models.Itemtypes.Switch,
                 };
                 App.config.items.Add(i);
 
-                Switch_update(true, grid, px, py, i.header, i.state, i.icon, i.link);
+                Switch_update(true, i);
             }
             catch (Exception ex)
             {
@@ -68,56 +68,68 @@ namespace Kala
             }
         }
 
-        public static void Switch_update(bool Create, Grid grid, int px, int py, string header, string s_state, string icon, string link)
+        public static void Switch_update(bool Create, App.trackItem item)
         {
             string status = "N/A";
 
             //Header (Also clears the old status)
-            AddHeaderText(grid, px, py, header);
+            item.grid.Children.Add(new Label
+            {
+                Text = item.header,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = App.config.TextColor,
+                BackgroundColor = App.config.CellColor,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Start
+            }, item.px, item.py);
 
-            if (!s_state.Equals("Uninitialized"))
+            if (!item.state.Equals("Uninitialized"))
             {
                 try
                 {
                     int stat;
-                    if (int.TryParse(s_state, out stat))
+                    if (int.TryParse(item.state, out stat))
                     {
                         if (stat > 0)
                         {
-                            status = Switch_On(grid, px, py);
+                            Switch_On(item);
+                            status = "ON";
                         }
                         else
                         {
-                            status = Switch_Off(grid, px, py);
+                            Switch_Off(item);
+                            status = "OFF";
                         }
                     }
                     else
                     {
-                        if (s_state.ToUpper().Equals("OFF"))
+                        if (item.state.ToUpper().Equals("OFF"))
                         {
-                            status = Switch_Off(grid, px, py);
+                            Switch_Off(item);
+                            status = "OFF";
                         }
                         else
                         {
-                            status = Switch_On(grid, px, py);
+                            Switch_On(item);
+                            status = "ON";
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Error(grid, px, py, ex.ToString());
+                    Error(item.grid, item.px, item.py, ex.ToString());
                 }
             }
 
             //Image
-            grid.Children.Add(new Image
+            item.grid.Children.Add(new Image
             {
-                Source = Device.OnPlatform(icon, icon, "Assets/" + icon),
+                Source = Device.OnPlatform(item.icon, item.icon, "Assets/" + item.icon),
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
-            }, px, px + 1, py, py + 1);
+            }, item.px, item.px + 1, item.py, item.py + 1);
 
             //Status
             ItemLabel l_status = new ItemLabel
@@ -129,14 +141,14 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Link = link
+                Link = item.link
             };
-            grid.Children.Add(l_status, px, py);
+            item.grid.Children.Add(l_status, item.px, item.py);
         }
 
-        public static string Switch_On(Grid grid, int px, int py)
+        public static void Switch_On(App.trackItem item)
         {
-            grid.Children.Add(new ShapeView()
+            item.grid.Children.Add(new ShapeView()
             {
                 ShapeType = ShapeType.Circle,
                 StrokeColor = App.config.ValueColor,
@@ -145,13 +157,12 @@ namespace Kala
                 Scale = 2,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center
-            }, px, py);
-            return "ON";
+            }, item.px, item.py);
         }
 
-        public static string Switch_Off(Grid grid, int px, int py)
+        public static void Switch_Off(App.trackItem item)
         {
-            grid.Children.Add(new CircularProgressBarView
+            item.grid.Children.Add(new CircularProgressBarView
             {
                 Progress = 100,
                 StrokeThickness = Device.OnPlatform(2, 4, 16),
@@ -159,9 +170,7 @@ namespace Kala
                 ProgressBackgroundColor = App.config.BackGroundColor,
                 ProgressColor = App.config.ValueColor,
                 Scale = 0.5f
-            }, px, py);
-
-            return "OFF";
+            }, item.px, item.py);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
@@ -192,7 +201,7 @@ namespace Kala
                     }
 
                     CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.state + "'");
-                    Switch_update(false, item.grid, item.px, item.py, item.header, item.state, item.icon, item.link);
+                    Switch_update(false, item);
                     new RestService().SendCommand(link, item.state);
                  }
             }

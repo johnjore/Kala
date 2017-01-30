@@ -55,11 +55,11 @@ namespace Kala
                     unit = widgetKeyValuePairs["unit"],
                     icon = widgetKeyValuePairs["icon"],
                     link = item.item.link,
-                    type = "DimmerItem"
+                    type = Models.Itemtypes.Dimmer
                 };
                 App.config.items.Add(i);
 
-                Dimmer_update(true, grid, px, py, i.header, i.state, i.unit, i.icon, i.link);
+                Dimmer_update(true, i);
             }
             catch (Exception ex)
             {
@@ -68,33 +68,83 @@ namespace Kala
             }
         }
 
-        public static void Dimmer_update(bool Create, Grid grid, int px, int py, string header, string s_state, string unit, string icon, string link)
+        public static void Dimmer_update(bool Create, App.trackItem item)
         {
-            AddHeaderText(grid, px, py, header);
-
-            grid.Children.Add(new Image
+            item.grid.Children.Add(new Label
             {
-                Source = Device.OnPlatform(icon, icon, "Assets/" + icon),
+                Text = item.header,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = App.config.TextColor,
+                BackgroundColor = App.config.CellColor,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Start
+            }, item.px, item.py);
+
+            item.grid.Children.Add(new Image
+            {
+                Source = Device.OnPlatform(item.icon, item.icon, "Assets/" + item.icon),
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = App.config.CellColor,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
-            }, px, px + 1, py, py + 1);
+            }, item.px, item.px + 1, item.py, item.py + 1);
 
-            AddStatusText(grid, px, py, s_state, unit, link);
+            ItemLabel l_status = new ItemLabel
+            {
+                Text = item.state,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = App.config.TextColor,
+                BackgroundColor = App.config.CellColor,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.End,
+                TranslationY = -10,
+                Link = item.link
+            };
 
+            l_status.HorizontalOptions = LayoutOptions.End;
+
+            ItemLabel l_unit = new ItemLabel
+            {
+                Text = item.unit,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
+                TextColor = App.config.TextColor,
+                BackgroundColor = App.config.CellColor,
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.End,
+                TranslationY = -10,
+                Link = item.link
+            };
+
+            //Grid for status text at the bottom
+            Grid g = new Grid();
+            g.RowDefinitions = new RowDefinitionCollection();
+            g.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            g.ColumnDefinitions = new ColumnDefinitionCollection();
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            g.RowSpacing = 6;
+            g.ColumnSpacing = 6;
+            g.BackgroundColor = App.config.CellColor;
+            g.HorizontalOptions = LayoutOptions.Center;
+            g.VerticalOptions = LayoutOptions.End;
+
+            g.Children.Add(l_status, 0, 0);
+            g.Children.Add(l_unit, 1, 0);
+
+            item.grid.Children.Add(g, item.px, item.py);
+       
             //Capturs non-initialized item
             try
             {
-                grid.Children.Add(new CircularProgressBarView
+                item.grid.Children.Add(new CircularProgressBarView
                 {
-                    Progress = Convert.ToInt16(s_state),
+                    Progress = Convert.ToInt16(item.state),
                     StrokeThickness = Device.OnPlatform(2, 4, 16),
                     BackgroundColor = Color.Transparent,
                     ProgressBackgroundColor = App.config.BackGroundColor,
                     ProgressColor = App.config.ValueColor,
                     Scale = 0.5f
-                }, px, py);
+                }, item.px, item.py);
             }
             catch { }
         }

@@ -67,6 +67,7 @@
     <Compile Include="Widgets\Calendar.cs" />
     <Compile Include="Widgets\Clock.cs" />
     <Compile Include="Widgets\Dimmer.cs" />
+    <Compile Include="Widgets\Sensor.cs" />
     <Compile Include="Widgets\Error.cs" />
     <Compile Include="Widgets\Gauge.cs" />
     <Compile Include="Widgets\Gauge_Group.cs" />

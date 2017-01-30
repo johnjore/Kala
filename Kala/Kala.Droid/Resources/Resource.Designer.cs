@@ -5525,88 +5525,91 @@ namespace Kala.Droid
 			public const int ic_wifi_white_48dp = 2130838640;
 			
 			// aapt resource value: 0x7f020471
-			public const int ic_work_white_48dp = 2130838641;
+			public const int ic_window_closed_white_48dp = 2130838641;
 			
 			// aapt resource value: 0x7f020472
-			public const int ic_wrap_text_white_48dp = 2130838642;
+			public const int ic_work_white_48dp = 2130838642;
 			
 			// aapt resource value: 0x7f020473
-			public const int ic_youtube_searched_for_white_48dp = 2130838643;
+			public const int ic_wrap_text_white_48dp = 2130838643;
 			
 			// aapt resource value: 0x7f020474
-			public const int ic_zoom_in_white_48dp = 2130838644;
+			public const int ic_youtube_searched_for_white_48dp = 2130838644;
 			
 			// aapt resource value: 0x7f020475
-			public const int ic_zoom_out_map_white_48dp = 2130838645;
+			public const int ic_zoom_in_white_48dp = 2130838645;
 			
 			// aapt resource value: 0x7f020476
-			public const int ic_zoom_out_white_48dp = 2130838646;
+			public const int ic_zoom_out_map_white_48dp = 2130838646;
 			
 			// aapt resource value: 0x7f020477
-			public const int icon = 2130838647;
+			public const int ic_zoom_out_white_48dp = 2130838647;
 			
 			// aapt resource value: 0x7f020478
-			public const int mr_dialog_material_background_dark = 2130838648;
+			public const int icon = 2130838648;
 			
 			// aapt resource value: 0x7f020479
-			public const int mr_dialog_material_background_light = 2130838649;
+			public const int mr_dialog_material_background_dark = 2130838649;
 			
 			// aapt resource value: 0x7f02047a
-			public const int mr_ic_audiotrack_light = 2130838650;
+			public const int mr_dialog_material_background_light = 2130838650;
 			
 			// aapt resource value: 0x7f02047b
-			public const int mr_ic_cast_dark = 2130838651;
+			public const int mr_ic_audiotrack_light = 2130838651;
 			
 			// aapt resource value: 0x7f02047c
-			public const int mr_ic_cast_light = 2130838652;
+			public const int mr_ic_cast_dark = 2130838652;
 			
 			// aapt resource value: 0x7f02047d
-			public const int mr_ic_close_dark = 2130838653;
+			public const int mr_ic_cast_light = 2130838653;
 			
 			// aapt resource value: 0x7f02047e
-			public const int mr_ic_close_light = 2130838654;
+			public const int mr_ic_close_dark = 2130838654;
 			
 			// aapt resource value: 0x7f02047f
-			public const int mr_ic_media_route_connecting_mono_dark = 2130838655;
+			public const int mr_ic_close_light = 2130838655;
 			
 			// aapt resource value: 0x7f020480
-			public const int mr_ic_media_route_connecting_mono_light = 2130838656;
+			public const int mr_ic_media_route_connecting_mono_dark = 2130838656;
 			
 			// aapt resource value: 0x7f020481
-			public const int mr_ic_media_route_mono_dark = 2130838657;
+			public const int mr_ic_media_route_connecting_mono_light = 2130838657;
 			
 			// aapt resource value: 0x7f020482
-			public const int mr_ic_media_route_mono_light = 2130838658;
+			public const int mr_ic_media_route_mono_dark = 2130838658;
 			
 			// aapt resource value: 0x7f020483
-			public const int mr_ic_pause_dark = 2130838659;
+			public const int mr_ic_media_route_mono_light = 2130838659;
 			
 			// aapt resource value: 0x7f020484
-			public const int mr_ic_pause_light = 2130838660;
+			public const int mr_ic_pause_dark = 2130838660;
 			
 			// aapt resource value: 0x7f020485
-			public const int mr_ic_play_dark = 2130838661;
+			public const int mr_ic_pause_light = 2130838661;
 			
 			// aapt resource value: 0x7f020486
-			public const int mr_ic_play_light = 2130838662;
-			
-			// aapt resource value: 0x7f02048c
-			public const int notification_template_icon_bg = 2130838668;
+			public const int mr_ic_play_dark = 2130838662;
 			
 			// aapt resource value: 0x7f020487
-			public const int pin_progress_pinned = 2130838663;
+			public const int mr_ic_play_light = 2130838663;
+			
+			// aapt resource value: 0x7f02048d
+			public const int notification_template_icon_bg = 2130838669;
 			
 			// aapt resource value: 0x7f020488
-			public const int pin_progress_shadow = 2130838664;
+			public const int pin_progress_pinned = 2130838664;
 			
 			// aapt resource value: 0x7f020489
-			public const int pin_progress_unpinned = 2130838665;
+			public const int pin_progress_shadow = 2130838665;
 			
 			// aapt resource value: 0x7f02048a
-			public const int scrubber_control_normal_holo = 2130838666;
+			public const int pin_progress_unpinned = 2130838666;
 			
 			// aapt resource value: 0x7f02048b
-			public const int scrubber_control_pressed_holo = 2130838667;
+			public const int scrubber_control_normal_holo = 2130838667;
+			
+			// aapt resource value: 0x7f02048c
+			public const int scrubber_control_pressed_holo = 2130838668;
 			
 			static Drawable()
 			{

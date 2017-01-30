@@ -1,0 +1,2 @@
+Frame label="Lounge Window {widget=sensor,px=3,py=1,sx=1,sy=1}"		{ Text item=Sensor_Contact label="{icon=ic_window_closed_white_48dp}" }
+Frame label="Lounge Window {widget=sensor,px=4,py=1,sx=1,sy=1}"		{ Text item=Sensor_Motion  label="{icon=ic_window_closed_white_48dp}" }

@@ -117,7 +117,7 @@ namespace Kala
             double finalLat = (lowestLat + highestLat) / 2;
             double finalLong = (lowestLong + highestLong) / 2;
             double distance = DistanceCalculation.GeoCodeCalc.CalcDistance(lowestLat, lowestLong, highestLat, highestLong, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
-            if (distance < 3) distance = 1;
+            if (distance < 1) distance = 1;
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong), Distance.FromKilometers(distance)));
         }
 

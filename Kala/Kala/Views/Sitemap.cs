@@ -272,6 +272,20 @@ namespace Kala
                                 Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
                             }
                             break;
+                        case "SENSOR":
+                            string sx = "1";
+                            string sy = "1";
+                            if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                            {
+                                sx = itemKeyValuePairs["sx"];
+                                sy = itemKeyValuePairs["sy"];
+                            }
+
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Sensor(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widget);
+                            }
+                            break;
                         case "GAUGE":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {

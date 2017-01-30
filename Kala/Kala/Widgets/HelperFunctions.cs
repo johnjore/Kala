@@ -7,66 +7,6 @@ namespace Kala
 {
     public partial class Widgets
     {
-        public static void AddHeaderText(Grid grid, int x, int y, string Label)
-        {
-            grid.Children.Add(new Label
-            {
-                Text = Label,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Start
-            }, x, y);
-        }
-
-        public static void AddStatusText(Grid grid, int x, int y, string Label, string Unit, string link)
-        {
-            ItemLabel l_status = new ItemLabel
-            {
-                Text = Label,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.End,
-                TranslationY = -10,
-                Link = link
-            };
-
-            l_status.HorizontalOptions = LayoutOptions.End;
-
-            ItemLabel l_unit = new ItemLabel
-            {
-                Text = Unit,
-                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.End,
-                TranslationY = -10,
-                Link = link
-            };
-
-            //Grid for status text at the bottom
-            Grid g = new Grid();
-            g.RowDefinitions = new RowDefinitionCollection();
-            g.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            g.ColumnDefinitions = new ColumnDefinitionCollection();
-            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            g.RowSpacing = 6;
-            g.ColumnSpacing = 6;
-            g.BackgroundColor = App.config.CellColor;
-            g.HorizontalOptions = LayoutOptions.Center;
-            g.VerticalOptions = LayoutOptions.End;
-
-            g.Children.Add(l_status, 0, 0);
-            g.Children.Add(l_unit, 1, 0);
-
-            grid.Children.Add(g, x, y);
-        }
-
         public static string WeatherCondition(string state)
         {
             string strImage = string.Empty;

@@ -10,6 +10,9 @@ namespace Kala.Models
     {
         Notused = 0,
         Winddirection = 1,
-        Weathericon = 2
+        Weathericon = 2,
+        Sensor = 3,
+        Switch = 4,
+        Dimmer = 5
     };
 }

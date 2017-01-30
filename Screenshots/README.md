@@ -25,6 +25,9 @@ Image
 Map
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Map%2C%202x2.png)
 
+Sensor
+![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Sensor%2C%201x1.png)
+
 Switch (On)
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Switch-On%2C%201x1.png)
 
