@@ -1,11 +1,12 @@
 ﻿{
   "dependencies": {
+    "Microsoft.Bcl.Build": "1.0.21",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Newtonsoft.Json": "9.0.1",
     "wpbest.Plugin.Logger": "1.0.8",
-    "Xam.Plugins.Settings": "2.5.1",
-    "Xamarin.FFImageLoading.Forms": "2.2.7",
-    "Xamarin.FFImageLoading.Transformations": "2.2.7",
+    "Xam.Plugins.Settings": "2.5.3",
+    "Xamarin.FFImageLoading.Forms": "2.2.8",
+    "Xamarin.FFImageLoading.Transformations": "2.2.8",
     "Xamarin.Forms": "2.3.3.180",
     "Xamarin.Forms.GoogleMaps": "1.7.1"
   },

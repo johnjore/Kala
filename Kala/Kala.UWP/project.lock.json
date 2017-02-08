@@ -14,7 +14,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -2075,7 +2075,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -2085,7 +2085,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -2098,9 +2098,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -2112,9 +2112,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -2163,7 +2163,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -4304,7 +4304,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -4314,7 +4314,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -4327,9 +4327,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -4341,9 +4341,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -4392,7 +4392,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -6572,7 +6572,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -6582,7 +6582,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -6595,9 +6595,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -6609,9 +6609,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -6660,7 +6660,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -8810,7 +8810,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -8820,7 +8820,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -8833,9 +8833,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -8847,9 +8847,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -8898,7 +8898,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -11087,7 +11087,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -11097,7 +11097,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -11110,9 +11110,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -11124,9 +11124,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -11175,7 +11175,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -13325,7 +13325,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -13335,7 +13335,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -13348,9 +13348,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -13362,9 +13362,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -13413,7 +13413,7 @@
           "lib/win8/_._": {}
         }
       },
-      "Microsoft.Bcl.Build/1.0.14": {},
+      "Microsoft.Bcl.Build/1.0.21": {},
       "Microsoft.CSharp/4.0.1": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -15602,7 +15602,7 @@
           "lib/UAP10/Plugin.Logger.dll": {}
         }
       },
-      "Xam.Plugins.Settings/2.5.1": {
+      "Xam.Plugins.Settings/2.5.3": {
         "compile": {
           "lib/UAP10/Plugin.Settings.Abstractions.dll": {},
           "lib/UAP10/Plugin.Settings.dll": {}
@@ -15612,7 +15612,7 @@
           "lib/UAP10/Plugin.Settings.dll": {}
         }
       },
-      "Xamarin.FFImageLoading/2.2.7": {
+      "Xamarin.FFImageLoading/2.2.8": {
         "dependencies": {
           "Microsoft.Net.Http": "2.2.29"
         },
@@ -15625,9 +15625,9 @@
           "lib/portable-netcore45+wpa81/FFImageLoading.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Forms/2.2.7": {
+      "Xamarin.FFImageLoading.Forms/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7",
+          "Xamarin.FFImageLoading": "2.2.8",
           "Xamarin.Forms": "1.4.4.6392"
         },
         "compile": {
@@ -15639,9 +15639,9 @@
           "lib/uap10.0/FFImageLoading.Forms.dll": {}
         }
       },
-      "Xamarin.FFImageLoading.Transformations/2.2.7": {
+      "Xamarin.FFImageLoading.Transformations/2.2.8": {
         "dependencies": {
-          "Xamarin.FFImageLoading": "2.2.7"
+          "Xamarin.FFImageLoading": "2.2.8"
         },
         "compile": {
           "lib/portable-netcore45+wpa81/FFImageLoading.Transformations.dll": {}
@@ -15770,23 +15770,16 @@
         "lib/wpa81/_._"
       ]
     },
-    "Microsoft.Bcl.Build/1.0.14": {
-      "sha512": "cDLKSvNvRa519hplsbSoYqO69TjdDIhfjtKUM0g20/nVROoWsGav9KCI9HtnGjLmdV1+TcUUDhbotcllibjPEA==",
+    "Microsoft.Bcl.Build/1.0.21": {
+      "sha512": "sgHu4mIt0+NVGyI12Bj4hLPypNK55UOH+ologj2LqDCjxq3EbIxe/uAtHjY+fEwbE1dtsAHG8SXHf+V/EYbKTg==",
       "type": "package",
-      "path": "Microsoft.Bcl.Build/1.0.14",
+      "path": "Microsoft.Bcl.Build/1.0.21",
       "files": [
         "License-Stable.rtf",
-        "Microsoft.Bcl.Build.1.0.14.nupkg.sha512",
+        "Microsoft.Bcl.Build.1.0.21.nupkg.sha512",
         "Microsoft.Bcl.Build.nuspec",
-        "content/net40/_._",
-        "content/netcore45/_._",
-        "content/portable-net40+win8+sl4+wp71+wpa81/_._",
-        "content/sl4-windowsphone71/_._",
-        "content/sl4/_._",
-        "tools/Install.ps1",
-        "tools/Microsoft.Bcl.Build.Tasks.dll",
-        "tools/Microsoft.Bcl.Build.targets",
-        "tools/Uninstall.ps1"
+        "build/Microsoft.Bcl.Build.Tasks.dll",
+        "build/Microsoft.Bcl.Build.targets"
       ]
     },
     "Microsoft.CSharp/4.0.1": {
@@ -22083,12 +22076,12 @@
         "wpbest.Plugin.Logger.nuspec"
       ]
     },
-    "Xam.Plugins.Settings/2.5.1": {
-      "sha512": "qLFxTF5NXC4VvLt4+DtdYc31d33bXOQkophUlm4mGRZoefeF/bu4ScnrcK0OZYAXimt1ONqO9kId2e6YcsW5dA==",
+    "Xam.Plugins.Settings/2.5.3": {
+      "sha512": "QCtid1urnXHzK02POXYcetrXPpbCk5bq6enaGodvHSWsls3J6esFpiJncXQbq1yi4RwlciytF6UIN1ZPgeUsUw==",
       "type": "package",
-      "path": "Xam.Plugins.Settings/2.5.1",
+      "path": "Xam.Plugins.Settings/2.5.3",
       "files": [
-        "Xam.Plugins.Settings.2.5.1.nupkg.sha512",
+        "Xam.Plugins.Settings.2.5.3.nupkg.sha512",
         "Xam.Plugins.Settings.nuspec",
         "content/MonoAndroid10/Helpers/Settings.cs.pp",
         "content/UAP10/Helpers/Settings.cs.pp",
@@ -22133,12 +22126,12 @@
         "readme.txt"
       ]
     },
-    "Xamarin.FFImageLoading/2.2.7": {
-      "sha512": "vn6m7ngiQ9P26wq6nSCAqTWe/WALTiFf0FEVFEPQ9IrPufceceRkbWWBXs+OSm0B5CVjH0GoopR+ed1w27tlRg==",
+    "Xamarin.FFImageLoading/2.2.8": {
+      "sha512": "q/moBVJXoNxVDv63qsQ3onnNtLst8lqsE/mvCdv3OoR9HmnKZpD9fCJpA535BvCLcx6c99+gNLRu1Q/Ydcl0fw==",
       "type": "package",
-      "path": "Xamarin.FFImageLoading/2.2.7",
+      "path": "Xamarin.FFImageLoading/2.2.8",
       "files": [
-        "Xamarin.FFImageLoading.2.2.7.nupkg.sha512",
+        "Xamarin.FFImageLoading.2.2.8.nupkg.sha512",
         "Xamarin.FFImageLoading.nuspec",
         "lib/MonoAndroid10/FFImageLoading.Platform.dll",
         "lib/MonoAndroid10/FFImageLoading.Platform.pdb",
@@ -22165,12 +22158,12 @@
         "lib/portable-netcore45+wpa81/FFImageLoading.xml"
       ]
     },
-    "Xamarin.FFImageLoading.Forms/2.2.7": {
-      "sha512": "7az9raEGhuURvXPWDfjFQRK93B4PG9V2rQ69hcBm+avszmvWuxlwN/sIsmruvZv7JgA7N6cF7AmFNildI6mSOA==",
+    "Xamarin.FFImageLoading.Forms/2.2.8": {
+      "sha512": "6MqM6/0b5P+j9OscsoJabzSBmoqxkxL4n2ZAg1JpQCQALEUT9folhtgW69tfpI59G0qKMRpRRZ62UtXsPbt1AA==",
       "type": "package",
-      "path": "Xamarin.FFImageLoading.Forms/2.2.7",
+      "path": "Xamarin.FFImageLoading.Forms/2.2.8",
       "files": [
-        "Xamarin.FFImageLoading.Forms.2.2.7.nupkg.sha512",
+        "Xamarin.FFImageLoading.Forms.2.2.8.nupkg.sha512",
         "Xamarin.FFImageLoading.Forms.nuspec",
         "lib/MonoAndroid10/FFImageLoading.Forms.Droid.dll",
         "lib/MonoAndroid10/FFImageLoading.Forms.Droid.pdb",
@@ -22201,12 +22194,12 @@
         "lib/uap10.0/FFImageLoading.Forms.xml"
       ]
     },
-    "Xamarin.FFImageLoading.Transformations/2.2.7": {
-      "sha512": "ifTfsQNZ/hkTvoacg/TbTXwKoNjWPqYTU/FV9Uj+QTSpBYJ3bNG3TJydEJM0vqdArADhEoOmwKuVzbKl8/1XPg==",
+    "Xamarin.FFImageLoading.Transformations/2.2.8": {
+      "sha512": "JF8mJ+xY7aM5TZK9B+cRBseM7MKqkN7c6pN9ggpOMGBKvGxaHusyoMyLmCYjUSCx02guN4zCIuCoEXykuN5mJg==",
       "type": "package",
-      "path": "Xamarin.FFImageLoading.Transformations/2.2.7",
+      "path": "Xamarin.FFImageLoading.Transformations/2.2.8",
       "files": [
-        "Xamarin.FFImageLoading.Transformations.2.2.7.nupkg.sha512",
+        "Xamarin.FFImageLoading.Transformations.2.2.8.nupkg.sha512",
         "Xamarin.FFImageLoading.Transformations.nuspec",
         "lib/MonoAndroid10/FFImageLoading.Transformations.dll",
         "lib/MonoAndroid10/FFImageLoading.Transformations.pdb",
@@ -22404,11 +22397,12 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Microsoft.Bcl.Build >= 1.0.21",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.2.2",
       "Newtonsoft.Json >= 9.0.1",
-      "Xam.Plugins.Settings >= 2.5.1",
-      "Xamarin.FFImageLoading.Forms >= 2.2.7",
-      "Xamarin.FFImageLoading.Transformations >= 2.2.7",
+      "Xam.Plugins.Settings >= 2.5.3",
+      "Xamarin.FFImageLoading.Forms >= 2.2.8",
+      "Xamarin.FFImageLoading.Transformations >= 2.2.8",
       "Xamarin.Forms >= 2.3.3.180",
       "Xamarin.Forms.GoogleMaps >= 1.7.1",
       "wpbest.Plugin.Logger >= 1.0.8"

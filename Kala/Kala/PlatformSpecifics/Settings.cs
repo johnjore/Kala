@@ -94,10 +94,5 @@ namespace Kala
             get { return AppSettings.GetValueOrDefault<int>(ScreensaverKey, ScreensaverDefault); }
             set { AppSettings.AddOrUpdateValue<int>(ScreensaverKey, value); }
         }
-
-        //Todo:
-        /*Colors
-         * Background etc
-        */
     }
 }

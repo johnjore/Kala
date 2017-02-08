@@ -8,7 +8,6 @@ using DrawShape;
 using Xamarin.Forms.GoogleMaps;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Kala
 {
@@ -75,6 +74,7 @@ namespace Kala
 
 
         //Process Update Messages
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS1998:Await.Warning")]
         public static async Task Updates()
         {
             bool debug = false;
