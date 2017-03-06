@@ -165,7 +165,7 @@ namespace Kala
                                     VerticalOptions = LayoutOptions.StartAndExpand,
                                     Link = item.item.link,
                                     Type = Models.Itemtypes.Weathericon,
-                                    TranslationY = -5
+                                    TranslationY = -10
                                 };
                                 App.config.itemlabels.Add(l_image);
                                 w_grid.Children.Add(l_image, 0, 0 + 1, 0, 0 + 2);

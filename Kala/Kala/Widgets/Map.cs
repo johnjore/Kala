@@ -58,26 +58,26 @@ namespace Kala
                     //Add the Pins to list and map
                     Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
 
-                    double lat = 0.0;
-                    double lon = 0.0;
+                    double lat = 999.0;
+                    double lon = 999.0;
                     string url = String.Empty;
                     
                     if (item.item != null)
                     {
                         var b = item.item.state.Split(',');
 
-                        lat = Convert.ToDouble(b[0]);
-                        lon = Convert.ToDouble(b[1]);
-                        url = item.item.link;
+                        if (b.Count() >= 2)
+                        {
+                            double.TryParse(b[0], out lat);
+                            double.TryParse(b[1], out lon);
+                            url = item.item.link;
+                        }
                     }
                     else
                     {
-                        lat = Convert.ToDouble(widgetKeyValuePairs["lat"]);
-                        lon = Convert.ToDouble(widgetKeyValuePairs["lon"]);
+                        double.TryParse(widgetKeyValuePairs["lat"], out lat);
+                        double.TryParse(widgetKeyValuePairs["lon"], out lon);
                     }
-
-                    latitudes.Add(lat);
-                    longitudes.Add(lon);
 
                     var pin = new Pin()
                     {
@@ -94,8 +94,16 @@ namespace Kala
                         pin.Icon = BitmapDescriptorFactory.DefaultMarker(GetColor(widgetKeyValuePairs["color"]));
                     }
 
+                    //If valid, add it
+                    if (lat != 999.0 && lon != 999.0)
+                    {
+                        latitudes.Add(lat);
+                        longitudes.Add(lon);
+                    }
+
                     map.Pins.Add(pin);
                 }
+
                 MapUpdate(latitudes, longitudes, map);
 
                 grid.Children.Add(map, px, px + sx, py, py + sy);
