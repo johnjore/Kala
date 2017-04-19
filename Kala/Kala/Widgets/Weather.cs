@@ -106,7 +106,8 @@ namespace Kala
                     TextColor = App.config.TextColor,
                     BackgroundColor = App.config.CellColor,
                     HorizontalOptions = LayoutOptions.Start,
-                    VerticalOptions = LayoutOptions.End
+                    VerticalOptions = LayoutOptions.End,
+                    TranslationY = -5
                 };
                 w_grid.Children.Add(l_header, 1, 0);
                 #endregion Header
@@ -131,7 +132,8 @@ namespace Kala
                                     BackgroundColor = App.config.CellColor,
                                     HorizontalOptions = LayoutOptions.Start,
                                     VerticalOptions = LayoutOptions.Start,
-                                    Link = item.item.link
+                                    Link = item.item.link,
+                                    TranslationY = -5
                                 };
                                 App.config.itemlabels.Add(l_condition);
                                 w_grid.Children.Add(l_condition, 1, 1);
@@ -149,23 +151,32 @@ namespace Kala
                                     HorizontalOptions = LayoutOptions.End,
                                     VerticalOptions = LayoutOptions.FillAndExpand,
                                     Digits = temp.Item2,
-                                    Link = item.item.link                                    
+                                    Link = item.item.link,
+                                    TranslationY = -5
                                 };
                                 App.config.itemlabels.Add(l_temperature);
                                 w_grid.Children.Add(l_temperature, 2, 2 + 1, 0, 0 + 2);
                                 break;
                             case "CONDITION":
+                                string strFontFamily = null;
+                                switch (Device.RuntimePlatform)
+                                {
+                                    case Device.Android:
+                                        strFontFamily = "weathericons-regular-webfont.ttf#Weather Icons";
+                                        break;
+                                }
+
                                 ItemLabel l_image = new ItemLabel
                                 {
                                     Text = WeatherCondition(item.item.state),
                                     TextColor = App.config.TextColor,
-                                    FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
+                                    FontFamily = strFontFamily,
                                     FontSize = 68,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.StartAndExpand,
                                     Link = item.item.link,
                                     Type = Models.Itemtypes.Weathericon,
-                                    TranslationY = -10
+                                    TranslationY = -15
                                 };
                                 App.config.itemlabels.Add(l_image);
                                 w_grid.Children.Add(l_image, 0, 0 + 1, 0, 0 + 2);
@@ -213,12 +224,20 @@ namespace Kala
                                     }
                                 }
 
+                                string strFontFamily = null;
+                                switch (Device.RuntimePlatform)
+                                {
+                                    case Device.Android:
+                                        strFontFamily = "weathericons-regular-webfont.ttf#Weather Icons";
+                                        break;
+                                }
+
                                 ItemLabel l_winddirection = new ItemLabel
                                 {
                                     Type = Models.Itemtypes.Winddirection,   //Special. Rotate label, depending on item value
                                     Text = "\uf0b1",
                                     FontSize = 30,
-                                    FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
+                                    FontFamily = strFontFamily,
                                     TextColor = App.config.TextColor,
                                     Rotation = w_direction,
                                     BackgroundColor = App.config.CellColor,
@@ -258,11 +277,19 @@ namespace Kala
                     {
                         var digits = Digits(widgetKeyValuePairs, item.item.state);
 
+                        string strFontFamily = null;
+                        switch (Device.RuntimePlatform)
+                        {
+                            case Device.Android:
+                                strFontFamily = "weathericons-regular-webfont.ttf#Weather Icons";
+                                break;
+                        }
+
                         ItemLabel l1 = new ItemLabel
                         {
                             Text = widgetKeyValuePairs["font"] + "  " + digits.Item1 + " " + widgetKeyValuePairs["unit"],
                             FontSize = 20,
-                            FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
+                            FontFamily = strFontFamily,
                             TextColor = App.config.TextColor,
                             BackgroundColor = App.config.CellColor,
                             HorizontalOptions = LayoutOptions.Center,

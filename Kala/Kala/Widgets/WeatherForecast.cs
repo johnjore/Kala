@@ -90,11 +90,19 @@ namespace Kala
                     #region Condition
                     if (items[i].label.Contains("condition"))
                     {
+                        string strFontFamily = null;
+                        switch (Device.RuntimePlatform)
+                        {
+                            case Device.Android:
+                                strFontFamily = "weathericons-regular-webfont.ttf#Weather Icons";
+                                break;
+                        }
+
                         ItemLabel l_image = new ItemLabel
                         {
                             Text = WeatherCondition(items[i].item.state),
                             TextColor = App.config.TextColor,
-                            FontFamily = Device.OnPlatform(null, "weathericons-regular-webfont.ttf#Weather Icons", null),
+                            FontFamily = strFontFamily,
                             FontSize = 68,
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.Center,

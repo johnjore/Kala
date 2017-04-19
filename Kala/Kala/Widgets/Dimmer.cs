@@ -80,9 +80,17 @@ namespace Kala
                 VerticalTextAlignment = TextAlignment.Start
             }, item.px, item.py);
 
+            string strSource = item.icon;
+            switch (Device.RuntimePlatform)
+            {
+                case Device.WinPhone:
+                    strSource = "Assets/" + item.icon;
+                    break;
+            }
+
             item.grid.Children.Add(new Image
             {
-                Source = Device.OnPlatform(item.icon, item.icon, "Assets/" + item.icon),
+                Source = strSource,
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = App.config.CellColor,
                 VerticalOptions = LayoutOptions.Center,
@@ -136,10 +144,25 @@ namespace Kala
             //Capturs non-initialized item
             try
             {
+
+                int intStrokeThickness = 2;
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.iOS:
+                        intStrokeThickness = 2;
+                        break;
+                    case Device.Android:
+                        intStrokeThickness = 4;
+                        break;
+                    case Device.WinPhone:
+                        intStrokeThickness = 16;
+                        break;
+                }
+
                 item.grid.Children.Add(new CircularProgressBarView
                 {
                     Progress = Convert.ToInt16(item.state),
-                    StrokeThickness = Device.OnPlatform(2, 4, 16),
+                    StrokeThickness = intStrokeThickness,
                     BackgroundColor = Color.Transparent,
                     ProgressBackgroundColor = App.config.BackGroundColor,
                     ProgressColor = App.config.ValueColor,

@@ -102,9 +102,17 @@ namespace Kala
                 #endregion Center unit
 
                 #region Image
+                string strSource = widgetKeyValuePairs["icon"];
+                switch (Device.RuntimePlatform)
+                {
+                    case Device.WinPhone:
+                        strSource = "Assets/" + widgetKeyValuePairs["icon"];
+                        break;
+                }
+
                 t_grid.Children.Add(new Image
                 {
-                    Source = Device.OnPlatform(widgetKeyValuePairs["icon"], widgetKeyValuePairs["icon"], "Assets/" + widgetKeyValuePairs["icon"]),
+                    Source = strSource,
                     Aspect = Aspect.AspectFill,
                     BackgroundColor = App.config.CellColor,
                     VerticalOptions = LayoutOptions.End,
@@ -196,6 +204,5 @@ namespace Kala
                 Error(t_grid, i, 1, ex.ToString());
             }
         }
-
     }
 }

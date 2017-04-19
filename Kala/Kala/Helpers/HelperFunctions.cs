@@ -72,7 +72,6 @@ namespace Kala
             return _rdm.Next(_min, _max);
         }
 
-
         //Process Update Messages
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS1998:Await.Warning")]
         public static async Task Updates()
@@ -226,7 +225,7 @@ namespace Kala
                             Min = sv.Min,
                             Max = sv.Max,
                             Link = sv.Link,
-                            TranslationY = 78   /**///Why is a TranslationY needed?!?
+                            /**///TranslationY = 78   /**///Why is a TranslationY needed?!?
                         };
 
                         //Update list with new ShapeView object

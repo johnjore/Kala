@@ -372,7 +372,14 @@ namespace Kala
             cp.BackgroundColor = App.config.BackGroundColor;
             cp.Title = title;
             cp.Content = grid;
-            cp.Padding = new Thickness(0, Device.OnPlatform(20, 0, 0), 0, 0);
+
+            cp.Padding = new Thickness(0, 0, 0, 0);
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    new Thickness(0, 20, 0, 0);
+                    break;
+            }
             App.tp.Children.Add(cp);
 
             return grid;
