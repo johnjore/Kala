@@ -85,7 +85,7 @@ namespace Kala
                     BackgroundColor = Color.Transparent,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.End,
-                    Link = item.item.link
+                    Name = item.item.name
                 };
                 App.config.itemlabels.Add(l_mode);
                 w_grid.Children.Add(l_mode, 0, 1);

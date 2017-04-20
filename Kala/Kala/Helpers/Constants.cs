@@ -11,20 +11,19 @@
         public sealed class Api
         {
             /// <summary>
-            /// The call to determine the OpenHAB version
-            /// </summary>
-            public const string ServerVersion = "rest/bindings";
-
-            /// <summary>
             /// The call to fetch the sitemaps
             /// </summary>
             public const string Sitemaps = "rest/sitemaps";
 
             /// <summary>
+            /// The call to set updates
+            /// </summary>
+            public const string Items = "rest/items/";
+
+            /// <summary>
             /// The call to get updates
             /// </summary>
-            public const string Items = "rest/items";
-
+            public const string Events = "rest/events/?type=ItemStateEvent";
         }
     }
 }

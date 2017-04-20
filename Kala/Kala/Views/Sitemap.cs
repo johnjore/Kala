@@ -154,79 +154,65 @@ namespace Kala
         /// <returns>nothing</returns>
         private void ParseSitemap(Models.Sitemap.Sitemap items)
         {
-            foreach (Models.Sitemap.Widget page in items.homepage.widget)
+            try
             {
-                CrossLogger.Current.Debug("Kala", "Label: " + page.label);
-
-                //Populate Page, if it contains elements to parse
-                if (page.label != string.Empty)
+                foreach (Models.Sitemap.Widget page in items.homepage.widgets)
                 {
-                    Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.label);
-                    CrossLogger.Current.Debug("Kala", "Label: " + pageKeyValuePairs["label"]);
+                    CrossLogger.Current.Debug("Kala", "Label: " + page.label);
 
-                    #region page
-                    if (page.linkedPage != null)
+                    //Populate Page, if it contains elements to parse
+                    if (page.label != string.Empty)
                     {
-                        Grid grid = null;
+                        Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.label);
+                        CrossLogger.Current.Debug("Kala", "Label: " + pageKeyValuePairs["label"]);
 
-                        if (pageKeyValuePairs.ContainsKey("sx") && pageKeyValuePairs.ContainsKey("sy"))
+                        #region page
+                        if (page.linkedPage != null)
                         {
-                            if (pageKeyValuePairs.ContainsKey("icon"))
+                            if (pageKeyValuePairs.ContainsKey("sx") && pageKeyValuePairs.ContainsKey("sy") && pageKeyValuePairs.ContainsKey("label"))
                             {
-                                grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], pageKeyValuePairs["icon"]);
-                            }
-                            else
-                            {
-                                grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], null);
-                            }
-                        }
+                                if (!pageKeyValuePairs.ContainsKey("icon"))
+                                {
+                                    pageKeyValuePairs.Add("icon", null);
+                                }
 
-                        //Shortcut
-                        var w = page.linkedPage.widget;
+                                CrossLogger.Current.Debug("Kala", "Sitemap - Create Grid using: " + pageKeyValuePairs["label"] + ", " + pageKeyValuePairs["sx"] + ", " + pageKeyValuePairs["sy"] + ", " + pageKeyValuePairs["icon"]);
+                                Grid grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], pageKeyValuePairs["icon"]);
 
-                        //If more than one item page frame
-                        if (w.GetType() == typeof(JArray))
-                        {
-                            List<Models.Sitemap.Widget3> w_items = ((JArray)w).ToObject<List<Models.Sitemap.Widget3>>();
-                            foreach (Models.Sitemap.Widget3 item in w_items)
-                            {
-                                ParseWidgets(grid, item);
+                                foreach (Models.Sitemap.Widget3 item in page.linkedPage.widgets)
+                                {
+                                    ParseWidgets(grid, item);
+                                }
                             }
                         }
-                        //If one item in page frame
-                        else if (w.GetType() == typeof(JObject))
-                        {
-                            Models.Sitemap.Widget3 item = ((JObject)w).ToObject<Models.Sitemap.Widget3>();
-                            ParseWidgets(grid, item);
-                        }
+                        #endregion page
                         else
                         {
-                            CrossLogger.Current.Warn("Kala", "Unknown: " + w.ToString());
+                            CrossLogger.Current.Warn("Kala", "Unknown: " + ToString());
+
+                            switch (pageKeyValuePairs["widget"].ToUpper())
+                            {
+                                case "SITEMAP":
+                                    CrossLogger.Current.Debug("Kala", "Sitemap:" + pageKeyValuePairs["name"]);
+
+                                    Models.Sitemaps.Sitemap sitemaps = GetActiveSitemap(pageKeyValuePairs["name"]);
+                                    if (sitemaps != null)
+                                    {
+                                        Sitemap sitemap = new Sitemap();
+                                        sitemap.CreateSitemap(sitemaps);
+
+                                        CrossLogger.Current.Debug("Kala", "Got ActiveSitemap");
+                                    }
+                                    break;
+                            }
+
                         }
-                    }
-                    #endregion page
-                    else
-                    {
-                        CrossLogger.Current.Warn("Kala", "Unknown: " + ToString());
-
-                        switch (pageKeyValuePairs["widget"].ToUpper())
-                        {
-                            case "SITEMAP":
-                                CrossLogger.Current.Debug("Kala", "Sitemap:" + pageKeyValuePairs["name"]);
-
-                                Models.Sitemaps.Sitemap sitemaps = GetActiveSitemap(pageKeyValuePairs["name"]);
-                                if (sitemaps != null)
-                                {
-                                    Sitemap sitemap = new Sitemap();
-                                    sitemap.CreateSitemap(sitemaps);
-
-                                    CrossLogger.Current.Debug("Kala", "Got ActiveSitemap");
-                                }
-                                break;
-                        }
-
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                CrossLogger.Current.Debug("Sitemap", "ParseSitemap() crashed: " + ex.ToString());
             }
         }
 
@@ -238,7 +224,7 @@ namespace Kala
         {
             try
             {
-                CrossLogger.Current.Debug("Kala", "Widget : " + item.widget + ", ID: " + item.widgetId);
+                CrossLogger.Current.Debug("Kala", "ID: " + item.widgetId);
                 Dictionary<string, string> itemKeyValuePairs = Helpers.SplitCommand(item.label);
 
                 if (itemKeyValuePairs != null && itemKeyValuePairs.ContainsKey("widget") && itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py"))
@@ -248,7 +234,7 @@ namespace Kala
                         case "AVATAR":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widget);
+                                Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "BLANK":
@@ -257,7 +243,7 @@ namespace Kala
                         case "CALENDAR":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JArray)item.widget);
+                                Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], JArray.FromObject(item.widgets));
                             }
                             break;
                         case "CLOCK":
@@ -269,7 +255,7 @@ namespace Kala
                         case "DIMMER":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                                Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "SENSOR":
@@ -283,27 +269,19 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Sensor(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widget);
+                                Widgets.Sensor(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "GAUGE":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                                Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "GAUGE-GROUP":
                             if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                var token = JToken.Parse(item.widget.ToString());
-                                if (token is JArray)
-                                {
-                                    Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
-                                }
-                                else if (token is JObject)
-                                {
-                                    Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widget);
-                                }
+                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
                             }
                             break;
                         case "IMAGE":
@@ -312,7 +290,7 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.widget);
+                                Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "MAP":
@@ -321,25 +299,25 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Map(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["type"], (JArray)item.widget);
+                                Widgets.Map(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["type"], JArray.FromObject(item.widgets));
                             }
                             break;
                         case "SWITCH":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Switch(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widget);
+                                Widgets.Switch(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "WEATHER":
-                            if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
+                            if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))                            
                             {
-                                Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
+                                Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
                             }
                             break;
                         case "WEATHERFORECAST":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.WeatherForecast(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JArray)item.widget);
+                                Widgets.WeatherForecast(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
                             }
                             break;
                         default:
@@ -408,10 +386,11 @@ namespace Kala
             grid.BackgroundColor = App.config.BackGroundColor;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+        #pragma warning disable CS4014
         public void GetUpdates()
         {
-            new RestService().GetUpdate();
+            new RestService().GetUpdateAsync();
         }
+        #pragma warning restore CS4014
     }
 }

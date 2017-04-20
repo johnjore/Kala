@@ -121,7 +121,7 @@ namespace Kala
                 #endregion Image
 
                 #region Center Text / Value
-                string s_value = String.Empty;
+                string s_value = string.Empty;
                 if (digits.Item1.ToLower().Equals("uninitialized"))
                     s_value = "N/A";
                 else
@@ -136,7 +136,7 @@ namespace Kala
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     TranslationY = -20,
-                    Link = item.item.link,
+                    Name = item.item.name,
                     Digits = digits.Item2
                 };
                 App.config.itemlabels.Add(l_value);
@@ -175,11 +175,6 @@ namespace Kala
                     VerticalOptions = LayoutOptions.Center
                 }, i, 1);
 
-                if (item.item.link.Contains("Sensor_MasterBedroom_Temperature"))
-                {
-                    CrossLogger.Current.Error("Update", "1");
-                }
-
                 ShapeView progressArc = new ShapeView
                 {
                     ShapeType = ShapeType.Arc,
@@ -190,7 +185,7 @@ namespace Kala
                     IndicatorPercentage = ((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    Link = item.item.link,
+                    Name = item.item.name,
                     Min = min,
                     Max = max
                 };

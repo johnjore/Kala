@@ -2,16 +2,16 @@
 
 public class ItemLabel : Label
 {
-    public static readonly BindableProperty LinkProperty = BindableProperty.Create(nameof(Link), typeof(string), typeof(ItemLabel), null);
+    public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ItemLabel), null);
     public static readonly BindableProperty PreProperty = BindableProperty.Create(nameof(Pre), typeof(string), typeof(ItemLabel), null);
     public static readonly BindableProperty PostProperty = BindableProperty.Create(nameof(Post), typeof(string), typeof(ItemLabel), null);
     public static readonly BindableProperty TypeProperty = BindableProperty.Create(nameof(Type), typeof(Kala.Models.Itemtypes), typeof(ItemLabel), Kala.Models.Itemtypes.Notused);
     public static readonly BindableProperty DigitsProperty = BindableProperty.Create(nameof(Digits), typeof(int), typeof(ItemLabel), -1);
 
-    public string Link
+    public string Name
     {
-        get { return (string)GetValue(LinkProperty); }
-        set { SetValue(LinkProperty, value); }
+        get { return (string)GetValue(NameProperty); }
+        set { SetValue(NameProperty, value); }
     }
 
     public string Pre

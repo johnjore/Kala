@@ -13,9 +13,12 @@
     <Entry Placeholder="Protocol" Text="{Binding Protocol}"/>
     <Entry Placeholder="Server" Text="{Binding Server}"/>
     <Entry Placeholder="Port" Text="{Binding Port, StringFormat='{0:F0}'}"/>
-    <Entry Placeholder="Username" Text="{Binding Username}"/>
-    <Entry IsPassword="true" Placeholder="Password" Text="{Binding Password}"/>
     <Entry Placeholder="Sitemap" Text="{Binding Sitemap}"/>
-  </StackLayout>
+      
+    <!-- OH2 does not support authentication. Do not show on settings page
+        <Entry Placeholder="Username" Text="{Binding Username}"/>
+        <Entry IsPassword="true" Placeholder="Password" Text="{Binding Password}"/>
+    -->
+    </StackLayout>
   
 </ContentPage>

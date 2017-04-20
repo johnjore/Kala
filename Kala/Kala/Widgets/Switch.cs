@@ -40,7 +40,7 @@ namespace Kala
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.Transparent,
-                    StyleId = item.item.link //StyleID is not used on buttons
+                    StyleId = item.item.name //StyleID is not used on buttons
                 };
                 switchButton.Clicked += OnSwitchButtonClicked;
                 CrossLogger.Current.Debug("Switch", "Button ID: " + switchButton.Id + " created.");
@@ -51,7 +51,7 @@ namespace Kala
                     grid = grid,
                     px = px,
                     py = py,
-                    link = item.item.link,
+                    name = item.item.name,
                     header = header,
                     icon = widgetKeyValuePairs["icon"],
                     state = item.item.state,
@@ -149,7 +149,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Link = item.link
+                Name = item.name
             };
             item.grid.Children.Add(l_status, item.px, item.py);
         }
@@ -199,11 +199,11 @@ namespace Kala
         public static void OnSwitchButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
-            string link = button.StyleId;
+            string name = button.StyleId;
 
             foreach (App.trackItem item in App.config.items)
             {
-                if (item.link.Equals(link))
+                if (item.name.Equals(name))
                 {
                     if (!item.state.ToLower().Equals("uninitialized"))
                     {
@@ -224,8 +224,10 @@ namespace Kala
 
                     CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.state + "'");
                     Switch_update(false, item);
-                    new RestService().SendCommand(link, item.state);
-                 }
+                    #pragma warning disable CS4014
+                    new RestService().SendCommand(name, item.state);
+                    #pragma warning restore CS4014
+                }
             }
         }
     }

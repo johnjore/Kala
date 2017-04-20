@@ -48,7 +48,7 @@ namespace Kala
                     py = py,
                     sx = sx,
                     sy = sy,
-                    link = item.item.link,
+                    name = item.item.name,
                     header = header,
                     icon = widgetKeyValuePairs["icon"],
                     state = item.item.state,
@@ -133,7 +133,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Link = item.link
+                Name = item.name
             };
             item.grid.Children.Add(l_status, item.px, item.py);
             #endregion Status Text

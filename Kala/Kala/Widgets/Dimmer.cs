@@ -28,7 +28,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Dimmer", "Widgets.Switch crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Dimmer", "Widgets.Dimmer crashed: " + ex.ToString());
             }
 
             try
@@ -39,7 +39,7 @@ namespace Kala
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.Transparent,
-                    StyleId = item.item.link //StyleID is not used on buttons
+                    StyleId = item.item.name //StyleID is not used on buttons
                 };
                 dimmerButton.Clicked += OnDimmerButtonClicked;
                 CrossLogger.Current.Debug("Dimmer", "Button ID: " + dimmerButton.Id + " created.");
@@ -54,7 +54,7 @@ namespace Kala
                     state = item.item.state,
                     unit = widgetKeyValuePairs["unit"],
                     icon = widgetKeyValuePairs["icon"],
-                    link = item.item.link,
+                    name = item.item.name,
                     type = Models.Itemtypes.Dimmer
                 };
                 App.config.items.Add(i);
@@ -63,7 +63,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Dimmer", "Widgets.Switch crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Dimmer", "Widgets.Dimmer crashed: " + ex.ToString());
                 Error(grid, px, py, ex.ToString());
             }
         }
@@ -97,6 +97,14 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center
             }, item.px, item.px + 1, item.py, item.py + 1);
 
+            switch (item.state.ToUpper())
+            {
+                case "ON":  item.state = "100";
+                    break;
+                case "OFF": item.state = "0";
+                    break;
+            }
+
             ItemLabel l_status = new ItemLabel
             {
                 Text = item.state,
@@ -106,7 +114,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Link = item.link
+                Name = item.name
             };
 
             l_status.HorizontalOptions = LayoutOptions.End;
@@ -120,7 +128,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Link = item.link
+                Name = item.name
             };
 
             //Grid for status text at the bottom
@@ -178,12 +186,12 @@ namespace Kala
         {
             Button button = sender as Button;
             App.trackItem item = null;
-            string link = button.StyleId;
+            string name = button.StyleId;
 
             //Find current item
             foreach (App.trackItem i in App.config.items)
             {
-                if (i.link.Equals(link))
+                if (i.name.Equals(name))
                 {
                     item = i;
                     break;

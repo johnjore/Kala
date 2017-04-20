@@ -8,8 +8,9 @@ namespace Kala.Models.Sitemap
         public string type { get; set; }
         public string label { get; set; }
         public string icon { get; set; }
+        public List<object> mappings { get; set; }
         public Item item { get; set; }
-        public object widget { get; set; }
+        public List<object> widgets { get; set; }      
     }
 
     public class LinkedPage
@@ -18,8 +19,8 @@ namespace Kala.Models.Sitemap
         public string title { get; set; }
         public string icon { get; set; }
         public string link { get; set; }
-        public string leaf { get; set; }
-        public object widget { get; set; }
+        public bool leaf { get; set; }
+        public List<Widget3> widgets { get; set; }
     }
 
     public class Widget
@@ -28,7 +29,9 @@ namespace Kala.Models.Sitemap
         public string type { get; set; }
         public string label { get; set; }
         public string icon { get; set; }
+        public List<object> mappings { get; set; }
         public LinkedPage linkedPage { get; set; }
+        public List<object> widgets { get; set; }
     }
 
     public class Homepage
@@ -36,8 +39,8 @@ namespace Kala.Models.Sitemap
         public string id { get; set; }
         public string title { get; set; }
         public string link { get; set; }
-        public string leaf { get; set; }
-        public List<Widget> widget { get; set; }
+        public bool leaf { get; set; }
+        public List<Widget> widgets { get; set; }
     }
 
     public class Sitemap
@@ -48,4 +51,3 @@ namespace Kala.Models.Sitemap
         public Homepage homepage { get; set; }
     }
 }
-

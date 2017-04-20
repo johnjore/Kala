@@ -60,7 +60,7 @@ namespace Kala
 
                     double lat = 999.0;
                     double lon = 999.0;
-                    string url = String.Empty;
+                    string name = string.Empty;
                     
                     if (item.item != null)
                     {
@@ -70,7 +70,7 @@ namespace Kala
                         {
                             double.TryParse(b[0], out lat);
                             double.TryParse(b[1], out lon);
-                            url = item.item.link;
+                            name = item.item.name;
                         }
                     }
                     else
@@ -83,7 +83,7 @@ namespace Kala
                     {
                         Type = PinType.Place,
                         Label = widgetKeyValuePairs["label"],
-                        Tag = url,
+                        Tag = name,
                         Position = new Position(lat, lon),
                         Icon = BitmapDescriptorFactory.DefaultMarker(Color.Red)
                     };

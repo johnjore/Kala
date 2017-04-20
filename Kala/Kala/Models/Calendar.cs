@@ -18,8 +18,8 @@ namespace Kala.Models
     {
         public string Label { get; set; }
         public string State { get; set; }
-        public string Link { get; set; }
-        
+        public string Name { get; set; }
+
         public Grid grid { get; set; }
         public int px { get; set; }
         public int py { get; set; }

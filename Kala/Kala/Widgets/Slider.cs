@@ -37,7 +37,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = 100,
-                StyleId = item.link,
+                StyleId = item.name,
             };
             slider.Effects.Add(Effect.Resolve("Effects.SliderEffect"));
             slider.ValueChanged += OnSliderValueChanged;
@@ -71,16 +71,17 @@ namespace Kala
 
             return cp;
         }
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
+                
         static void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
         {
             Slider slider = sender as Slider;
-            string link = slider.StyleId;
+            string name = slider.StyleId;
             string state = Convert.ToInt16(Math.Round(e.NewValue, MidpointRounding.AwayFromZero)).ToString();
 
             CrossLogger.Current.Debug("Slider", "New state: " + state);
-            new RestService().SendCommand(link, state);
+            #pragma warning disable CS4014
+            new RestService().SendCommand(name, state);
+            #pragma warning restore CS4014
         }
     }
 }

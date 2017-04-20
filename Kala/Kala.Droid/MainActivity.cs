@@ -56,7 +56,7 @@ namespace Kala.Droid
             //Logger
             CrossLogger.Current.Configure("Kala.log", 3, 100, LogLevel.Debug, true);
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Log Started");
-            CrossLogger.Current.Log(LogLevel.Info, "Kala", CrossLogger.Current.GetLocalStoragePath());
+            CrossLogger.Current.Log(LogLevel.Info, "Kala", "Folder for Log file: " + CrossLogger.Current.GetLocalStoragePath().ToString());
 
             LoadApplication(new App());
         }

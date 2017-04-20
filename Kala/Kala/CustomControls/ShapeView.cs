@@ -11,7 +11,7 @@ namespace DrawShape
         public static readonly BindableProperty IndicatorPercentageProperty = BindableProperty.Create(nameof(IndicatorPercentage), typeof(float), typeof(ShapeView), 0f);
         public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(float), typeof(ShapeView), 0f);
         public static readonly BindableProperty PaddingProperty = BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(ShapeView), default(Thickness));
-        public static readonly BindableProperty LinkProperty = BindableProperty.Create(nameof(Link), typeof(string), typeof(ItemLabel), null);
+        public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ItemLabel), null);
         public static readonly BindableProperty MinProperty = BindableProperty.Create(nameof(Min), typeof(double), typeof(ItemLabel), 0.0);
         public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(ItemLabel), 100.0);
 
@@ -57,10 +57,10 @@ namespace DrawShape
 		{
 		}
 
-        public string Link
+        public string Name
         {
-            get { return (string)GetValue(LinkProperty); }
-            set { SetValue(LinkProperty, value); }
+            get { return (string)GetValue(NameProperty); }
+            set { SetValue(NameProperty, value); }
         }
 
         public double Min

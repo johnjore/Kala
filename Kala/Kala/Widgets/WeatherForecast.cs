@@ -107,7 +107,7 @@ namespace Kala
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.Center,
                             TranslationY = -5,
-                            Link = items[i].item.link,
+                            Name = items[i].item.name,
                             Type = Models.Itemtypes.Weathericon
                         };
                         App.config.itemlabels.Add(l_image);
@@ -126,7 +126,7 @@ namespace Kala
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.End,
                             TranslationX = -30,
-                            Link = items[i].item.link,
+                            Name = items[i].item.name,
                             Pre = "   ",
                             Post = "\u00B0",
                             Text = digits.Item1 + " \u00B0",
@@ -146,7 +146,7 @@ namespace Kala
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.End,
                             TranslationX = 30,
-                            Link = items[i].item.link,
+                            Name = items[i].item.name,
                             Post = " \u00B0",
                             Text = digits.Item1 + " \u00B0  ",
                             Digits = digits.Item2

@@ -93,7 +93,7 @@ namespace Kala
                             CrossLogger.Current.Debug("Image", "Refresh Image: " + image.Id.ToString());
                             try
                             {
-                                /**///image.ReloadImage();
+                                image.ReloadImage();
                             }
                             catch (Exception ex)
                             {

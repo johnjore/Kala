@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 using Plugin.Logger;
@@ -10,10 +11,8 @@ namespace Kala
     {
         public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
-            CrossLogger.Current.Debug("Weather", "Weather: " + data.ToString());
-
             try
-            {
+            {               
                 //Size of Weather widget
                 int px = Convert.ToInt16(x1);
                 int py = Convert.ToInt16(y1);
@@ -86,7 +85,7 @@ namespace Kala
                 t_grid.VerticalOptions = LayoutOptions.FillAndExpand;
                 t_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
                 w_grid.Children.Add(t_grid, 0, 0 + 3, 3, 3 + 1); //Add in bottom row, across all columns in w_grid
-                #endregion Child Grids
+                #endregion t_grid
 
                 #region Separator
                 //Boxview (Line)
@@ -132,7 +131,7 @@ namespace Kala
                                     BackgroundColor = App.config.CellColor,
                                     HorizontalOptions = LayoutOptions.Start,
                                     VerticalOptions = LayoutOptions.Start,
-                                    Link = item.item.link,
+                                    Name = item.item.name,
                                     TranslationY = -5
                                 };
                                 App.config.itemlabels.Add(l_condition);
@@ -151,7 +150,7 @@ namespace Kala
                                     HorizontalOptions = LayoutOptions.End,
                                     VerticalOptions = LayoutOptions.FillAndExpand,
                                     Digits = temp.Item2,
-                                    Link = item.item.link,
+                                    Name = item.item.name,
                                     TranslationY = -5
                                 };
                                 App.config.itemlabels.Add(l_temperature);
@@ -174,7 +173,7 @@ namespace Kala
                                     FontSize = 68,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.StartAndExpand,
-                                    Link = item.item.link,
+                                    Name = item.item.name,
                                     Type = Models.Itemtypes.Weathericon,
                                     TranslationY = -15
                                 };
@@ -192,13 +191,13 @@ namespace Kala
                         {
                             case "WIND":
                                 CrossLogger.Current.Debug("Weather", "Wind");
-                                List<Models.Sitemap.Widget3> winds = ((JArray)item.widget).ToObject<List<Models.Sitemap.Widget3>>();
-
+                                List<Models.Sitemap.Widget3> winds = (JArray.FromObject(item.widgets)).ToObject<List<Models.Sitemap.Widget3>>();
+                                
                                 //Wind direction and speed
                                 int w_direction = 0;
-                                string wind_direction_url = string.Empty;
+                                string wind_direction_name = string.Empty;
                                 string wind_speed = string.Empty;
-                                string wind_speed_url = string.Empty;
+                                string wind_speed_name = string.Empty;
                                 int digits = -1;
                                 string wind_speed_post = string.Empty;
 
@@ -209,13 +208,13 @@ namespace Kala
                                     {
                                         case "WIND-DIRECTION":
                                             Helpers.wind_direction.TryGetValue(wind.item.state.ToLower(), out w_direction);
-                                            wind_direction_url = wind.item.link;
+                                            wind_direction_name = wind.item.name;
                                             break;
                                         case "WIND-SPEED":
                                             var tmpdigits = Digits(windKeyValuePairs, wind.item.state);
                                             digits = tmpdigits.Item2;
                                             wind_speed = tmpdigits.Item1;
-                                            wind_speed_url = wind.item.link;
+                                            wind_speed_name = wind.item.name;
                                             wind_speed_post = " " + windKeyValuePairs["unit"];
                                             break;
                                         default:
@@ -223,7 +222,7 @@ namespace Kala
                                             break;
                                     }
                                 }
-
+                                
                                 string strFontFamily = null;
                                 switch (Device.RuntimePlatform)
                                 {
@@ -244,7 +243,7 @@ namespace Kala
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = -45,
-                                    Link = wind_direction_url
+                                    Name = wind_direction_name
                                 };
                                 App.config.itemlabels.Add(l_winddirection);
                                 t_grid.Children.Add(l_winddirection, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
@@ -258,13 +257,12 @@ namespace Kala
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = 20,
-                                    Link = wind_speed_url,
+                                    Name = wind_speed_name,
                                     Post = wind_speed_post,
                                     Digits = digits
                                 };
                                 App.config.itemlabels.Add(l_windspeed);
                                 t_grid.Children.Add(l_windspeed, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
-
                                 break;
                             default:
                                 CrossLogger.Current.Warn("Weather", "Unknown frame type");
@@ -295,7 +293,7 @@ namespace Kala
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.Center,
                             Pre = widgetKeyValuePairs["font"] + "  ",
-                            Link = item.item.link,
+                            Name = item.item.name,
                             Post = " " + widgetKeyValuePairs["unit"],
                             Digits = digits.Item2
                         };

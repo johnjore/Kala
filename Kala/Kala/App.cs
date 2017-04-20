@@ -22,7 +22,7 @@ namespace Kala
             public string header { get; set; }
             public string unit { get; set; }
             public Models.Itemtypes type { get; set; }
-            public string link { get; set; }
+            public string name { get; set; }
         }
 
         public class Configuration
@@ -65,14 +65,14 @@ namespace Kala
             //TabbedPage setup
             if (tp.Children.Count == 0)
             {
-                tp.BackgroundColor = App.config.BackGroundColor;
-                tp.BarBackgroundColor = App.config.BackGroundColor;
-                tp.BarTextColor = App.config.TextColor;
+                tp.BackgroundColor = config.BackGroundColor;
+                tp.BarBackgroundColor = config.BackGroundColor;
+                tp.BarTextColor = config.TextColor;
 
                 tp.CurrentPageChanged += (sender, e) =>
                 {
                     //Reset screensaver timer
-                    App.config.LastActivity = DateTime.Now;
+                    config.LastActivity = DateTime.Now;
                     CrossLogger.Current.Debug("Kala", "Reset Screensaver timer");
                 };
 
@@ -93,15 +93,15 @@ namespace Kala
                     CrossLogger.Current.Debug("Kala", "Got Sitemaps");
 
                     //Add settings tab last
-                    App.tp.Children.Add(new Views.Page1());
-                    MainPage = App.tp;
+                    tp.Children.Add(new Views.Page1());
+                    MainPage = tp;
                 }
             }
             else
             {
-                MainPage = App.tp;
+                MainPage = tp;
             }
-            App.config.Initialized = true;
+            config.Initialized = true;
         }
         
         protected override void OnStart()

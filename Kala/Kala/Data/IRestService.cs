@@ -10,7 +10,7 @@ namespace Kala
 	public interface IRestService
 	{
         /// <summary>
-        /// Loads all the sitemaps
+        /// Lists all sitemaps
         /// </summary>
         /// <returns>A list of sitemaps</returns>
         Models.Sitemaps.Sitemaps ListSitemaps();
@@ -33,7 +33,7 @@ namespace Kala
         /// Waits for an item update
         /// </summary>
         /// <returns>An update for an item</returns>
-        Task GetUpdate();
+        Task GetUpdateAsync();
 
         /// <summary>
         /// Reset the connection to the OpenHAB server after changing the settings in the app

@@ -39,7 +39,7 @@ namespace Kala
                     Models.calItems a = new Models.calItems();
                     a.Label = item.label;
                     a.State = item.item.state;
-                    a.Link = item.item.link;
+                    a.Name = item.item.name;
 
                     a.grid = grid;
                     a.px = px;
@@ -80,16 +80,16 @@ namespace Kala
         }
 
         //Update stored list
-        public static void Calendar_Update(Models.Item item)
+        public static void Calendar_Update(Models.Events item)
         {
             CrossLogger.Current.Debug("Calendar", "Update" + item.ToString());
 
             //Loop and update with new data
             foreach (Models.calItems itemCal in itemCalendar)
             {
-                if (itemCal.Link.Equals(item.link))
+                if (itemCal.Name.Equals(item.topic))
                 {
-                    itemCal.State = item.state;
+                    itemCal.State = item.value;
                 }
             }
 
@@ -202,8 +202,8 @@ namespace Kala
                     {
                         if (SortedList[i - 1].Day == SortedList[i].Day)
                         {
-                            SortedList[i].Day = String.Empty;
-                            SortedList[i].DayOfWeek = String.Empty;
+                            SortedList[i].Day = string.Empty;
+                            SortedList[i].DayOfWeek = string.Empty;
                         }
                     }
 
