@@ -31,10 +31,10 @@ namespace Kala
         private static int PortDefault = 8080;
 
         private const string UsernameKey = "username_key";
-        private static string UsernameDefault = "username";
+        private static string UsernameDefault = string.Empty;
 
         private const string PasswordKey = "password_key";
-        private static string PasswordDefault = "password";
+        private static string PasswordDefault = string.Empty;
 
         private const string SitemapKey = "sitemap_key";
         private static string SitemapDefault = "Kala";
@@ -49,50 +49,50 @@ namespace Kala
 
         public static string Protocol
         {
-            get { return AppSettings.GetValueOrDefault<string>(ProtocolKey, ProtocolDefault); }
-            set { AppSettings.AddOrUpdateValue<string>(ProtocolKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Protocol), ProtocolDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Protocol), value);
         }
 
         public static string Server
         {
-            get { return AppSettings.GetValueOrDefault<string>(ServerKey, ServerDefault); }
-            set { AppSettings.AddOrUpdateValue<string>(ServerKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Server), ServerDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Server), value);
         }
 
         public static int Port
         {
-            get { return AppSettings.GetValueOrDefault<int>(PortKey, PortDefault); }
-            set { AppSettings.AddOrUpdateValue<int>(PortKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Port), PortDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Port), value);
         }
 
         public static string Username
         {
-            get { return AppSettings.GetValueOrDefault<string>(UsernameKey, UsernameDefault); }
-            set { AppSettings.AddOrUpdateValue<string>(UsernameKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Username), UsernameDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Username), value);
         }
 
         public static string Password
         {
-            get { return AppSettings.GetValueOrDefault<string>(PasswordKey, PasswordDefault); }
-            set { AppSettings.AddOrUpdateValue<string>(PasswordKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Password), PasswordDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Password), value);
         }
 
         public static string Sitemap
         {
-            get { return AppSettings.GetValueOrDefault<string>(SitemapKey, SitemapDefault); }
-            set { AppSettings.AddOrUpdateValue<string>(SitemapKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Sitemap), SitemapDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Sitemap), value);
         }
 
         public static bool Fullscreen
         {
-            get { return AppSettings.GetValueOrDefault<bool>(FullscreenKey, FullscreenDefault); }
-            set { AppSettings.AddOrUpdateValue<bool>(FullscreenKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Fullscreen), FullscreenDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Fullscreen), value);
         }
 
         public static int Screensaver
         {
-            get { return AppSettings.GetValueOrDefault<int>(ScreensaverKey, ScreensaverDefault); }
-            set { AppSettings.AddOrUpdateValue<int>(ScreensaverKey, value); }
+            get => AppSettings.GetValueOrDefault(nameof(Screensaver), ScreensaverDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Screensaver), value);            
         }
     }
 }

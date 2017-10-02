@@ -1,15 +1,16 @@
 # Kala
-Xamarin.Forms based client for openHAB (Android, iOS, Universal Windows, Windows 8.1 and Windows Phone 8.1)
+Xamarin.Forms based client for openHAB (Android, iOS, Universal Windows)
 
 # Screenshot
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Sitemap%2C%205x3.png)
 
 # History
 A non-official Android client went commercial with a rather large price tag.
-GUI used here is inspired by that client, but distributed for free
+GUI used here is inspired by that client, but distributed for free.
 
 # Roadmap
-* Add "widgets"
+* Add additinal "widgets"
+* Bug fixes
 * Update the non-Android clients with the same functionality as the Android version
 
 # Libraries / references
@@ -23,6 +24,7 @@ GUI used here is inspired by that client, but distributed for free
 * https://github.com/amay077/Xamarin.Forms.GoogleMaps
 * https://github.com/wpbest/Plugin.Logger
 * https://materialdesignicons.com/
+* ++
 
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.
@@ -36,7 +38,7 @@ Kala is a play on Kaala, the dogs name. All donations go to Kala (the dog) or to
 Contribution are always welcome and helps both the overall quality, as well as speeds up development work.
 
 # License
-Copyright 2016 - John Jore
+Copyright 2016, 2017 - John Jore
 
 Software licensed under GPL version 3 available in GPLv3.TXT and online on http://www.gnu.org/licenses/gpl.txt.
 

@@ -40,12 +40,13 @@ namespace Kala
             {
                 var map = new Map() //MapSpan.FromCenterAndRadius(new Position(37, -122), Distance.FromMiles(0.3)))
                 {
-                    IsShowingUser = true,
+                    MyLocationEnabled = false,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     MapType = GetMapType(maptype)
                 };
+                map.UiSettings.MyLocationButtonEnabled = false;
                 itemMaps.Add(map);
-
+                
                 //Items in Map widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
                 CrossLogger.Current.Debug("Map", "Items: " + items.Count.ToString());

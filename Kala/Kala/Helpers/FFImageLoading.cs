@@ -26,7 +26,7 @@ namespace Kala.FFImageLoading
         {
             if (Settings.Username != string.Empty)
             {
-                var authData = string.Format("{0}:{1}", Settings.Username, Kala.Settings.Password);
+                var authData = string.Format("{0}:{1}", Settings.Username, Settings.Password);
                 var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
             }

@@ -37,7 +37,7 @@ namespace Kala
                 };
                 w_grid.ColumnDefinitions = new ColumnDefinitionCollection
                 {
-                    new ColumnDefinition { Width = new GridLength(100) },
+                    new ColumnDefinition { Width = new GridLength(110) },
                     new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
                     new ColumnDefinition { Width = GridLength.Auto },
                 };

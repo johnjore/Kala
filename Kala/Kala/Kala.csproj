@@ -84,24 +84,19 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FFImageLoading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.9\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.19\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.2.9\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Forms.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.2.19\lib\portable-net45+win8+wpa81+wp8+netstandard1.0\FFImageLoading.Forms.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.9\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Platform.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.2.2.19\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Platform.dll</HintPath>
     </Reference>
     <Reference Include="FFImageLoading.Transformations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.FFImageLoading.Transformations.2.2.9\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Transformations.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.FFImageLoading.Transformations.2.2.19\lib\portable-net45+win8+wpa81+wp8+netstandard1.0\FFImageLoading.Transformations.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\portable-net45+win8+wpa81+wp8\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\portable-net45+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.Logger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\wpbest.Plugin.Logger.1.0.8\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Logger.dll</HintPath>
@@ -111,13 +106,11 @@
       <HintPath>..\..\packages\wpbest.Plugin.Logger.1.0.8\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Logger.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Plugin.Settings, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\portable-net45+wp80+win8+wpa81\Plugin.Settings.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Plugin.Settings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.3.0.1\lib\netstandard1.0\Plugin.Settings.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Settings.Abstractions, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.Settings.2.5.4\lib\portable-net45+wp80+win8+wpa81\Plugin.Settings.Abstractions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Plugin.Settings.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.3.0.1\lib\netstandard1.0\Plugin.Settings.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
@@ -131,27 +124,21 @@
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Windows">
-      <HintPath>..\..\..\..\Program Files (x86)\Windows Phone Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.282\lib\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.GoogleMaps, Version=1.8.0.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.GoogleMaps.1.8.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Xamarin.Forms.GoogleMaps.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Xamarin.Forms.GoogleMaps, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.Forms.GoogleMaps.2.1.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid70+MonoTouch10+Xamarin.iOS10+UAP10\Xamarin.Forms.GoogleMaps.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Platform.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.282\lib\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Xaml.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Xamarin.Forms.2.4.0.282\lib\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -168,8 +155,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.4.0.282\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.4.0.282\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <Import Project="..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+  <Import Project="..\..\packages\Xamarin.Forms.2.4.0.282\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.4.0.282\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />
 </Project>
