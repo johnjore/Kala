@@ -4,6 +4,9 @@ Avatar
 Blank
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Blank%2C%201x1.png)
 
+Blind
+![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Blind%2C%201x2%2C%202x1.png)
+
 Calendar
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Calendar%2C%202x3.png)
 
