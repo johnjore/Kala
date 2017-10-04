@@ -13,6 +13,7 @@ namespace Kala.Models
         Weathericon = 2,
         Sensor = 3,
         Switch = 4,
-        Dimmer = 5
+        Dimmer = 5,
+        Blind = 6
     };
 }

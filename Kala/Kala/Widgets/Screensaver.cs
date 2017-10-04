@@ -85,8 +85,10 @@ namespace Kala
             absoluteLayout.Children.Add(l_clock);
             absoluteLayout.Children.Add(resumeButton);
 
-            ContentPage cp = new ContentPage();
-            cp.Content = absoluteLayout;
+            ContentPage cp = new ContentPage
+            {
+                Content = absoluteLayout
+            };
 
             return cp;
         }

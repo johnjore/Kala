@@ -16,22 +16,22 @@ namespace DrawShape
         public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(ItemLabel), 100.0);
 
         public ShapeType ShapeType {
-			get{ return (ShapeType)GetValue (ShapeTypeProperty); }
-			set{ SetValue (ShapeTypeProperty, value); }
+			get { return (ShapeType)GetValue (ShapeTypeProperty); }
+			set { SetValue (ShapeTypeProperty, value); }
 		}
 
 		public Color StrokeColor {
-			get{ return (Color)GetValue (StrokeColorProperty); }
-			set{ SetValue (StrokeColorProperty, value); }
+			get { return (Color)GetValue (StrokeColorProperty); }
+			set { SetValue (StrokeColorProperty, value); }
 		}
 
 		public float StrokeWidth {
-			get{ return (float)GetValue (StrokeWidthProperty); }
-			set{ SetValue (StrokeWidthProperty, value); }
+			get { return (float)GetValue (StrokeWidthProperty); }
+			set { SetValue (StrokeWidthProperty, value); }
 		}
 
 		public float IndicatorPercentage {
-			get{ return (float)GetValue (IndicatorPercentageProperty); }
+			get { return (float)GetValue (IndicatorPercentageProperty); }
 			set {
 				if (ShapeType != ShapeType.CircleIndicator && ShapeType != ShapeType.Arc)
 					throw new ArgumentException ("Can only specify this property with CircleIndicator");
@@ -40,7 +40,7 @@ namespace DrawShape
 		}
 
 		public float CornerRadius {
-			get{ return (float)GetValue (CornerRadiusProperty); }
+			get { return (float)GetValue (CornerRadiusProperty); }
 			set {
 				if (ShapeType != ShapeType.Box)
 					throw new ArgumentException ("Can only specify this property with Box");
@@ -49,8 +49,8 @@ namespace DrawShape
 		}
 
 		public Thickness Padding {
-			get{ return (Thickness)GetValue (PaddingProperty); }
-			set{ SetValue (PaddingProperty, value); }
+			get { return (Thickness)GetValue (PaddingProperty); }
+			set { SetValue (PaddingProperty, value); }
 		}
 
 		public ShapeView ()

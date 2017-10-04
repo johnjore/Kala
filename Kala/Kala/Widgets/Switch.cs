@@ -64,7 +64,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Switch", "Widgets.Switch crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, 1, 1, ex.ToString());
             }
         }
 
@@ -87,8 +87,7 @@ namespace Kala
             {
                 try
                 {
-                    int stat;
-                    if (int.TryParse(item.state, out stat))
+                    if (int.TryParse(item.state, out int stat))
                     {
                         if (stat > 0)
                         {
@@ -117,7 +116,7 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, item.px, item.py, ex.ToString());
+                    Error(item.grid, item.px, item.py, item.sx, item.sy, ex.ToString());
                 }
             }
 
@@ -207,8 +206,7 @@ namespace Kala
                 {
                     if (!item.state.ToLower().Equals("uninitialized"))
                     {
-                        int stat;
-                        if (int.TryParse(item.state, out stat))
+                        if (int.TryParse(item.state, out int stat))
                         {
                             item.state = (stat > 0) ? "OFF" : "ON";
                         }

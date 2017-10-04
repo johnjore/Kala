@@ -1,0 +1,9 @@
+//Vertical
+Frame label="Blind {widget=blind,px=4,py=0,sx=1,sy=2}"	{
+	Switch item=Blind_Livingroom	label="{icon=ic_window_closed_white_48dp,up_icon=ic_keyboard_arrow_up_white_48dp,down_icon=ic_keyboard_arrow_down_white_48dp}"
+}
+
+//Horizontal
+Frame label="Blind {widget=blind,px=2,py=1,sx=2,sy=1}"	{
+	Switch item=Blind_Livingroom	label="{icon=ic_window_closed_white_48dp,up_icon=ic_keyboard_arrow_left_white_48dp,down_icon=ic_keyboard_arrow_right_white_48dp}"
+}

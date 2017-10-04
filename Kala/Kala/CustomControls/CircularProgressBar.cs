@@ -1,6 +1,6 @@
-﻿using Xamarin.Forms;
+﻿//From https://github.com/jamesmontemagno
 
-//From https://github.com/jamesmontemagno
+using Xamarin.Forms;
 
 namespace CircularProgressBar.FormsPlugin.Abstractions
 {
@@ -14,8 +14,7 @@ namespace CircularProgressBar.FormsPlugin.Abstractions
         public static readonly BindableProperty ProgressBackgroundColorProperty = BindableProperty.Create(nameof(ProgressBackgroundColor), typeof(Color), typeof(CircularProgressBarView), Color.Transparent);
         public static readonly BindableProperty ProgressColorProperty = BindableProperty.Create(nameof(ProgressColor), typeof(Color), typeof(CircularProgressBarView), Color.Transparent);
         public static readonly BindableProperty SizeProperty = BindableProperty.Create(nameof(Size), typeof(float), typeof(CircularProgressBarView), 1.0f);
-        //public static readonly BindableProperty ScaleProperty = BindableProperty.Create(nameof(Progress), typeof(float), typeof(CircularProgressBarView), 1.0f);
-
+        
         /// <summary>
         /// Gets or sets the current progress
         /// </summary>

@@ -61,7 +61,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Music", "Sensor crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, sx, sy, ex.ToString());
             }
         }
 
@@ -95,7 +95,7 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, item.px, item.py, ex.ToString());
+                    Error(item.grid, item.px, item.py, item.sx, item.sy, ex.ToString());
                 }
             }
             else

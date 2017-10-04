@@ -66,8 +66,10 @@ namespace Kala
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
 
-            ContentPage cp = new ContentPage();
-            cp.Content = sl;
+            ContentPage cp = new ContentPage
+            {
+                Content = sl
+            };
 
             return cp;
         }

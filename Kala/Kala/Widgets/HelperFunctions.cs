@@ -57,8 +57,7 @@ namespace Kala
             if (dict.ContainsKey("digits"))
             {               
                 int.TryParse(dict["digits"], out digits);
-                double v1 = 0.0;
-                Double.TryParse(state.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out v1);
+                Double.TryParse(state.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out double v1);
                 s_value = (Math.Round(v1, digits, MidpointRounding.AwayFromZero)).ToString("f" + digits);
             }
             else

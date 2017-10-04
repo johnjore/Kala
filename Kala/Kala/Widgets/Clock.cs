@@ -7,22 +7,20 @@ namespace Kala
     {
         public static void Clock(Grid grid, string x1, string y1, string x2, string y2)
         {
-            int px = Convert.ToInt16(x1);
-            int py = Convert.ToInt16(y1);
-            int sx = Convert.ToInt16(x2);
-            int sy = Convert.ToInt16(y2);
+            DateTime time = DateTime.Now;
+            string format1 = "HH:mm";
+            string format2 = "dddd d MMMM";
+            double resolution = 160.0;
+
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
+            int.TryParse(x2, out int sx);
+            int.TryParse(y2, out int sy);
 
             grid.Children.Add(new Label
             {
                 BackgroundColor = App.config.CellColor
             }, px, px + sx, py, py + sy);
-
-            DateTime time = DateTime.Now;
-
-            string format1 = "HH:mm";
-            string format2 = "dddd d MMMM";
-
-            double resolution = 160.0;
 
             Label l1 = new Label
             {
@@ -34,6 +32,7 @@ namespace Kala
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = -20
             };
+            grid.Children.Add(l1, px, px + sx, py, py + sy);
 
             Label l2 = new Label
             {
@@ -45,11 +44,8 @@ namespace Kala
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = 20
             };
-
-            grid.Children.Add(l1, px, px + sx, py, py + sy);
             grid.Children.Add(l2, px, px + sx, py, py + sy);
 
-            // Start the timer
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
                 time = DateTime.Now;

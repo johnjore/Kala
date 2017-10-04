@@ -12,20 +12,8 @@ namespace Kala
     {
         public static void Gauge(Grid grid, string x1, string y1, string header, JObject data)
         {
-            int px = 0;
-            int py = 0;
-
-            //If this fails, we dont know where to show an error
-            try
-            {
-                px = Convert.ToInt16(x1);
-                py = Convert.ToInt16(y1);
-                
-            }
-            catch (Exception ex)
-            {
-                CrossLogger.Current.Error("Gauge", "Crashed: " + ex.ToString());
-            }
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
 
             try
             {
@@ -37,33 +25,33 @@ namespace Kala
 
                 //Column
                 Create_Gauge(t_grid, 0, item);
-
                 grid.Children.Add(t_grid, px, py);
             }
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Gauge", "Crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, 1, 1, ex.ToString());
             }
         }
 
         private static Grid Create_GaugeHeader(string header, int sx)
         {
             #region t_grid
-            Grid t_grid = new Grid();
-            t_grid.Padding = new Thickness(0, 0, 0, 0);
-            t_grid.RowSpacing = 0;
-            t_grid.ColumnSpacing = 0;
-            t_grid.BackgroundColor = App.config.CellColor;
-            t_grid.VerticalOptions = LayoutOptions.FillAndExpand;
-            t_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
+            Grid t_grid = new Grid
+            {
+                Padding = new Thickness(0, 0, 0, 0),
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                BackgroundColor = App.config.CellColor,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
 
-            //Rows
-            t_grid.RowDefinitions = new RowDefinitionCollection
+                RowDefinitions = new RowDefinitionCollection
                 {
                     new RowDefinition { Height = GridLength.Auto },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-                };
+                }
+            };
             #endregion t_grid
 
             //Header is in Row 0
@@ -121,10 +109,8 @@ namespace Kala
                 #endregion Image
 
                 #region Center Text / Value
-                string s_value = string.Empty;
-                if (digits.Item1.ToLower().Equals("uninitialized"))
-                    s_value = "N/A";
-                else
+                string s_value = "N/A";
+                if (!(digits.Item1.ToLower().Equals("uninitialized")))
                     s_value = digits.Item1;
 
                 ItemLabel l_value = new ItemLabel
@@ -141,15 +127,9 @@ namespace Kala
                 };
                 App.config.itemlabels.Add(l_value);
                 t_grid.Children.Add(l_value, i, 1);
-                #endregion Center Text / Value
-
-                #region Arc
-                float min = 0.0f;
-                float max = 0.0f;
-                float value = 0.0f;
-                Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out min);
-                Single.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out max);
-                Single.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out value);
+                Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
+                Single.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float max);
+                Single.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float value);
 
                 //Basic sanity checks
                 if (value > max) max = value;
@@ -196,7 +176,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Gauge", "Crashed: " + ex.ToString());
-                Error(t_grid, i, 1, ex.ToString());
+                Error(t_grid, i, 1, 1, 1, ex.ToString());
             }
         }
     }

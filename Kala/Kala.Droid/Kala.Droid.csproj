@@ -11726,6 +11726,9 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_window_closed_white_48dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="environment.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

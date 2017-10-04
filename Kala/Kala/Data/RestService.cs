@@ -24,8 +24,10 @@ namespace Kala
 
         public RestService()
 		{
-            client = new HttpClient();
-            client.MaxResponseContentBufferSize = 256000;
+            client = new HttpClient
+            {
+                MaxResponseContentBufferSize = 256000
+            };
 
             if (Settings.Username != string.Empty)
             {
@@ -54,31 +56,20 @@ namespace Kala
                 string resultString = response.Content.ReadAsStringAsync().Result;
                 CrossLogger.Current.Debug("RestService", "Content Response: " + resultString.ToString());
 
-                //OH1 and OH2 have different responses
                 try
                 {
-                    //OH1
-                    Models.Sitemaps.Sitemaps sitemaps = JsonConvert.DeserializeObject<Models.Sitemaps.Sitemaps>(resultString);
+                    Models.Sitemaps.Sitemaps sitemaps = new Models.Sitemaps.Sitemaps
+                    {
+                        sitemap = ((JArray)JToken.Parse(resultString)).ToObject<List<Models.Sitemaps.Sitemap>>()
+                    };
+
                     CrossLogger.Current.Debug("RestService", "Found " + sitemaps.sitemap.Count().ToString() + " sitemaps");
                     return sitemaps;
                 }
                 catch
                 {
-                    try
-                    {
-                        //OH2
-                        Models.Sitemaps.Sitemaps sitemaps = new Models.Sitemaps.Sitemaps();
-                        sitemaps.sitemap = ((JArray)JToken.Parse(resultString)).ToObject<List<Models.Sitemaps.Sitemap>>();
-
-                        CrossLogger.Current.Debug("RestService", "Found " + sitemaps.sitemap.Count().ToString() + " sitemaps");
-                        return sitemaps;
-                    }
-                    catch
-                    {
-                        //OH3?
-                        CrossLogger.Current.Debug("RestService", "Failed to parse JSON sitemaps response");
-                        return null;
-                    }
+                    CrossLogger.Current.Debug("RestService", "Failed to parse JSON sitemaps response");
+                    return null;
                 }
             }
             catch
@@ -107,7 +98,6 @@ namespace Kala
                 string resultString = response.Content.ReadAsStringAsync().Result;
                 CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
 
-                //Note: OH1 and OH2 have different responses
                 try
                 {
                     Models.Sitemap.Sitemap items = JsonConvert.DeserializeObject<Models.Sitemap.Sitemap>(resultString);
@@ -144,19 +134,17 @@ namespace Kala
                 if (response.IsSuccessStatusCode)
                 {
                     CrossLogger.Current.Debug("Kala", "SendCommand - Success");
-                    return;
                 }
                 else
                 {
                     CrossLogger.Current.Debug("Kala", "Sendcommand - Failed: " + response.ToString());
-                }
-                
+                }               
             }
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Kala", "SendCommand - Failed: " + ex.ToString());
-                return;
             }
+            return;
         }
 
         public async Task GetUpdateAsync()
@@ -189,7 +177,6 @@ namespace Kala
                                         {
                                             queueUpdates.Enqueue(updates);
 
-                                            //Process updates?
                                             if (boolExit == true && App.config.Initialized == true && queueUpdates.Count() > 0)
                                             {
                                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "RestService - GetUpdateAsync() - Creating Updates() thread"));

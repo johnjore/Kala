@@ -15,48 +15,35 @@ namespace Kala
         {
             CrossLogger.Current.Debug("Avatar", "Creating Avatar Widget");
 
-            int px = 0;
-            int py = 0;
-            int sx = 0;
-            int sy = 0;
-
-            //If this fails, we don't know where to show the error
-            try
-            {
-                px = Convert.ToInt16(x1);
-                py = Convert.ToInt16(y1);
-                sx = Convert.ToInt16(x2);
-                sy = Convert.ToInt16(y2);
-            }
-            catch (Exception ex)
-            {
-                CrossLogger.Current.Error("Avatar", "Crashed: " + ex.ToString());
-            }
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
+            int.TryParse(x2, out int sx);
+            int.TryParse(y2, out int sy);
 
             try
             {
                 Models.avatar item = data.ToObject<Models.avatar>();
 
                 #region w_grid
-                //Create grid layout
-                Grid w_grid = new Grid();
+                Grid w_grid = new Grid
+                {
+                    Padding = new Thickness(0, 0, 0, 0),
+                    RowSpacing = 0,
+                    ColumnSpacing = 0,
+                    BackgroundColor = App.config.CellColor,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    RowDefinitions = new RowDefinitionCollection
+                    {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = GridLength.Auto },
+                    },
+                    ColumnDefinitions = new ColumnDefinitionCollection
+                    {
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    },
+                };
                 grid.Children.Add(w_grid, px, px + sx, py, py + sy);
-
-                w_grid.RowDefinitions = new RowDefinitionCollection
-                {
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-                    new RowDefinition { Height = GridLength.Auto },
-                };
-                w_grid.ColumnDefinitions = new ColumnDefinitionCollection
-                {
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                };
-                w_grid.Padding = new Thickness(0, 0, 0, 0);
-                w_grid.RowSpacing = 0;
-                w_grid.ColumnSpacing = 0;
-                w_grid.BackgroundColor = App.config.CellColor;
-                w_grid.VerticalOptions = LayoutOptions.FillAndExpand;
-                w_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
                 #endregion w_grid
 
                 var image = new CachedImage()
@@ -93,7 +80,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Avatar", "Crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, sx, sy, ex.ToString());
             }
         }
     }

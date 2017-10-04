@@ -61,7 +61,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Sensor", "Sensor crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, sx, sy, ex.ToString());
             }
         }
 
@@ -95,7 +95,7 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, item.px, item.py, ex.ToString());
+                    Error(item.grid, item.px, item.py, item.sx, item.sy, ex.ToString());
                 }
             }
             else
@@ -104,18 +104,10 @@ namespace Kala
             }
             #endregion State
 
-            #region Image
-            string strSource = item.icon;
-            switch (Device.RuntimePlatform)
-            {
-                case Device.WinPhone:
-                    strSource = "Assets/" + item.icon;
-                    break;
-            }
-
+            #region Image     
             item.grid.Children.Add(new Image
             {
-                Source = strSource,
+                Source = item.icon,
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,

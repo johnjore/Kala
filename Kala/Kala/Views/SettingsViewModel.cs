@@ -1,21 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-/*
- * Authentication
- *  Username        Password
- *  Username        Password
- *  
- *  Local Connection
- *  Protocol        Server          Port
- *  http/https      fqdn            8080
- *  
- *  Remote Connection
- *  Protocol        Server          Port
- *  http/https      fqdn            8443
- *  
- *  Sitemap
- *  <Dropdown list>
-*/
  
 namespace Kala
 {
@@ -99,8 +83,6 @@ namespace Kala
             }
         }
 
-        #region INotifyPropertyChanged implementation
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged([CallerMemberName]string name = "")
@@ -110,7 +92,5 @@ namespace Kala
                 return;
             changed(this, new PropertyChangedEventArgs(name));
         }
-
-        #endregion
     }
 }

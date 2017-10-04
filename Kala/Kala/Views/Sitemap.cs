@@ -131,7 +131,6 @@ namespace Kala
                 }
             }
 
-
             CrossLogger.Current.Info("Kala", "Fullscreen : " + Settings.Fullscreen.ToString());
             CrossLogger.Current.Info("Kala", "Screensaver: " + Settings.Screensaver.ToString());
             CrossLogger.Current.Info("Kala", "Sitemap: " + Settings.Fullscreen.ToString());
@@ -237,6 +236,12 @@ namespace Kala
                                 Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widgets[0]);
                             }
                             break;
+                        case "BLIND":
+                            if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                            {
+                                Widgets.Blind(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                            }
+                            break;
                         case "BLANK":
                             Widgets.Blank(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"]);
                             break;
@@ -285,7 +290,6 @@ namespace Kala
                             }
                             break;
                         case "IMAGE":
-                            //Parameters
                             if (!itemKeyValuePairs.ContainsKey("aspect")) { itemKeyValuePairs.Add("aspect", "aspectfill"); }
 
                             if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
@@ -294,7 +298,6 @@ namespace Kala
                             }
                             break;
                         case "MAP":
-                            //Parameters
                             if (!itemKeyValuePairs.ContainsKey("type")) { itemKeyValuePairs.Add("type", "street"); }
 
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))

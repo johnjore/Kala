@@ -38,22 +38,24 @@ namespace Kala
             try
             {
                 #region t_grid
-                Grid t_grid = new Grid();
-                t_grid.Padding = new Thickness(0, 0, 0, 0);
-                t_grid.RowSpacing = 0;
-                t_grid.ColumnSpacing = 0;
-                t_grid.BackgroundColor = App.config.CellColor;
-                t_grid.VerticalOptions = LayoutOptions.FillAndExpand;
-                t_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
+                Grid t_grid = new Grid
+                {
+                    Padding = new Thickness(0, 0, 0, 0),
+                    RowSpacing = 0,
+                    ColumnSpacing = 0,
+                    BackgroundColor = App.config.CellColor,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
 
-                //Rows
-                t_grid.RowDefinitions = new RowDefinitionCollection
+                    //Rows
+                    RowDefinitions = new RowDefinitionCollection
                 {
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
                     //new RowDefinition { Height = GridLength.Auto },
                     //new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                }
                 };
-                
+
                 //Columns
                 for (int i = 0; i < items.Count; i++)            //Each day has 3 items
                 {
@@ -163,7 +165,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("WeatherForecast", "Crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, sx, sy, ex.ToString());
             }
         }
     }

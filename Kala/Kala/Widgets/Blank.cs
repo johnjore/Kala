@@ -7,8 +7,8 @@ namespace Kala
     {
         public static void Blank(Grid grid, string x, string y)
         {
-            int px = Convert.ToInt16(x);
-            int py = Convert.ToInt16(y);
+            int.TryParse(x, out int px);
+            int.TryParse(y, out int py);
 
             grid.Children.Add(new Label
             {

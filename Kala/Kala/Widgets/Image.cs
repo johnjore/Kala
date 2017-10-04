@@ -107,7 +107,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Image", "Image crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, sx, sy, ex.ToString());
             }
         }
     }

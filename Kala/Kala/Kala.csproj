@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="CustomControls\CircularProgressBar.cs" />
+    <Compile Include="CustomControls\ItemButton.cs" />
     <Compile Include="CustomControls\ItemLabel.cs" />
     <Compile Include="CustomControls\ShapeView.cs" />
     <Compile Include="Data\IRestService.cs" />
@@ -63,6 +64,7 @@
     </Compile>
     <Compile Include="Views\SettingsViewModel.cs" />
     <Compile Include="Views\Sitemap.cs" />
+    <Compile Include="Widgets\Blind.cs" />
     <Compile Include="Widgets\Avatar.cs" />
     <Compile Include="Widgets\Blank.cs" />
     <Compile Include="Widgets\Calendar.cs" />

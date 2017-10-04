@@ -22,11 +22,10 @@ namespace Kala
 
             try
             {
-                //Size of Calendar widget
-                int px = Convert.ToInt16(x1);
-                int py = Convert.ToInt16(y1);
-                int sx = Convert.ToInt16(x2);
-                int sy = Convert.ToInt16(y2);
+                int.TryParse(x1, out int px);
+                int.TryParse(y1, out int py);
+                int.TryParse(x2, out int sx);
+                int.TryParse(y2, out int sy);
 
                 //Items in Calendar widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
@@ -36,17 +35,17 @@ namespace Kala
                 {
                     Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
 
-                    Models.calItems a = new Models.calItems();
-                    a.Label = item.label;
-                    a.State = item.item.state;
-                    a.Name = item.item.name;
-
-                    a.grid = grid;
-                    a.px = px;
-                    a.py = py;
-                    a.sx = sx;
-                    a.sy = sy;
-
+                    Models.calItems a = new Models.calItems
+                    {
+                        Label = item.label,
+                        State = item.item.state,
+                        Name = item.item.name,
+                        grid = grid,
+                        px = px,
+                        py = py,
+                        sx = sx,
+                        sy = sy
+                    };
                     itemCalendar.Add(a);
                 }
 
@@ -126,8 +125,7 @@ namespace Kala
                     if (widgetKeyValuePairs.ContainsKey("item"))
                     {
                         //Event ID Number
-                        int id = 0;
-                        int.TryParse(Regex.Replace(widgetKeyValuePairs["item"], @"\D", ""), out id);
+                        int.TryParse(Regex.Replace(widgetKeyValuePairs["item"], @"\D", ""), out int id);
                         id--;
 
                         //Initialize
@@ -147,15 +145,13 @@ namespace Kala
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("start-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", Start:" + item.State);
-                            DateTime tmp;
-                            DateTime.TryParse(item.State, out tmp);
+                            DateTime.TryParse(item.State, out DateTime tmp);
                             calEvents[id].Start = tmp;
                         }
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("end-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", End:" + item.State);
-                            DateTime tmp;
-                            DateTime.TryParse(item.State, out tmp);
+                            DateTime.TryParse(item.State, out DateTime tmp);
                             calEvents[id].End = tmp;
                         }
                     }
@@ -339,13 +335,14 @@ namespace Kala
         {
             if (item.Start != DateTime.MinValue)
             {
-                Models.calendar a = new Models.calendar();
-
-                a.Day = item.Start.AddDays(j).Day.ToString();
-                a.DayOfWeek = item.Start.AddDays(j).DayOfWeek.ToString().Substring(0, 3);
-                a.Title = item.Title;
-                a.Location = item.Location;
-                a.Start = item.Start.AddDays(j);
+                Models.calendar a = new Models.calendar
+                {
+                    Day = item.Start.AddDays(j).Day.ToString(),
+                    DayOfWeek = item.Start.AddDays(j).DayOfWeek.ToString().Substring(0, 3),
+                    Title = item.Title,
+                    Location = item.Location,
+                    Start = item.Start.AddDays(j)
+                };
 
                 if (item.Start.TimeOfDay == TimeSpan.Zero)
                 {

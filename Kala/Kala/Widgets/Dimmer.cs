@@ -11,28 +11,18 @@ namespace Kala
     {
         public static void Dimmer(Grid grid, string x1, string y1, string header, JObject data)
         {
-            int px = 0;
-            int py = 0;
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
+
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;
-
-            //If this fails, we dont know where to show an error
+            
             try
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
                 widgetKeyValuePairs = Helpers.SplitCommand(item.label);
                 CrossLogger.Current.Debug("Dimmer", "Label: " + widgetKeyValuePairs["label"]);
 
-                px = Convert.ToInt16(x1);
-                py = Convert.ToInt16(y1);
-            }
-            catch (Exception ex)
-            {
-                CrossLogger.Current.Error("Dimmer", "Widgets.Dimmer crashed: " + ex.ToString());
-            }
-
-            try
-            {
                 //Slider button
                 Button dimmerButton = new Button
                 {
@@ -64,7 +54,7 @@ namespace Kala
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Dimmer", "Widgets.Dimmer crashed: " + ex.ToString());
-                Error(grid, px, py, ex.ToString());
+                Error(grid, px, py, 1, 1, ex.ToString());
             }
         }
 
@@ -111,13 +101,11 @@ namespace Kala
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = App.config.TextColor,
                 BackgroundColor = App.config.CellColor,
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
                 Name = item.name
             };
-
-            l_status.HorizontalOptions = LayoutOptions.End;
 
             ItemLabel l_unit = new ItemLabel
             {
@@ -132,27 +120,28 @@ namespace Kala
             };
 
             //Grid for status text at the bottom
-            Grid g = new Grid();
-            g.RowDefinitions = new RowDefinitionCollection();
-            g.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            g.ColumnDefinitions = new ColumnDefinitionCollection();
-            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            g.RowSpacing = 6;
-            g.ColumnSpacing = 6;
-            g.BackgroundColor = App.config.CellColor;
-            g.HorizontalOptions = LayoutOptions.Center;
-            g.VerticalOptions = LayoutOptions.End;
-
+            Grid g = new Grid
+            {
+                RowDefinitions = new RowDefinitionCollection {
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                },
+                ColumnDefinitions = new ColumnDefinitionCollection {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                },
+                RowSpacing = 6,
+                ColumnSpacing = 6,
+                BackgroundColor = App.config.CellColor,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.End,                
+            };
             g.Children.Add(l_status, 0, 0);
             g.Children.Add(l_unit, 1, 0);
-
             item.grid.Children.Add(g, item.px, item.py);
        
             //Capturs non-initialized item
             try
             {
-
                 int intStrokeThickness = 2;
                 switch (Device.RuntimePlatform)
                 {

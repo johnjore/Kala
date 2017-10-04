@@ -5,7 +5,7 @@ namespace Kala
 {
     public partial class Widgets
     {
-        public static void Error(Grid grid, int px, int py, string errorMessage)
+        public static void Error(Grid grid, int px, int py, int sx, int sy, string errorMessage)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace Kala
                     BackgroundColor = App.config.CellColor,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center
-                }, px, px + 1, py, py + 1);
+                }, px, px + sx, py, py + sy);
 
                 grid.Children.Add(new Label
                 {
@@ -34,7 +34,7 @@ namespace Kala
                     BackgroundColor = Color.Transparent,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center
-                }, px, py);
+                }, px, px + sx, py, py + sy);
             }
             catch (Exception ex)
             {

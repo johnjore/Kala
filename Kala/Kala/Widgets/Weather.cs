@@ -66,8 +66,10 @@ namespace Kala
                     }
                 }
 
-                Grid t_grid = new Grid();
-                t_grid.RowDefinitions = new RowDefinitionCollection();
+                Grid t_grid = new Grid
+                {
+                    RowDefinitions = new RowDefinitionCollection()
+                };
                 for (int i = 0; i <= status_r; i++)
                 {
                     t_grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });

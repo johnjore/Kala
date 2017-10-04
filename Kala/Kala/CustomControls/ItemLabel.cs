@@ -37,5 +37,4 @@ public class ItemLabel : Label
         get { return (int)GetValue(DigitsProperty); }
         set { SetValue(DigitsProperty, value); }
     }
-
 }

@@ -49,7 +49,6 @@ namespace Kala
             {
                 int start = instructions.IndexOf("{") + 1;
                 int end = instructions.IndexOf("}");
-
                 string label = instructions.Substring(0, start - 1).Trim();
                 string command = instructions.Substring(start, end - start);
 
