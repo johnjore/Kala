@@ -319,8 +319,9 @@ namespace Kala
                                 }
                             }
                         };
-                    })
+                    }),
                 };
+                lvCalendar.ItemTapped += OnItemTapped; //Prevent selection of items
 
                 grid.Children.Add(lvCalendar, px, px + sx, py, py + sy);
                 #endregion Render               
@@ -329,6 +330,12 @@ namespace Kala
             {
                 CrossLogger.Current.Error("Calendar", "Crashed: " + ex.ToString());
             }
+        }
+
+        private static void OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e == null) return;
+            ((ListView)sender).SelectedItem = null;
         }
 
         private static Models.calendar GuiRecord(Models.calendar item, int j)

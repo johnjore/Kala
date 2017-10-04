@@ -13,7 +13,7 @@ using Plugin.Logger.Abstractions;
 namespace Kala.Droid
 {
     [Activity(Label = "Kala", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
         {
@@ -23,28 +23,28 @@ namespace Kala.Droid
             //Fullscreen
             if (Settings.Fullscreen)
             {
-                this.Window.AddFlags(WindowManagerFlags.Fullscreen);
+                Window.AddFlags(WindowManagerFlags.Fullscreen);
                 base.SetTheme(global::Android.Resource.Style.ThemeBlackNoTitleBar);
             }
             else
             {
                 base.SetTheme(global::Android.Resource.Style.ThemeHolo);
-                this.Window.ClearFlags(WindowManagerFlags.Fullscreen);
+                Window.ClearFlags(WindowManagerFlags.Fullscreen);
             }
 
             //Screensaver
             if (Settings.Screensaver > 0)
             {
-                this.Window.AddFlags(WindowManagerFlags.KeepScreenOn);
+                Window.AddFlags(WindowManagerFlags.KeepScreenOn);
             }
             else
             {
-                this.Window.ClearFlags(WindowManagerFlags.KeepScreenOn);
+                Window.ClearFlags(WindowManagerFlags.KeepScreenOn);
             }
 
             base.OnCreate(bundle);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
+            Xamarin.Forms.Forms.Init(this, bundle);
             //App.Speech = new Speech();
 
             // Library for Image handling as XF does not support authentication

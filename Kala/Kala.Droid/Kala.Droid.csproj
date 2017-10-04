@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomControls\CircularProgressBar.cs" />
+    <Compile Include="CustomControls\Class1.cs" />
     <Compile Include="CustomControls\Shape.cs" />
     <Compile Include="CustomControls\ShapeRenderer.cs" />
     <Compile Include="CustomControls\Slider.cs" />
