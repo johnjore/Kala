@@ -9,17 +9,9 @@ namespace Kala
         {
             try
             {
-                string strImage = "ic_error_white_48dp";
-                switch (Device.RuntimePlatform)
-                {
-                    case Device.WinPhone:
-                        strImage = "Assets/" + strImage;
-                        break;
-                }
-
                 grid.Children.Add(new Image
                 {
-                    Source = strImage,
+                    Source = "ic_error_white_48dp",
                     Aspect = Aspect.AspectFill,
                     BackgroundColor = App.config.CellColor,
                     VerticalOptions = LayoutOptions.Center,

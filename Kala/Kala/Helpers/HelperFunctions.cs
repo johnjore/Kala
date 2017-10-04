@@ -235,30 +235,12 @@ namespace Kala
                             sv.Min = 0;
                         }
 
-                        ShapeView progressArc = new ShapeView
-                        {
-                            ShapeType = ShapeType.Arc,
-                            StrokeColor = App.config.ValueColor,
-                            StrokeWidth = 1.0f,
-                            Scale = 3.0,
-                            Padding = 1,
-                            IndicatorPercentage = (float)((state - sv.Min) / (sv.Max - sv.Min) * 100.0f),   //Calculate indicator percentage
-                            HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Center,
-                            Min = sv.Min,
-                            Max = sv.Max,
-                            Name = sv.Name,
-                            TranslationY = 78   /**///Why is a TranslationY needed?!?
-                        };
-
-                        //Update list with new ShapeView object
-                        App.config.itemShapeViews.Remove(sv);
-                        App.config.itemShapeViews.Add(progressArc);
+                        sv.IndicatorPercentage = (float)((state - sv.Min) / (sv.Max - sv.Min) * 100.0f);
 
                         //Update GUI
                         Grid g = (Grid)sv.Parent;
                         g.Children.Remove(sv);
-                        g.Children.Add(progressArc);
+                        g.Children.Add(sv);                        
                     }
                     catch (Exception ex)
                     {

@@ -156,9 +156,6 @@ namespace Kala
                 case Device.Android:
                     intStrokeThickness = 4;
                     break;
-                case Device.WinPhone:
-                    intStrokeThickness = 16;
-                    break;
             }
 
             item.grid.Children.Add(new CircularProgressBarView

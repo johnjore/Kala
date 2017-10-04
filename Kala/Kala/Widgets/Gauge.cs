@@ -17,13 +17,10 @@ namespace Kala
 
             try
             {
-                //Create Grid w/header
                 Grid t_grid = Create_GaugeHeader(header, 1);
 
-                //Item
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
 
-                //Column
                 Create_Gauge(t_grid, 0, item);
                 grid.Children.Add(t_grid, px, py);
             }
@@ -90,13 +87,7 @@ namespace Kala
                 #endregion Center unit
 
                 #region Image
-                string strSource = widgetKeyValuePairs["icon"];
-                switch (Device.RuntimePlatform)
-                {
-                    case Device.WinPhone:
-                        strSource = "Assets/" + widgetKeyValuePairs["icon"];
-                        break;
-                }
+                string strSource = widgetKeyValuePairs["icon"];         
 
                 t_grid.Children.Add(new Image
                 {
@@ -127,11 +118,11 @@ namespace Kala
                 };
                 App.config.itemlabels.Add(l_value);
                 t_grid.Children.Add(l_value, i, 1);
+
                 Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
                 Single.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float max);
                 Single.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float value);
 
-                //Basic sanity checks
                 if (value > max) max = value;
                 if (value < min) min = value;
 
@@ -162,7 +153,7 @@ namespace Kala
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
-                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
+                    IndicatorPercentage = (float)((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     Name = item.item.name,

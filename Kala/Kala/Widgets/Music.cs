@@ -105,17 +105,9 @@ namespace Kala
             #endregion State
 
             #region Image
-            string strSource = item.icon;
-            switch (Device.RuntimePlatform)
-            {
-                case Device.WinPhone:
-                    strSource = "Assets/" + item.icon;
-                    break;
-            }
-
             item.grid.Children.Add(new Image
             {
-                Source = strSource,
+                Source = item.icon,
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
@@ -163,9 +155,6 @@ namespace Kala
                     break;
                 case Device.Android:
                     intStrokeThickness = 4;
-                    break;
-                case Device.WinPhone:
-                    intStrokeThickness = 16;
                     break;
             }
 
