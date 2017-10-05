@@ -27,10 +27,8 @@ namespace Kala
                 int.TryParse(x2, out int sx);
                 int.TryParse(y2, out int sy);
 
-                //Items in Calendar widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
 
-                //Loop through the items and save to custom list
                 foreach (Models.Sitemap.Widget3 item in items)
                 {
                     Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
@@ -57,15 +55,12 @@ namespace Kala
                 // Check if we've crossed midnight as first entry is now yesterday
                 Device.StartTimer(TimeSpan.FromSeconds(60), () =>
                 {
-                    if (SortedList != null && SortedList.Count > 0)
+                    if ((SortedList != null) && (SortedList.Count > 0) && (DateTime.Today.Date != SortedList[0].Start.Date))
                     {
-                        if (DateTime.Today.Date != SortedList[0].Start.Date)
+                        CrossLogger.Current.Debug("Calendar", "Update Calendar as we've crossed midnight");
+                        lock (itemCalendar)
                         {
-                            CrossLogger.Current.Debug("Calendar", "Update Calendar as we've crossed midnight");
-                            lock (itemCalendar)
-                            {
-                                Create_Calendar();
-                            }
+                            Create_Calendar();
                         }
                     }
 
@@ -159,7 +154,6 @@ namespace Kala
 
                 for (int i = 0; i < calEvents.Count(); i++)
                 {
-                    //calEvents[i].Hours = calEvents[i].Start.Hour.ToString() + ":" + calEvents[i].Start.Minute.ToString() + "-" + calEvents[i].End.Hour.ToString() + ":"  + calEvents[i].End.Minute.ToString();
                     calEvents[i].Hours = calEvents[i].Start.ToString("HH:mm") + ":" + calEvents[i].End.ToString("HH:mm");
                     CrossLogger.Current.Debug("Calendar", "Title:" + calEvents[i].Title + ", Time:" + calEvents[i].Start + "-" + calEvents[i].End + ", Location:" + calEvents[i].Location + ", Hours:" + calEvents[i].Hours);
                 }
@@ -191,31 +185,28 @@ namespace Kala
                 //Sort the list
                 SortedList = guiEvents.OrderBy(x => x.Start).ToList();
 
-                for (int i = 0; i < SortedList.Count; i++)
+                for (int i = 1; i < SortedList.Count; i++)
                 {
                     //Remove duplicate Day/DayOfWeek
-                    if (i != 0)
+                    if (SortedList[i - 1].Day == SortedList[i].Day)
                     {
-                        if (SortedList[i - 1].Day == SortedList[i].Day)
-                        {
-                            SortedList[i].Day = string.Empty;
-                            SortedList[i].DayOfWeek = string.Empty;
-                        }
+                        SortedList[i].Day = string.Empty;
+                        SortedList[i].DayOfWeek = string.Empty;
                     }
 
                     CrossLogger.Current.Debug("Calendar", SortedList[i].Day + "," + SortedList[i].DayOfWeek + "," + SortedList[i].Title + "," + SortedList[i].Hours + "," + SortedList[i].Location);
                 }
 
                 //Add today if missing from list
-                if (SortedList[0].Start != DateTime.Now)
+                if (SortedList[0].Start.Date > DateTime.Today.Date)
                 {
-                    Models.calendar a = new Models.calendar();
-                    DateTime dt = DateTime.Now;
-
-                    a.Start = dt;
-                    a.Day = dt.Day.ToString();
-                    a.DayOfWeek = dt.DayOfWeek.ToString().Substring(0, 3);
-                    a.Title = "Today";
+                    Models.calendar a = new Models.calendar
+                    {
+                        Start = DateTime.Today.Date,
+                        Day = DateTime.Now.Day.ToString(),
+                        DayOfWeek = DateTime.Now.DayOfWeek.ToString().Substring(0, 3),
+                        Title = "Today"
+                    };
 
                     SortedList.Insert(0, a);
                 }
@@ -321,7 +312,7 @@ namespace Kala
                         };
                     }),
                 };
-                lvCalendar.ItemTapped += OnItemTapped; //Prevent selection of items
+                lvCalendar.ItemTapped += OnItemTapped; //Prevent selection of items and background color
 
                 grid.Children.Add(lvCalendar, px, px + sx, py, py + sy);
                 #endregion Render               

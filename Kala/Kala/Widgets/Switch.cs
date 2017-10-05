@@ -70,7 +70,7 @@ namespace Kala
                 VerticalTextAlignment = TextAlignment.Start
             }, item.px, item.py);
 
-            if (!item.state.Equals("Uninitialized"))
+            if (item.state != null && !item.state.Equals("Uninitialized"))
             {
                 try
                 {

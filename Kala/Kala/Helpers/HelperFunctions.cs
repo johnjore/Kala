@@ -253,26 +253,33 @@ namespace Kala
             #region Maps
             foreach (Map map in Widgets.itemMaps)
             {
-                var latitudes = new List<double>();
-                var longitudes = new List<double>();
-                bool update = false;
-
-                foreach (Pin pin in map.Pins)
+                try
                 {
-                    if (pin.Tag.Equals(item.topic))
+                    var latitudes = new List<double>();
+                    var longitudes = new List<double>();
+                    bool update = false;
+
+                    foreach (Pin pin in map.Pins)
                     {
-                        CrossLogger.Current.Info("Map", "Update");
-                        var b = item.value.Split(',');
-                        pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
-                        update = true;
+                        if (pin.Tag.Equals(item.topic))
+                        {
+                            CrossLogger.Current.Info("Map", "Update");
+                            var b = item.value.Split(',');
+                            pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
+                            update = true;
+                        }
+
+                        latitudes.Add(pin.Position.Latitude);
+                        longitudes.Add(pin.Position.Longitude);
                     }
 
-                    latitudes.Add(pin.Position.Latitude);
-                    longitudes.Add(pin.Position.Longitude);
+                    if (update)
+                        Widgets.MapUpdate(latitudes, longitudes, map);
                 }
-
-                if (update)
-                    Widgets.MapUpdate(latitudes, longitudes, map);
+                catch (Exception ex)
+                {
+                    CrossLogger.Current.Error("Kala", "Map Update crashed: " + ex.ToString());
+                }
             }
             #endregion Maps
         }
