@@ -12,31 +12,15 @@ namespace Kala
         {
             CrossLogger.Current.Debug("WeatherForecast", "Creating Weather forecast :" + data.ToString());
 
-            List<Models.Sitemap.Widget3> items = null;
-            int px = 0;
-            int py = 0;
-            int sx = 0;
-            int sy = 0;
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
+            int.TryParse(x2, out int sx);
+            int.TryParse(y2, out int sy);
 
             try
             {
-                //Position & Size
-                px = Convert.ToInt16(x1);
-                py = Convert.ToInt16(y1);
-                sx = Convert.ToInt16(x2);
-                sy = Convert.ToInt16(y2);
+                List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
 
-                //Items
-                items = data.ToObject<List<Models.Sitemap.Widget3>>();
-                CrossLogger.Current.Debug("WeatherForecast", "Nr of items: " + items.Count.ToString());
-            }
-            catch (Exception ex)
-            {
-                CrossLogger.Current.Error("WeatherForecast", "Crashed:" + ex.ToString());
-            }
-
-            try
-            {
                 #region t_grid
                 Grid t_grid = new Grid
                 {
@@ -47,13 +31,10 @@ namespace Kala
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
 
-                    //Rows
                     RowDefinitions = new RowDefinitionCollection
-                {
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
-                    //new RowDefinition { Height = GridLength.Auto },
-                    //new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
-                }
+                    {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    }   
                 };
 
                 //Columns
@@ -71,21 +52,26 @@ namespace Kala
                     if (i % 3 == 0)
                     {
                         string DayOfWeek = "Today";
+                        int DayNumber = -1;
                         if (i / 3 != 0)
-                        {
-                            DayOfWeek = DateTime.Now.AddDays(i/3).DayOfWeek.ToString().Substring(0, 3);
+                        {                            
+                            DayNumber = (int)DateTime.Now.AddDays(i / 3).DayOfWeek;                            
+                            DayOfWeek = ((DayOfWeek)DayNumber).ToString().Substring(0, 3);
                         }
 
                         ItemLabel l_header = new ItemLabel
                         {
+                            Digits = DayNumber,
                             Text = DayOfWeek,
                             FontSize = 20,
                             TextColor = App.config.TextColor,
                             BackgroundColor = App.config.CellColor,
                             HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Start
+                            VerticalOptions = LayoutOptions.Start,
+                            Type = Models.Itemtypes.NameOfDay,                        
                         };
-                        t_grid.Children.Add(l_header, i / 3, 0);
+                        App.config.itemlabels.Add(l_header);
+                        t_grid.Children.Add(l_header, i / 3, 0);                        
                     }
                     #endregion Header
 
@@ -161,6 +147,28 @@ namespace Kala
 
                 grid.Children.Add(t_grid, px, px + sx, py, py + sy);
                 #endregion t_grid
+
+                // Check if we've crossed midnight as first entry is now yesterday
+                DayOfWeek Today = DateTime.Today.DayOfWeek;
+                Device.StartTimer(TimeSpan.FromSeconds(60), () =>
+                {
+                    if (DateTime.Today.DayOfWeek != Today)
+                    {
+                        CrossLogger.Current.Debug("WeatherForecast", "Update WeatherForecast DayOfWeek as we've crossed midnight");
+                        Today = DateTime.Today.DayOfWeek;
+
+                        foreach (ItemLabel lbl in App.config.itemlabels)
+                        {
+                            if (lbl.Type.Equals(Models.Itemtypes.NameOfDay) && (lbl.Digits != -1))
+                            {
+                                lbl.Digits = (lbl.Digits + 1) % 7;
+                                lbl.Text = ((DayOfWeek)lbl.Digits).ToString().Substring(0, 3);
+                            }
+                        }
+                    }
+
+                    return true;
+                });
             }
             catch (Exception ex)
             {

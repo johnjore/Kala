@@ -15,23 +15,10 @@ namespace Kala
         {
             CrossLogger.Current.Debug("Music", "Creating Music Widget");
 
-            int px = 0;
-            int py = 0;
-            int sx = 0;
-            int sy = 0;
-
-            //If this fails, we don't know where to show the error
-            try
-            {
-                px = Convert.ToInt16(x1);
-                py = Convert.ToInt16(y1);
-                sx = Convert.ToInt16(x2);
-                sy = Convert.ToInt16(y2);
-            }
-            catch (Exception ex)
-            {
-                CrossLogger.Current.Error("Music", "Crashed: " + ex.ToString());
-            }
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
+            int.TryParse(x2, out int sx);
+            int.TryParse(y2, out int sy);
 
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;

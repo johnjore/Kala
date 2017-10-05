@@ -12,12 +12,12 @@ namespace Kala
         public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
             try
-            {               
+            {
                 //Size of Weather widget
-                int px = Convert.ToInt16(x1);
-                int py = Convert.ToInt16(y1);
-                int sx = Convert.ToInt16(x2);
-                int sy = Convert.ToInt16(y2);
+                int.TryParse(x1, out int px);
+                int.TryParse(y1, out int py);
+                int.TryParse(x2, out int sx);
+                int.TryParse(y2, out int sy);
 
                 //Items in Weather widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();

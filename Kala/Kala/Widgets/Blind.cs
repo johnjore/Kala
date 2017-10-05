@@ -43,7 +43,7 @@ namespace Kala
                 grid.Children.Add(w_grid, px, px + sx, py, py + sy);
 
                 //Vertical
-                if (sx <= sy)
+                if (sx < sy)
                 {
                     w_grid.ColumnDefinitions = new ColumnDefinitionCollection {
                         new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
@@ -71,7 +71,7 @@ namespace Kala
                     AddControlImage(w_grid, widgetKeyValuePairs["icon"], 0, 1, item.item.name, "STOP");
                     AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 0, 2, item.item.name, "DOWN");
                 }
-                else //Horizontal
+                else if (sx > sy) //Horizontal
                 {
                     w_grid.ColumnDefinitions = new ColumnDefinitionCollection {
                         new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }, //Up
@@ -97,6 +97,36 @@ namespace Kala
                     AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.item.name, "UP");
                     AddControlImage(w_grid, widgetKeyValuePairs["icon"], 1, 0, item.item.name, "STOP");
                     AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 2, 0, item.item.name, "DOWN");
+                }
+                else
+                {
+                    w_grid.ColumnDefinitions = new ColumnDefinitionCollection {
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    };
+
+                    w_grid.RowDefinitions = new RowDefinitionCollection {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                    };
+
+                    //Header
+                    w_grid.Children.Add(new Label
+                    {
+                        Text = header,
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        TextColor = App.config.TextColor,
+                        BackgroundColor = App.config.CellColor,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalTextAlignment = TextAlignment.Start
+                    }, 1, 0);
+
+                    //Control buttons
+                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.item.name, "UP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 1, 1, item.item.name, "STOP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 2, 2, item.item.name, "DOWN");
                 }
                 #endregion w_grid
             }

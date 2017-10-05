@@ -12,28 +12,15 @@ namespace Kala
     {
         public static void Switch(Grid grid, string x1, string y1, string header, JObject data)
         {
-            int px = 0;
-            int py = 0;
-            Models.Sitemap.Widget3 item = null;
-            Dictionary<string, string> widgetKeyValuePairs = null;
-
-            //If this fails, we dont know where to show an error
+            int.TryParse(x1, out int px);
+            int.TryParse(y1, out int py);
+            
             try
             {
-                item = data.ToObject<Models.Sitemap.Widget3>();
-                widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
+                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
                 CrossLogger.Current.Debug("Switch", "Label: " + widgetKeyValuePairs["label"]);
 
-                px = Convert.ToInt16(x1);
-                py = Convert.ToInt16(y1);
-            }
-            catch (Exception ex)
-            {
-                CrossLogger.Current.Error("Switch", "Crashed: " + ex.ToString());
-            }
-
-            try
-            {
                 //Switch (on/off) button
                 Button switchButton = new Button
                 {

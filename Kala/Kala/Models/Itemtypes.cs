@@ -14,6 +14,7 @@ namespace Kala.Models
         Sensor = 3,
         Switch = 4,
         Dimmer = 5,
-        Blind = 6
+        Blind = 6,
+        NameOfDay = 7,
     };
 }

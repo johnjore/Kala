@@ -176,7 +176,7 @@ namespace Kala
             #region Generic labels
             foreach (ItemLabel lbl in App.config.itemlabels)
             {
-                if (lbl.Name.Equals(item.topic))
+                if (lbl.Name != null && lbl.Name.Equals(item.topic))
                 {
                     //Manage special cases
                     switch (lbl.Type)
