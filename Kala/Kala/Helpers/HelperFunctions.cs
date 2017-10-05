@@ -52,7 +52,7 @@ namespace Kala
                 string label = instructions.Substring(0, start - 1).Trim();
                 string command = instructions.Substring(start, end - start);
 
-                //CrossLogger.Current.Debug("Kala", "Label: " + label + ", Command: " + command);
+                CrossLogger.Current.Debug("Kala", "Label: " + label + ", Command: " + command);
 
                 item_keyValuePairs = command.Split(',').Select(value => value.Split('=')).ToDictionary(pair => pair[0], pair => pair[1]);
                 item_keyValuePairs.Add("label", label);
@@ -116,7 +116,7 @@ namespace Kala
                                     //Specials. To be removed and cleaned up later
                                     foreach (App.trackItem item in App.config.items)
                                     {
-                                        if (item.name.Equals(itemData.topic))
+                                        if (item.name.Equals(itemData.topic) && itemData.value != null)
                                         {
                                             item.state = itemData.value;
 
@@ -144,7 +144,7 @@ namespace Kala
                             }
                             catch (Exception ex)
                             {
-                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Crashed on " + tmpS + ", " + ex.ToString()));
+                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Updates", "Crashed on " + tmpS + ", " + ex.ToString()));
                             }
 
                             Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Messages in queue: " + RestService.queueUpdates.Count.ToString()));
@@ -176,7 +176,7 @@ namespace Kala
             #region Generic labels
             foreach (ItemLabel lbl in App.config.itemlabels)
             {
-                if (lbl.Name != null && lbl.Name.Equals(item.topic))
+                if (lbl.Name != null && lbl.Name.Equals(item.topic) && item.value != null)
                 {
                     //Manage special cases
                     switch (lbl.Type)
@@ -217,11 +217,11 @@ namespace Kala
             List<ShapeView> tmp = new List<ShapeView>(App.config.itemShapeViews);
             foreach (ShapeView sv in tmp)
             {
-                if (sv.Name.Equals(item.topic))
+                if (sv.Name.Equals(item.topic) && item.value != null)
                 {
                     try
                     {
-                        float state = float.Parse(item.value);
+                        float.TryParse(item.value, out float state);
 
                         //Basic sanity checks
                         if (state > sv.Max) sv.Max = state;
@@ -261,12 +261,15 @@ namespace Kala
 
                     foreach (Pin pin in map.Pins)
                     {
-                        if (pin.Tag.Equals(item.topic))
+                        if (pin.Tag.Equals(item.topic) && item.value != null)
                         {
                             CrossLogger.Current.Info("Map", "Update");
                             var b = item.value.Split(',');
-                            pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
-                            update = true;
+                            if (b.Count() > 2)
+                            {
+                                pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
+                                update = true;
+                            }
                         }
 
                         latitudes.Add(pin.Position.Latitude);

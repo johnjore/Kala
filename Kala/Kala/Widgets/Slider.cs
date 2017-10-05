@@ -11,12 +11,7 @@ namespace Kala
         {
             //Capture un-initialized values
             double value = 50.0f;
-            try
-            {
-                value = Convert.ToDouble(item.state);
-            }
-            catch
-            {}
+            Double.TryParse(item.state, out value);
             
             Label heading = new Label
             {

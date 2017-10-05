@@ -17,17 +17,13 @@ namespace Kala
                 //Loop through each sitemap
                 foreach (Models.Sitemaps.Sitemap s in sitemaps.sitemap)
                 {
-                    Dictionary<string, string> keywords = Helpers.SplitCommand(s.label);
-                    if (keywords != null && keywords.ContainsKey("kala") && keywords["kala"].Contains("true"))
+                    if (s.label.Contains("kala=true") && (Helpers.SplitCommand(s.label) != null) && (s.name.Equals(SitemapName)))
                     {
-                        if (s.name.Equals(SitemapName))
-                        {
-                            CrossLogger.Current.Info("Kala", "Label: " + s.label);
-                            CrossLogger.Current.Info("Kala", "Name: " + s.name);
-                            CrossLogger.Current.Info("Kala", "Link: " + s.link);
+                        CrossLogger.Current.Info("Kala", "Label: " + s.label);
+                        CrossLogger.Current.Info("Kala", "Name: " + s.name);
+                        CrossLogger.Current.Info("Kala", "Link: " + s.link);
 
-                            return s;
-                        }
+                        return s;
                     }
                 }
             }
@@ -65,7 +61,7 @@ namespace Kala
                 try
                 {
                     //Setting is stored locally, else its read too late to take effect on device
-                    Settings.Screensaver = Convert.ToInt16(entry["screensaver"]);
+                    Settings.Screensaver = Convert.ToInt64(entry["screensaver"]);
                 }
                 catch
                 {
@@ -211,7 +207,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Debug("Sitemap", "ParseSitemap() crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Sitemap", "ParseSitemap() crashed: " + ex.ToString());
             }
         }
 

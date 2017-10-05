@@ -68,13 +68,13 @@ namespace Kala
                 }
                 catch
                 {
-                    CrossLogger.Current.Debug("RestService", "Failed to parse JSON sitemaps response");
+                    CrossLogger.Current.Error("RestService", "Failed to parse JSON sitemaps response");
                     return null;
                 }
             }
             catch
             {
-                CrossLogger.Current.Debug("RestService", "Failed to enumerate sitemaps");
+                CrossLogger.Current.Error("RestService", "Failed to enumerate sitemaps");
                 return null;
             }
 		}
@@ -105,13 +105,13 @@ namespace Kala
                 }
                 catch
                 {
-                    CrossLogger.Current.Debug("RestService", "Failed to parse JSON sitemap response");
+                    CrossLogger.Current.Error("RestService", "Failed to parse JSON sitemap response");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Debug("Kala", @"Exception : '" + ex.ToString() + "'");
+                CrossLogger.Current.Error("Kala", @"Exception : '" + ex.ToString() + "'");
                 Application.Current.MainPage.DisplayAlert("Alert", ex.Message, "OK");
                 return null;
             }
@@ -202,7 +202,7 @@ namespace Kala
                     }
                     catch (Exception ex)
                     {
-                        CrossLogger.Current.Debug("Kala", "RestService - Update Crashed: "  + ex.ToString());
+                        CrossLogger.Current.Error("Kala", "RestService - Update Crashed: "  + ex.ToString());
                     }
                 }
             });

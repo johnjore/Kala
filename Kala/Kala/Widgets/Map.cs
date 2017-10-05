@@ -98,7 +98,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Info("Map", "Crashed:" + ex.ToString());
+                CrossLogger.Current.Error("Map", "Crashed:" + ex.ToString());
             }
         }
 

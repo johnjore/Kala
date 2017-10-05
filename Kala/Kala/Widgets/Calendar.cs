@@ -198,7 +198,7 @@ namespace Kala
                 }
 
                 //Add today if missing from list
-                if (SortedList[0].Start.Date > DateTime.Today.Date)
+                if (SortedList.Count > 0 && SortedList[0].Start.Date > DateTime.Today.Date)
                 {
                     Models.calendar a = new Models.calendar
                     {
@@ -210,8 +210,6 @@ namespace Kala
 
                     SortedList.Insert(0, a);
                 }
-
-                CrossLogger.Current.Debug("Stop", "Stop");
                 #endregion GUI
 
                 #region Render

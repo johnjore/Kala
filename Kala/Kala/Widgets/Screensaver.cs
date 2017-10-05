@@ -14,7 +14,7 @@ namespace Kala
         static Label l_clock;
         static bool active = false;
 
-        public static void Screensaver(int timeOut)
+        public static void Screensaver(Int64 timeOut)
         {
             CrossLogger.Current.Debug("Screensaver", "Configuring screensaver, using timeout of " + timeOut.ToString());
 

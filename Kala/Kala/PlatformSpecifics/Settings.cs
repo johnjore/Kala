@@ -2,6 +2,7 @@
 
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using System;
 
 namespace Kala
 {
@@ -43,7 +44,7 @@ namespace Kala
         private static bool FullscreenDefault = false;
 
         private const string ScreensaverKey = "Screensaver_key";
-        private static int ScreensaverDefault = 0;
+        private static Int64 ScreensaverDefault = 0;
 
         #endregion
 
@@ -89,7 +90,7 @@ namespace Kala
             set => AppSettings.AddOrUpdateValue(nameof(Fullscreen), value);
         }
 
-        public static int Screensaver
+        public static Int64 Screensaver
         {
             get => AppSettings.GetValueOrDefault(nameof(Screensaver), ScreensaverDefault);
             set => AppSettings.AddOrUpdateValue(nameof(Screensaver), value);            
