@@ -127,9 +127,22 @@ namespace Kala
                 }
             }
 
+            if (entry.ContainsKey("screenorientation"))
+            {
+                try
+                {
+                    Settings.Screenorientation = entry["screenorientation"];
+                }
+                catch
+                {
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'screenorientation' value: '" + entry["screenorientation"] + "'");
+                }
+            }
+
             CrossLogger.Current.Info("Kala", "Fullscreen : " + Settings.Fullscreen.ToString());
             CrossLogger.Current.Info("Kala", "Screensaver: " + Settings.Screensaver.ToString());
             CrossLogger.Current.Info("Kala", "Sitemap: " + Settings.Fullscreen.ToString());
+            CrossLogger.Current.Info("Kala", "Orientation: " + Settings.Screenorientation.ToString());
 
             if (App.config.Valid)
             {

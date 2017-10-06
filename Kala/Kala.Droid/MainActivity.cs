@@ -42,6 +42,13 @@ namespace Kala.Droid
                 Window.ClearFlags(WindowManagerFlags.KeepScreenOn);
             }
 
+            //Orientation
+            try
+            {
+                RequestedOrientation = (ScreenOrientation)Enum.Parse(typeof(ScreenOrientation), Settings.Screenorientation);
+            }
+            catch { }
+
             base.OnCreate(bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);

@@ -127,8 +127,10 @@ namespace Kala
             try
             {
                 StringContent queryString = new StringContent(command, Encoding.UTF8);
-                HttpResponseMessage response = await client.PostAsync(uri, queryString);
-                response.EnsureSuccessStatusCode();
+                //HttpResponseMessage response = 
+                await client.PostAsync(uri, queryString);
+                //No point waiting for the response as we dont do anything with it...
+                /*response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
@@ -138,7 +140,7 @@ namespace Kala
                 else
                 {
                     CrossLogger.Current.Debug("Kala", "Sendcommand - Failed: " + response.ToString());
-                }               
+                }*/         
             }
             catch (Exception ex)
             {

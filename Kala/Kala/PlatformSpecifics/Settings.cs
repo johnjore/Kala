@@ -46,6 +46,8 @@ namespace Kala
         private const string ScreensaverKey = "Screensaver_key";
         private static Int64 ScreensaverDefault = 0;
 
+        private const string ScreenorientationKey = "Screenoriention_key";
+        private static string ScreenorientationDefault = "Unspecified";
         #endregion
 
         public static string Protocol
@@ -94,6 +96,12 @@ namespace Kala
         {
             get => AppSettings.GetValueOrDefault(nameof(Screensaver), ScreensaverDefault);
             set => AppSettings.AddOrUpdateValue(nameof(Screensaver), value);            
+        }
+
+        public static string Screenorientation
+        {
+            get => AppSettings.GetValueOrDefault(nameof(Screenorientation), ScreenorientationDefault);
+            set => AppSettings.AddOrUpdateValue(nameof(Screenorientation), value);
         }
     }
 }

@@ -10,23 +10,13 @@ namespace Kala
         private static ContentPage CreateSliderPage(App.trackItem item)
         {
             Double.TryParse(item.state, out double value);
-            
-            Label heading = new Label
-            {
-                Text = item.header,
-                FontSize = 72,
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.BackGroundColor,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Start
-            };
 
             Slider slider = new Slider
             {
                 Minimum = 0.0f,
                 Maximum = 100.0f,
                 Value = value,
-                HeightRequest = 30,
+                HeightRequest = 100,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = 100,
@@ -41,29 +31,33 @@ namespace Kala
                 FontSize = 50,
                 TextColor = App.config.TextColor,
                 BackgroundColor = App.config.BackGroundColor,
-                HorizontalOptions= LayoutOptions.End,
-                VerticalOptions= LayoutOptions.End,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.End,
                 TranslationY = 200
             };
             button.Clicked += (sender, e) => {
                 Application.Current.MainPage = PreviousPage;
             };
-            
-            StackLayout sl = new StackLayout
-            {
-                Children = { heading, slider, button },
-                BackgroundColor = App.config.BackGroundColor,
-                Orientation = StackOrientation.Vertical,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
 
-            ContentPage cp = new ContentPage
-            {
-                Content = sl
-            };
-
-            return cp;
+            return (new ContentPage {
+                Content = new StackLayout
+                {
+                    Children = { new Label
+                        {
+                            Text = item.header,
+                            FontSize = 72,
+                            TextColor = App.config.TextColor,
+                            BackgroundColor = App.config.BackGroundColor,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            VerticalTextAlignment = TextAlignment.Start
+                        },
+                        slider, button },
+                    BackgroundColor = App.config.BackGroundColor,
+                    Orientation = StackOrientation.Vertical,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                }
+            });
         }
                 
         static void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
@@ -72,7 +66,6 @@ namespace Kala
             string name = slider.StyleId;
             string state = Convert.ToInt16(Math.Round(e.NewValue, MidpointRounding.AwayFromZero)).ToString();
 
-            CrossLogger.Current.Debug("Slider", "New state: " + state);
             #pragma warning disable CS4014
             new RestService().SendCommand(name, state);
             #pragma warning restore CS4014

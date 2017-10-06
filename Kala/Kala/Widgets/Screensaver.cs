@@ -22,19 +22,20 @@ namespace Kala
             {
                 CrossLogger.Current.Debug("Screensaver", "Check if time to show screensaver");
 
-                if (App.config.LastActivity.AddSeconds(timeOut) < DateTime.Now && active==false)
+                if ((App.config.LastActivity.AddSeconds(timeOut) < DateTime.Now) && active==false)
                 {
                     CrossLogger.Current.Debug("Screensaver", "Enable Screensaver");
-                    PreviousPage = Application.Current.MainPage;
 
                     IDim dim = DependencyService.Get<IDim>();
                     dim.SetBacklight(0.0f);
+                    dim = null;
+
                     active = true;
 
+                    PreviousPage = Application.Current.MainPage;
                     Application.Current.MainPage = CreatePage();
-                    InfiniteLoop();
 
-                    dim = null;
+                    InfiniteLoop();
                 }
 
                 return true;
@@ -68,6 +69,7 @@ namespace Kala
                 BackgroundColor = App.config.BackGroundColor,
             };
             AbsoluteLayout.SetLayoutFlags(l_clock, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(l_clock);
 
             Button resumeButton = new Button
             {
@@ -77,20 +79,15 @@ namespace Kala
                 AnchorX = 0,
                 AnchorY = 0,
                 HeightRequest = 1000,
-                WidthRequest = 1000
+                WidthRequest = 1000,
             };
             AbsoluteLayout.SetLayoutFlags(resumeButton, AbsoluteLayoutFlags.None);
             resumeButton.Clicked += OnResumeButtonClicked;
-
-            absoluteLayout.Children.Add(l_clock);
             absoluteLayout.Children.Add(resumeButton);
 
-            ContentPage cp = new ContentPage
-            {
+            return (new ContentPage {
                 Content = absoluteLayout
-            };
-
-            return cp;
+            });
         }
 
         async static void InfiniteLoop()
@@ -98,10 +95,7 @@ namespace Kala
             while (active == true)
             {
                 l_clock.Text = DateTime.Now.ToString("HH:mm");
-                AbsoluteLayout.SetLayoutBounds(l_clock, new Rectangle(random.NextDouble(),
-                                                                    random.NextDouble(),
-                                                                    AbsoluteLayout.AutoSize,
-                                                                    AbsoluteLayout.AutoSize));
+                AbsoluteLayout.SetLayoutBounds(l_clock, new Rectangle(random.NextDouble(), random.NextDouble(), AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize));
                 await Task.Delay(5000);
             }
         }
