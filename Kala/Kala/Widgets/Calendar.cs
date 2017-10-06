@@ -18,7 +18,6 @@ namespace Kala
         public static void Calendar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
         {
             CrossLogger.Current.Info("Calendar", "Widget Processing Started");
-            //CrossLogger.Current.Debug("Calendar", data.ToString());
 
             try
             {
@@ -33,18 +32,30 @@ namespace Kala
                 {
                     Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
 
-                    Models.calItems a = new Models.calItems
+                    //Master Grid for Widget
+                    Grid Widget_Grid = new Grid
+                    {
+                        RowDefinitions = new RowDefinitionCollection {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    },
+                        ColumnDefinitions = new ColumnDefinitionCollection {
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    },
+                        RowSpacing = 0,
+                        ColumnSpacing = 0,
+                        BackgroundColor = App.config.CellColor,
+                        HorizontalOptions = LayoutOptions.StartAndExpand,
+                        VerticalOptions = LayoutOptions.StartAndExpand,
+                    };
+                    grid.Children.Add(Widget_Grid, px, px + sx, py, py + sy);
+
+                    itemCalendar.Add(new Models.calItems
                     {
                         Label = item.label,
                         State = item.item.state,
                         Name = item.item.name,
-                        grid = grid,
-                        px = px,
-                        py = py,
-                        sx = sx,
-                        sy = sy
-                    };
-                    itemCalendar.Add(a);
+                        grid = Widget_Grid,
+                    });
                 }
 
                 lock (itemCalendar)
@@ -105,12 +116,7 @@ namespace Kala
                 //Make sure we have something to process
                 if (itemCalendar.Count == 0) return;
 
-                //Get Grid and position
-                Grid grid = itemCalendar[0].grid;
-                int px = itemCalendar[0].px;
-                int py = itemCalendar[0].py;
-                int sx = itemCalendar[0].sx;
-                int sy = itemCalendar[0].sy;
+                itemCalendar[0].grid.Children.Clear();
 
                 //Loop through the items
                 foreach (Models.calItems item in itemCalendar)
@@ -312,7 +318,7 @@ namespace Kala
                 };
                 lvCalendar.ItemTapped += OnItemTapped; //Prevent selection of items and background color
 
-                grid.Children.Add(lvCalendar, px, px + sx, py, py + sy);
+                itemCalendar[0].grid.Children.Add(lvCalendar, 0, 0); //, px, px + sx, py, py + sy);
                 #endregion Render               
             }
             catch (Exception ex)

@@ -11,10 +11,6 @@ namespace Kala
         public class trackItem
         {
             public Grid grid { get; set; }
-            public int px { get; set; }
-            public int py { get; set; }
-            public int sx { get; set; }
-            public int sy { get; set; }
             public string min { get; set; }
             public string max { get; set; }
             public string state { get; set; }

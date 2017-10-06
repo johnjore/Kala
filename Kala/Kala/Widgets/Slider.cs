@@ -9,9 +9,7 @@ namespace Kala
     {
         private static ContentPage CreateSliderPage(App.trackItem item)
         {
-            //Capture un-initialized values
-            double value = 50.0f;
-            Double.TryParse(item.state, out value);
+            Double.TryParse(item.state, out double value);
             
             Label heading = new Label
             {
@@ -51,7 +49,6 @@ namespace Kala
                 Application.Current.MainPage = PreviousPage;
             };
             
-
             StackLayout sl = new StackLayout
             {
                 Children = { heading, slider, button },

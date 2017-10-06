@@ -23,6 +23,23 @@ namespace Kala
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;
 
+            //Master Grid for Widget
+            Grid Widget_Grid = new Grid
+            {
+                RowDefinitions = new RowDefinitionCollection {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                },
+                ColumnDefinitions = new ColumnDefinitionCollection {
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                },
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                BackgroundColor = App.config.CellColor,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+            grid.Children.Add(Widget_Grid, px, px + sx, py, py + sy);
+
             try
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
@@ -30,11 +47,7 @@ namespace Kala
 
                 App.trackItem i = new App.trackItem
                 {
-                    grid = grid,
-                    px = px,
-                    py = py,
-                    sx = sx,
-                    sy = sy,
+                    grid = Widget_Grid,
                     name = item.item.name,
                     header = header,
                     icon = widgetKeyValuePairs["icon"],
@@ -54,7 +67,9 @@ namespace Kala
 
         public static void Sensor_update(bool Create, App.trackItem item)
         {
-            #region Header (Also clears the old status)
+            item.grid.Children.Clear();
+
+            #region Header
             item.grid.Children.Add(new Label
             {
                 Text = item.header,
@@ -63,7 +78,7 @@ namespace Kala
                 BackgroundColor = App.config.CellColor,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Start
-            }, item.px, item.py);
+            }, 0, 0);
             #endregion Header 
 
             #region State
@@ -82,7 +97,7 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, item.px, item.py, item.sx, item.sy, ex.ToString());
+                    Error(item.grid, 0, 0, 1, 1, ex.ToString());
                 }
             }
             else
@@ -99,11 +114,11 @@ namespace Kala
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
-            }, item.px, item.px + 1, item.py, item.py + 1);
+            }, 0, 0);
             #endregion Image
 
             #region Status Text
-            ItemLabel l_status = new ItemLabel
+            item.grid.Children.Add (new ItemLabel
             {
                 Text = item.state.ToUpper(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
@@ -113,8 +128,7 @@ namespace Kala
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
                 Name = item.name
-            };
-            item.grid.Children.Add(l_status, item.px, item.py);
+            }, 0, 0);
             #endregion Status Text
         }
 
@@ -129,7 +143,7 @@ namespace Kala
                 Scale = 2,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center
-            }, item.px, item.py);
+            }, 0, 0);
         }
 
         public static void Sensor_Off(App.trackItem item)
@@ -137,9 +151,6 @@ namespace Kala
             int intStrokeThickness = 2;
             switch (Device.RuntimePlatform)
             {
-                case Device.iOS:
-                    intStrokeThickness = 2;
-                    break;
                 case Device.Android:
                     intStrokeThickness = 4;
                     break;
@@ -153,7 +164,7 @@ namespace Kala
                 ProgressBackgroundColor = App.config.BackGroundColor,
                 ProgressColor = App.config.ValueColor,
                 Scale = 0.5f
-            }, item.px, item.py);            
+            }, 0, 0);
         }
     }
 }

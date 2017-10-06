@@ -21,23 +21,26 @@ namespace Kala
                 Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
                 CrossLogger.Current.Debug("Switch", "Label: " + widgetKeyValuePairs["label"]);
 
-                //Switch (on/off) button
-                Button switchButton = new Button
+                //Master Grid for Widget
+                Grid Widget_Grid = new Grid
                 {
+                    RowDefinitions = new RowDefinitionCollection {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    },
+                    ColumnDefinitions = new ColumnDefinitionCollection {
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    },
+                    RowSpacing = 0,
+                    ColumnSpacing = 0,
+                    BackgroundColor = App.config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
-                    BackgroundColor = Color.Transparent,
-                    StyleId = item.item.name //StyleID is not used on buttons
                 };
-                switchButton.Clicked += OnSwitchButtonClicked;
-                CrossLogger.Current.Debug("Switch", "Button ID: " + switchButton.Id + " created.");
-                grid.Children.Add(switchButton, px, py);
+                grid.Children.Add(Widget_Grid, px, py);
 
                 App.trackItem i = new App.trackItem
                 {
-                    grid = grid,
-                    px = px,
-                    py = py,
+                    grid = Widget_Grid,
                     name = item.item.name,
                     header = header,
                     icon = widgetKeyValuePairs["icon"],
@@ -59,6 +62,8 @@ namespace Kala
         {
             string status = "N/A";
 
+            item.grid.Children.Clear();
+            
             //Header (Also clears the old status)
             item.grid.Children.Add(new Label
             {
@@ -68,7 +73,7 @@ namespace Kala
                 BackgroundColor = App.config.CellColor,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Start
-            }, item.px, item.py);
+            }, 0, 0);
 
             if (item.state != null && !item.state.Equals("Uninitialized"))
             {
@@ -103,7 +108,7 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, item.px, item.py, item.sx, item.sy, ex.ToString());
+                    Error(item.grid, 0, 0, 1, 1, ex.ToString());
                 }
             }
 
@@ -115,7 +120,7 @@ namespace Kala
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
-            }, item.px, item.px + 1, item.py, item.py + 1);
+            }, 0, 0);
 
             //Status
             ItemLabel l_status = new ItemLabel
@@ -129,7 +134,19 @@ namespace Kala
                 TranslationY = -10,
                 Name = item.name
             };
-            item.grid.Children.Add(l_status, item.px, item.py);
+            item.grid.Children.Add(l_status, 0, 0);
+
+            //Button must be last to be added to work
+            Button switchButton = new Button
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = Color.Transparent,
+                StyleId = item.name //StyleID is not used on buttons
+            };
+            item.grid.Children.Add(switchButton, 0, 0);
+            switchButton.Clicked += OnSwitchButtonClicked;
+            CrossLogger.Current.Debug("Switch", "Button ID: " + switchButton.Id + " created.");
         }
 
         public static void Switch_On(App.trackItem item)
@@ -143,7 +160,7 @@ namespace Kala
                 Scale = 2,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center
-            }, item.px, item.py);
+            }, 0, 0);
         }
 
         public static void Switch_Off(App.trackItem item)
@@ -151,9 +168,6 @@ namespace Kala
             int intStrokeThickness = 2;
             switch (Device.RuntimePlatform)
             {
-                case Device.iOS:
-                    intStrokeThickness = 2;
-                    break;
                 case Device.Android:
                     intStrokeThickness = 4;
                     break;
@@ -167,7 +181,7 @@ namespace Kala
                 ProgressBackgroundColor = App.config.BackGroundColor,
                 ProgressColor = App.config.ValueColor,
                 Scale = 0.5f
-            }, item.px, item.py);
+            }, 0, 0);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]

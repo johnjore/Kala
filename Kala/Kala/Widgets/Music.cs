@@ -31,10 +31,6 @@ namespace Kala
                 App.trackItem i = new App.trackItem
                 {
                     grid = grid,
-                    px = px,
-                    py = py,
-                    sx = sx,
-                    sy = sy,
                     name = item.item.name,
                     header = header,
                     icon = widgetKeyValuePairs["icon"],
@@ -63,7 +59,7 @@ namespace Kala
                 BackgroundColor = App.config.CellColor,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Start
-            }, item.px, item.py);
+            }, 0, 0);
             #endregion Header 
 
             #region State
@@ -82,7 +78,7 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, item.px, item.py, item.sx, item.sy, ex.ToString());
+                    Error(item.grid,0, 0, 1, 1, ex.ToString());
                 }
             }
             else
@@ -99,7 +95,7 @@ namespace Kala
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
-            }, item.px, item.px + 1, item.py, item.py + 1);
+            }, 0, 0, 1, 1);
             #endregion Image
 
             #region Status Text
@@ -114,7 +110,7 @@ namespace Kala
                 TranslationY = -10,
                 Name = item.name
             };
-            item.grid.Children.Add(l_status, item.px, item.py);
+            item.grid.Children.Add(l_status, 0, 0);
             #endregion Status Text
         }
 
@@ -129,7 +125,7 @@ namespace Kala
                 Scale = 2,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center
-            }, item.px, item.py);
+            }, 0, 0);
         }
 
         public static void Music_Off(App.trackItem item)
@@ -153,7 +149,7 @@ namespace Kala
                 ProgressBackgroundColor = App.config.BackGroundColor,
                 ProgressColor = App.config.ValueColor,
                 Scale = 0.5f
-            }, item.px, item.py);
+            }, 0, 0);
         }
     }
 }
