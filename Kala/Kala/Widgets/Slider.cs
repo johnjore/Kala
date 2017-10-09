@@ -39,6 +39,8 @@ namespace Kala
                 Application.Current.MainPage = PreviousPage;
             };
 
+            App.config.LastActivity = DateTime.Now;
+
             return (new ContentPage {
                 Content = new StackLayout
                 {
@@ -60,8 +62,10 @@ namespace Kala
             });
         }
                 
-        static void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
+        private static void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
         {
+            App.config.LastActivity = DateTime.Now;
+
             Slider slider = sender as Slider;
             string name = slider.StyleId;
             string state = Convert.ToInt16(Math.Round(e.NewValue, MidpointRounding.AwayFromZero)).ToString();

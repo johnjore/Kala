@@ -162,7 +162,7 @@ namespace Kala
         }
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public static void OnDimmerButtonClicked(object sender, EventArgs e)
+        private static void OnDimmerButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
             App.trackItem item = null;

@@ -99,7 +99,7 @@ namespace Kala
             }
             config.Initialized = true;
         }
-        
+
         protected override void OnStart()
         {
         }

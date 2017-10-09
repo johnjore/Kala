@@ -46,6 +46,16 @@ namespace Kala
             };
             grid.Children.Add(l2, px, px + sx, py, py + sy);
 
+            //Button must be last to be added to work
+            Button dummyButton = new Button
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = Color.Transparent,
+            };
+            grid.Children.Add(dummyButton, px, px + sx, py, py + sy);
+            dummyButton.Clicked += OnDummyButtonClicked;
+
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
                 time = DateTime.Now;

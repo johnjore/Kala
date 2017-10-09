@@ -137,7 +137,7 @@ namespace Kala
             }
         }
         
-        public static void AddControlImage(Grid w_grid, String Source, int x, int y, string name, string cmd)
+        private static void AddControlImage(Grid w_grid, String Source, int x, int y, string name, string cmd)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace Kala
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public static void OnBlindButtonClicked(object sender, EventArgs e)
+        private static void OnBlindButtonClicked(object sender, EventArgs e)
         {
             ItemButton button = sender as ItemButton;
             CrossLogger.Current.Error("Blind", "BlindButton: " + button.Name + ", Cmd: " + button.Cmd);

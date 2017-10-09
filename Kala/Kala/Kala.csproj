@@ -54,7 +54,7 @@
     <Compile Include="Models\Itemtypes.cs" />
     <Compile Include="Models\Sitemap.cs" />
     <Compile Include="Models\Sitemaps.cs" />
-    <Compile Include="PlatformSpecifics\IDim.cs" />
+    <Compile Include="PlatformSpecifics\IScreen.cs" />
     <Compile Include="PlatformSpecifics\IPlatformInfo.cs" />
     <Compile Include="PlatformSpecifics\ITextToSpeech.cs" />
     <Compile Include="PlatformSpecifics\Settings.cs" />

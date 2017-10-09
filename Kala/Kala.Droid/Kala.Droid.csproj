@@ -198,7 +198,7 @@
     <Compile Include="CustomControls\ShapeRenderer.cs" />
     <Compile Include="CustomControls\Slider.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="PlatformSpecifics\Dim.cs" />
+    <Compile Include="PlatformSpecifics\Screen.cs" />
     <Compile Include="PlatformSpecifics\PlatformInfo.cs" />
     <Compile Include="PlatformSpecifics\Speech.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

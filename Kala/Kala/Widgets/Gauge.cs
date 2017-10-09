@@ -162,7 +162,17 @@ namespace Kala
                 };
                 App.config.itemShapeViews.Add(progressArc);
                 t_grid.Children.Add(progressArc, i, 1);
-                #endregion Arc              
+                #endregion Arc
+
+                //Button must be last to be added to work
+                Button dummyButton = new Button
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.Transparent,
+                };
+                t_grid.Children.Add(dummyButton, i, 1);
+                dummyButton.Clicked += OnDummyButtonClicked;
             }
             catch (Exception ex)
             {

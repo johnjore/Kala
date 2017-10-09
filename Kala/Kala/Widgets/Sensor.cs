@@ -130,9 +130,19 @@ namespace Kala
                 Name = item.name
             }, 0, 0);
             #endregion Status Text
+
+            //Button must be last to be added to work
+            Button dummyButton = new Button
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = Color.Transparent,
+            };
+            item.grid.Children.Add(dummyButton, 0, 0);
+            dummyButton.Clicked += OnDummyButtonClicked;
         }
 
-        public static void Sensor_On(App.trackItem item)
+        private static void Sensor_On(App.trackItem item)
         {
             item.grid.Children.Add(new ShapeView()
             {
@@ -146,7 +156,7 @@ namespace Kala
             }, 0, 0);
         }
 
-        public static void Sensor_Off(App.trackItem item)
+        private static void Sensor_Off(App.trackItem item)
         {
             int intStrokeThickness = 2;
             switch (Device.RuntimePlatform)

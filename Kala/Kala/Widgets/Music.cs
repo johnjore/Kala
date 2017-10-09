@@ -48,7 +48,7 @@ namespace Kala
             }
         }
 
-        public static void Music_update(bool Create, App.trackItem item)
+        private static void Music_update(bool Create, App.trackItem item)
         {
             #region Header (Also clears the old status)
             item.grid.Children.Add(new Label
@@ -114,7 +114,7 @@ namespace Kala
             #endregion Status Text
         }
 
-        public static void Music_On(App.trackItem item)
+        private static void Music_On(App.trackItem item)
         {
             item.grid.Children.Add(new ShapeView()
             {
@@ -128,7 +128,7 @@ namespace Kala
             }, 0, 0);
         }
 
-        public static void Music_Off(App.trackItem item)
+        private static void Music_Off(App.trackItem item)
         {
             int intStrokeThickness = 1;
             switch (Device.RuntimePlatform)

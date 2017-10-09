@@ -145,6 +145,16 @@ namespace Kala
                     #endregion Temperature
                 }
 
+                //Button must be last to be added to work
+                Button dummyButton = new Button
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.Transparent,
+                };
+                t_grid.Children.Add(dummyButton, px, px + sx, py, py + sy);
+                dummyButton.Clicked += OnDummyButtonClicked;
+                
                 grid.Children.Add(t_grid, px, px + sx, py, py + sy);
                 #endregion t_grid
 

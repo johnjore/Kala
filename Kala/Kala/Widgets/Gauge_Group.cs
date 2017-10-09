@@ -34,7 +34,7 @@ namespace Kala
             }
         }
     
-        public static void Gauge_Group(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        private static void Gauge_Group(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);

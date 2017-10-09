@@ -49,7 +49,7 @@ namespace Kala
             return strImage;
         }
 
-        public static Tuple<string, int> Digits(Dictionary<string, string> dict, string state)
+        private static Tuple<string, int> Digits(Dictionary<string, string> dict, string state)
         {
             string s_value = string.Empty;
             int digits = -1;
@@ -66,6 +66,11 @@ namespace Kala
             }
 
             return Tuple.Create(s_value, digits);
+        }
+
+        private static void OnDummyButtonClicked(object sender, EventArgs e)
+        {
+            App.config.LastActivity = DateTime.Now;
         }
     }
 }

@@ -95,11 +95,23 @@ namespace Kala
                 MapUpdate(latitudes, longitudes, map);
 
                 grid.Children.Add(map, px, px + sx, py, py + sy);
+                map.MapClicked += Map_MapClicked;
+                map.CameraChanged += Map_CameraChanged;
             }
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Map", "Crashed:" + ex.ToString());
             }
+        }
+
+        private static void Map_CameraChanged(object sender, CameraChangedEventArgs e)
+        {
+            App.config.LastActivity = DateTime.Now;
+        }
+
+        private static void Map_MapClicked(object sender, MapClickedEventArgs e)
+        {
+            App.config.LastActivity = DateTime.Now;
         }
 
         public static void MapUpdate(List<double>latitudes, List<double> longitudes, Map map)
@@ -117,7 +129,7 @@ namespace Kala
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong), Distance.FromKilometers(distance)));
         }
 
-        public static MapType GetMapType(string maptype)
+        private static MapType GetMapType(string maptype)
         {
             switch (maptype.ToUpper())
             {
@@ -129,7 +141,7 @@ namespace Kala
             }            
         }
 
-        public static Color GetColor(string color)
+        private static Color GetColor(string color)
         {
             switch (color.ToLower())
             {

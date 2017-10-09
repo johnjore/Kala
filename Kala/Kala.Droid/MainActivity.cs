@@ -1,10 +1,6 @@
 ﻿using System;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 using FFImageLoading.Forms.Droid;
 using Plugin.Logger;
@@ -20,34 +16,15 @@ namespace Kala.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            //Fullscreen
+            /**/ //Move this to a run-time setting
             if (Settings.Fullscreen)
             {
-                Window.AddFlags(WindowManagerFlags.Fullscreen);
-                base.SetTheme(global::Android.Resource.Style.ThemeBlackNoTitleBar);
+                base.SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
             }
             else
             {
-                base.SetTheme(global::Android.Resource.Style.ThemeHolo);
-                Window.ClearFlags(WindowManagerFlags.Fullscreen);
+                base.SetTheme(Android.Resource.Style.ThemeHolo);
             }
-
-            //Screensaver
-            if (Settings.Screensaver > 0)
-            {
-                Window.AddFlags(WindowManagerFlags.KeepScreenOn);
-            }
-            else
-            {
-                Window.ClearFlags(WindowManagerFlags.KeepScreenOn);
-            }
-
-            //Orientation
-            try
-            {
-                RequestedOrientation = (ScreenOrientation)Enum.Parse(typeof(ScreenOrientation), Settings.Screenorientation);
-            }
-            catch { }
 
             base.OnCreate(bundle);
 

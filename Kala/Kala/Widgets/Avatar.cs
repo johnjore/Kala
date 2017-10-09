@@ -76,6 +76,16 @@ namespace Kala
                 };
                 App.config.itemlabels.Add(l_mode);
                 w_grid.Children.Add(l_mode, 0, 1);
+
+                //Button must be last to be added to work
+                Button dummyButton = new Button
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.Transparent,
+                };
+                grid.Children.Add(dummyButton, px, px + sx, py, py + sy);
+                dummyButton.Clicked += OnDummyButtonClicked;
             }
             catch (Exception ex)
             {

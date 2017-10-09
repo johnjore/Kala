@@ -306,6 +306,17 @@ namespace Kala
                     }
                 }
                 #endregion Fields
+
+                //Button must be last to be added to work
+                Button dummyButton = new Button
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.Transparent,
+                };
+                grid.Children.Add(dummyButton, px, px + sx, py, py + sy);
+                dummyButton.Clicked += OnDummyButtonClicked;
+
             }
             catch (Exception ex)
             {

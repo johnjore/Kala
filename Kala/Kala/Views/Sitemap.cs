@@ -45,14 +45,17 @@ namespace Kala
             //Settings
             if (entry.ContainsKey("fullscreen"))
             {
-                //Setting is stored locally, else its read too late to take effect on device
                 try
                 {
+                    IScreen fs = DependencyService.Get<IScreen>();
+                    fs.SetFullScreen(Convert.ToBoolean(entry["fullscreen"]));
+                    fs = null;
+
                     Settings.Fullscreen = Convert.ToBoolean(entry["fullscreen"]);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'fullscreen' value: '" + entry["fullscreen"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'fullscreen' value: '" + entry["fullscreen"].ToString() + "', " + ex.ToString());
                 }
             }
 
@@ -60,13 +63,15 @@ namespace Kala
             {
                 try
                 {
-                    //Setting is stored locally, else its read too late to take effect on device
-                    Settings.Screensaver = Convert.ToInt64(entry["screensaver"]);
+                    IScreen ss = DependencyService.Get<IScreen>();
+                    ss.ScreenSaver(Convert.ToInt64(entry["screensaver"]));
+                    ss = null;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'screensaver' value: '" + entry["screensaver"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'screensaver' value: '" + entry["screensaver"].ToString() + "', " + ex.ToString());
                 }
+
             }
 
             if (entry.ContainsKey("kala"))
@@ -75,9 +80,9 @@ namespace Kala
                 {
                     App.config.Valid = Convert.ToBoolean(entry["kala"]);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'kala' identifier: '" + entry["kala"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'kala' identifier: '" + entry["kala"].ToString() + "', " + ex.ToString());
                 }                
             }
 
@@ -87,9 +92,9 @@ namespace Kala
                 {
                     App.config.BackGroundColor = Color.FromHex(entry["background"]);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'background' value: '" + entry["background"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'background' value: '" + entry["background"].ToString() + "', " + ex.ToString());
                 }
             }
 
@@ -99,31 +104,33 @@ namespace Kala
                 {
                     App.config.CellColor = Color.FromHex(entry["cell"]);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'cell' value: '" + entry["cell"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'cell' value: '" + entry["cell"].ToString() + "', " + ex.ToString());
                 }
             }
+
             if (entry.ContainsKey("text"))
             {
                 try
                 {
                     App.config.TextColor = Color.FromHex(entry["text"]);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'text' value: '" + entry["text"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'text' value: '" + entry["text"].ToString() + "', " + ex.ToString());
                 }
             }
+
             if (entry.ContainsKey("value"))
             {
                 try
                 {
                     App.config.ValueColor = Color.FromHex(entry["value"]);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'value' value: '" + entry["value"] + "'");
+                    CrossLogger.Current.Error("Kala", "Failed to convert 'value' value: '" + entry["value"].ToString() + "', " + ex.ToString());
                 }
             }
 
@@ -131,19 +138,16 @@ namespace Kala
             {
                 try
                 {
-                    Settings.Screenorientation = entry["screenorientation"];
+                    IScreen so = DependencyService.Get<IScreen>();
+                    so.SetScreenOrientation(entry["screenorientation"]);
+                    so = null;
                 }
-                catch
-                {
-                    CrossLogger.Current.Error("Kala", "Failed to convert 'screenorientation' value: '" + entry["screenorientation"] + "'");
+                catch (Exception ex)
+                {                    
+                    CrossLogger.Current.Error("Kala", "Failed to action 'screenorientation' value: '" + entry["screenorientation"].ToString() + "', " + ex.ToString());
                 }
             }
-
-            CrossLogger.Current.Info("Kala", "Fullscreen : " + Settings.Fullscreen.ToString());
-            CrossLogger.Current.Info("Kala", "Screensaver: " + Settings.Screensaver.ToString());
-            CrossLogger.Current.Info("Kala", "Sitemap: " + Settings.Fullscreen.ToString());
-            CrossLogger.Current.Info("Kala", "Orientation: " + Settings.Screenorientation.ToString());
-
+            
             if (App.config.Valid)
             {
                 ParseSitemap(items);
@@ -379,7 +383,7 @@ namespace Kala
         /// Configures grid with columns and rows
         /// </summary>
         /// <returns>nothing</returns>
-        public static void CreateGrid(Grid grid, int columns, int rows)
+        private static void CreateGrid(Grid grid, int columns, int rows)
         {
             grid.RowDefinitions = new RowDefinitionCollection();
             for (int i = 0; i < rows; i++)

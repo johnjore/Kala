@@ -149,7 +149,7 @@ namespace Kala
             CrossLogger.Current.Debug("Switch", "Button ID: " + switchButton.Id + " created.");
         }
 
-        public static void Switch_On(App.trackItem item)
+        private static void Switch_On(App.trackItem item)
         {
             item.grid.Children.Add(new ShapeView()
             {
@@ -163,7 +163,7 @@ namespace Kala
             }, 0, 0);
         }
 
-        public static void Switch_Off(App.trackItem item)
+        private static void Switch_Off(App.trackItem item)
         {
             int intStrokeThickness = 2;
             switch (Device.RuntimePlatform)
@@ -185,7 +185,7 @@ namespace Kala
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public static void OnSwitchButtonClicked(object sender, EventArgs e)
+        private static void OnSwitchButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
             string name = button.StyleId;

@@ -12,7 +12,7 @@ namespace Kala
     {
         //Keep track of calendar items. GUI needs a complete redraw on each update
         public static List<Models.calItems> itemCalendar = new List<Models.calItems>();
-        public static List<Models.calendar> SortedList = null;
+        private static List<Models.calendar> SortedList = null;
 
         //Intial creation
         public static void Calendar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
@@ -105,7 +105,7 @@ namespace Kala
         }
 
         //Create / Update GUI
-        public static void Create_Calendar()
+        private static void Create_Calendar()
         {
             try
             {
@@ -320,6 +320,8 @@ namespace Kala
 
                 itemCalendar[0].grid.Children.Add(lvCalendar, 0, 0); //, px, px + sx, py, py + sy);
                 #endregion Render               
+
+                lvCalendar.ItemAppearing += LvCalendar_ItemAppearing;
             }
             catch (Exception ex)
             {
@@ -327,8 +329,15 @@ namespace Kala
             }
         }
 
+        private static void LvCalendar_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+            App.config.LastActivity = DateTime.Now;
+        }
+
         private static void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
+            App.config.LastActivity = DateTime.Now; //Update lastActivity to reset Screensaver timer
+
             if (e == null) return;
             ((ListView)sender).SelectedItem = null;
         }

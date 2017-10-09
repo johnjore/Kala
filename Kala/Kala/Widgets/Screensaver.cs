@@ -26,7 +26,7 @@ namespace Kala
                 {
                     CrossLogger.Current.Debug("Screensaver", "Enable Screensaver");
 
-                    IDim dim = DependencyService.Get<IDim>();
+                    IScreen dim = DependencyService.Get<IScreen>();
                     dim.SetBacklight(0.0f);
                     dim = null;
 
@@ -50,11 +50,11 @@ namespace Kala
             App.tp.CurrentPage = App.tp.Children[0];        //Revert to first tab when resuming
             App.config.LastActivity = DateTime.Now;         //Update lastactivity to reset Screensaver timer
 
-            IDim dim = DependencyService.Get<IDim>();
+            IScreen dim = DependencyService.Get<IScreen>();
             dim.SetBacklight(0.8f);
             dim = null;
         }
-        
+
         private static ContentPage CreatePage()
         {
             AbsoluteLayout absoluteLayout = new AbsoluteLayout
@@ -90,7 +90,7 @@ namespace Kala
             });
         }
 
-        async static void InfiniteLoop()
+        private async static void InfiniteLoop()
         {
             while (active == true)
             {

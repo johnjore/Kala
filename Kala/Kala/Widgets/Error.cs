@@ -5,7 +5,7 @@ namespace Kala
 {
     public partial class Widgets
     {
-        public static void Error(Grid grid, int px, int py, int sx, int sy, string errorMessage)
+        private static void Error(Grid grid, int px, int py, int sx, int sy, string errorMessage)
         {
             try
             {
