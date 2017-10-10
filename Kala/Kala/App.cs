@@ -26,11 +26,12 @@ namespace Kala
             public Models.Sitemaps.Sitemap sitemap;
             public bool Valid = false;
             public bool Initialized = false;
+            public bool Settings = true;
             public Color BackGroundColor = Color.FromHex("212121");
             public Color CellColor = Color.FromHex("424242");
             public Color TextColor = Color.FromHex("ffffff"); // Color.White;
             public Color ValueColor = Color.Blue;
-            public DateTime LastActivity = DateTime.Now;
+            public DateTime LastActivity = DateTime.Now;            
             public List<trackItem> items = new List<trackItem>();
             public List<ItemLabel> itemlabels = new List<ItemLabel>();
             public List<DrawShape.ShapeView> itemShapeViews = new List<DrawShape.ShapeView>();
@@ -88,8 +89,11 @@ namespace Kala
                     sitemap.CreateSitemap(sitemaps);
                     CrossLogger.Current.Debug("Kala", "Got Sitemaps");
 
-                    //Add settings tab last
-                    tp.Children.Add(new Views.Page1());
+                    if (config.Settings)
+                    {
+                        //Add settings tab last
+                        tp.Children.Add(new Views.Page1());
+                    }
                     MainPage = tp;
                 }
             }

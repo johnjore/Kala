@@ -148,6 +148,18 @@ namespace Kala
                 }
             }
             
+            if (entry.ContainsKey("settings"))
+            {
+                try
+                {
+                    App.config.Settings = Convert.ToBoolean(entry["settings"]);
+                }
+                catch (Exception ex)
+                {
+                    CrossLogger.Current.Error("Kala", "Failed to action 'settings' value: '" + entry["settings"].ToString() + "', " + ex.ToString());
+                }
+            }
+
             if (App.config.Valid)
             {
                 ParseSitemap(items);

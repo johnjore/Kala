@@ -43,37 +43,5 @@ namespace CircularProgressBar.FormsPlugin.Android
 
             SetNativeControl(progress);
         }
-
-
-        /*
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            base.OnElementPropertyChanged(sender, e);
-
-            if (Control == null || Element == null)
-                return;
-
-            if (e.PropertyName == CircularProgressBarView.ProgressProperty.PropertyName)
-            {
-                Control.Progress = Element.Progress;
-            }
-            else if (e.PropertyName == CircularProgressBarView.ProgressBackgroundColorProperty.PropertyName)
-            {
-                Control.ProgressBackgroundColor = Element.ProgressBackgroundColor.ToAndroid();
-            }
-            else if (e.PropertyName == CircularProgressBarView.ProgressColorProperty.PropertyName)
-            {
-                Control.ProgressColor = Element.ProgressColor.ToAndroid();
-            }
-            else if (e.PropertyName == CircularProgressBarView.StrokeThicknessProperty.PropertyName)
-            {
-                Control.IndeterminateInterval = Element.StrokeThickness;
-            }
-            else if (e.PropertyName == CircularProgressBarView.SizeProperty.PropertyName)
-            {
-                Control.ScaleX = Element.Size;
-                Control.ScaleY = Element.Size;
-            }
-        }*/
     }
 }
