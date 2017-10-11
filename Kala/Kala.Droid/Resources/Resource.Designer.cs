@@ -2576,8 +2576,26 @@ namespace Kala.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
+			// aapt resource value: 0x7f0204e5
+			public const int avd_hide_password_1 = 2130838757;
+			
+			// aapt resource value: 0x7f0204e6
+			public const int avd_hide_password_2 = 2130838758;
+			
+			// aapt resource value: 0x7f0204e7
+			public const int avd_hide_password_3 = 2130838759;
+			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
+			
+			// aapt resource value: 0x7f0204e8
+			public const int avd_show_password_1 = 2130838760;
+			
+			// aapt resource value: 0x7f0204e9
+			public const int avd_show_password_2 = 2130838761;
+			
+			// aapt resource value: 0x7f0204ea
+			public const int avd_show_password_3 = 2130838762;
 			
 			// aapt resource value: 0x7f020055
 			public const int common_full_open_on_phone = 2130837589;
