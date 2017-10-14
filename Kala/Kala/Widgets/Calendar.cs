@@ -191,13 +191,16 @@ namespace Kala
                 //Sort the list
                 SortedList = guiEvents.OrderBy(x => x.Start).ToList();
 
-                for (int i = 1; i < SortedList.Count; i++)
+                for (int i = 0; i < SortedList.Count; i++)
                 {
                     //Remove duplicate Day/DayOfWeek
-                    if (SortedList[i - 1].Day == SortedList[i].Day)
+                    for (int j = i+1; j < SortedList.Count; j++)
                     {
-                        SortedList[i].Day = string.Empty;
-                        SortedList[i].DayOfWeek = string.Empty;
+                        if (SortedList[i].Day == SortedList[j].Day)
+                        {
+                            SortedList[j].Day = string.Empty;
+                            SortedList[j].DayOfWeek = string.Empty;
+                        }
                     }
 
                     CrossLogger.Current.Debug("Calendar", SortedList[i].Day + "," + SortedList[i].DayOfWeek + "," + SortedList[i].Title + "," + SortedList[i].Hours + "," + SortedList[i].Location);

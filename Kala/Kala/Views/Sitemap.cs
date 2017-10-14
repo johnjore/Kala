@@ -50,8 +50,6 @@ namespace Kala
                     IScreen fs = DependencyService.Get<IScreen>();
                     fs.SetFullScreen(Convert.ToBoolean(entry["fullscreen"]));
                     fs = null;
-
-                    Settings.Fullscreen = Convert.ToBoolean(entry["fullscreen"]);
                 }
                 catch (Exception ex)
                 {
@@ -63,8 +61,9 @@ namespace Kala
             {
                 try
                 {
-                    IScreen ss = DependencyService.Get<IScreen>();
-                    ss.ScreenSaver(Convert.ToInt64(entry["screensaver"]));
+                    App.config.ScreenSaver = Convert.ToInt64(entry["screensaver"]);
+                    IScreen ss = DependencyService.Get<IScreen>();                    
+                    ss.ScreenSaver(App.config.ScreenSaver);
                     ss = null;
                 }
                 catch (Exception ex)
@@ -165,9 +164,10 @@ namespace Kala
                 ParseSitemap(items);
 
                 //Enable screensaver?
-                if (Settings.Screensaver > 0)
+                if (App.config.ScreenSaver > 0)
                 {
-                    Widgets.Screensaver(Settings.Screensaver);
+                    Widgets.Screensaver(App.config.ScreenSaver);
+                    App.config.ScreenSaver = 0;
                 }
             }
         }

@@ -27,6 +27,7 @@ namespace Kala
             public bool Valid = false;
             public bool Initialized = false;
             public bool Settings = true;
+            public long ScreenSaver = -1;
             public Color BackGroundColor = Color.FromHex("212121");
             public Color CellColor = Color.FromHex("424242");
             public Color TextColor = Color.FromHex("ffffff"); // Color.White;

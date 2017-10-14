@@ -16,16 +16,6 @@ namespace Kala.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            /**/ //Move this to a run-time setting
-            if (Settings.Fullscreen)
-            {
-                base.SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
-            }
-            else
-            {
-                base.SetTheme(Android.Resource.Style.ThemeHolo);
-            }
-
             base.OnCreate(bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);

@@ -1,8 +1,9 @@
 ﻿using System;
 using Android.App;
 using Android.Content.PM;
-using Xamarin.Forms;
 using Android.Views;
+using Xamarin.Forms;
+
 
 [assembly: Dependency(typeof(Kala.Droid.ScreenLayout))]
 namespace Kala.Droid
@@ -18,10 +19,11 @@ namespace Kala.Droid
             activity.Window.Attributes = attributes;
         }
 
-        public void SetScreenOrientation(string ScreenOrientation)
+        public void SetScreenOrientation(string Screenorientation)
         {
             var activity = (Activity)Forms.Context;
-            activity.RequestedOrientation = (ScreenOrientation)Enum.Parse(typeof(ScreenOrientation), ScreenOrientation);
+            activity.RequestedOrientation = (ScreenOrientation)Enum.Parse(typeof(ScreenOrientation), Screenorientation);
+            activity.RequestedOrientation = ScreenOrientation.Locked;
         }
 
         public void ScreenSaver(long screensaver)
@@ -46,11 +48,11 @@ namespace Kala.Droid
             if (fullscreen)
             {
                 activity.Window.AddFlags(WindowManagerFlags.Fullscreen);
-                /**///SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
+                activity.SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
             }
             else
             {
-                /**///SetTheme(Android.Resource.Style.ThemeHolo);
+                activity.SetTheme(Android.Resource.Style.ThemeHolo);
                 activity.Window.ClearFlags(WindowManagerFlags.Fullscreen);
             }
         }
