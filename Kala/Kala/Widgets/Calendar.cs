@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -146,13 +147,13 @@ namespace Kala
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("start-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", Start:" + item.State);
-                            DateTime.TryParse(item.State, out DateTime tmp);
+                            DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                             calEvents[id].Start = tmp;
                         }
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("end-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", End:" + item.State);
-                            DateTime.TryParse(item.State, out DateTime tmp);
+                            DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                             calEvents[id].End = tmp;
                         }
                     }
@@ -178,13 +179,19 @@ namespace Kala
                         for (int j = 0; j < days; j++)
                         {
                             Models.calendar a = GuiRecord(calEvents[i], j);
-                            if (a != null) guiEvents.Add(a);
+                            if (a != null)
+                            {
+                                guiEvents.Add(a);
+                            }
                         }
                     }
                     else
                     {
                         Models.calendar a = GuiRecord(calEvents[i], 0);
-                        if (a != null) guiEvents.Add(a);
+                        if (a != null)
+                        {
+                            guiEvents.Add(a);
+                        }
                     }
                 }
 
@@ -347,7 +354,7 @@ namespace Kala
 
         private static Models.calendar GuiRecord(Models.calendar item, int j)
         {
-            if (item.Start != DateTime.MinValue)
+            if ((item.Start != DateTime.MinValue) && (item.Start.AddDays(j) >= DateTime.Now.Date))
             {
                 Models.calendar a = new Models.calendar
                 {
@@ -371,7 +378,9 @@ namespace Kala
                 return a;
             }
             else
+            {
                 return null;
+            }
         }
     }
 }
