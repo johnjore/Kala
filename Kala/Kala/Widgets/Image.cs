@@ -68,14 +68,16 @@ namespace Kala
                 grid.Children.Add(l_header, px, px + sx, py, py + sy);
 
                 //Button must be last to be added to work
-                Button dummyButton = new Button
+                ItemImageButton ImageButton = new ItemImageButton
                 {
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.Transparent,
+                    Name = header,
+                    URL = item.url,
                 };
-                grid.Children.Add(dummyButton, px, px + sx, py, py + sy);
-                dummyButton.Clicked += OnDummyButtonClicked;
+                grid.Children.Add(ImageButton, px, px + sx, py, py + sy);
+                ImageButton.Clicked += OnImageButtonClicked;
 
                 // Start the refresh time
                 if (item.refresh != string.Empty)
@@ -107,6 +109,69 @@ namespace Kala
                 CrossLogger.Current.Error("Image", "Image crashed: " + ex.ToString());
                 Error(grid, px, py, sx, sy, ex.ToString());
             }
+        }
+
+        private static void OnImageButtonClicked(object sender, EventArgs e)
+        {
+            ItemImageButton button = sender as ItemImageButton;
+           
+            CrossLogger.Current.Info("Image", "Button ID: '" + button.Id.ToString() + ", Image ID: " + button.URL + ", Name: " + button.Name);
+
+            PreviousPage = Application.Current.MainPage;
+            Application.Current.MainPage = CreateImagePage(button);
+        }
+
+        private static ContentPage CreateImagePage(ItemImageButton ImageInfo)
+        {
+            App.config.LastActivity = DateTime.Now;
+
+            var image = new CachedImage()
+            {
+                DownsampleToViewSize = false,
+                CacheDuration = TimeSpan.FromMilliseconds(1000),
+                Aspect = Aspect.AspectFit,
+                RetryCount = 0,
+                RetryDelay = 250,
+                BitmapOptimizations = true,
+                Source = ImageInfo.URL,
+                HeightRequest = 400,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+
+            Button button = new Button
+            {
+                Text = "Close",
+                FontSize = 50,
+                TextColor = App.config.TextColor,
+                BackgroundColor = App.config.BackGroundColor,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.End,
+            };
+            button.Clicked += (sender, e) => {
+                Application.Current.MainPage = PreviousPage;
+            };
+
+            return (new ContentPage
+            {
+                Content = new StackLayout
+                {
+                    Children = { new Label
+                        {
+                            Text = ImageInfo.Name,
+                            FontSize = 24,
+                            TextColor = App.config.TextColor,
+                            BackgroundColor = App.config.BackGroundColor,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            VerticalTextAlignment = TextAlignment.Start
+                        },
+                        image, button },
+                    BackgroundColor = App.config.BackGroundColor,
+                    Orientation = StackOrientation.Vertical,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                }
+            });
         }
     }
 }

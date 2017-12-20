@@ -147,13 +147,40 @@ namespace Kala
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("start-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", Start:" + item.State);
-                            DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                            //DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                            DateTime tmp = DateTime.MinValue;
+                            DateTime.TryParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
+
+                            if (tmp == DateTime.MinValue)
+                            {
+                                DateTime.TryParseExact(item.State, "yyyy-MM-ddTHH:mm:ss.fffK", CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
+                            }
+
+                            if (tmp == DateTime.MinValue)
+                            {
+                                CrossLogger.Current.Error("Calendar", "Failed to DateTime convert: '" + item.State + "'");
+                            }
+
                             calEvents[id].Start = tmp;
                         }
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("end-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", End:" + item.State);
-                            DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                            //DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                            DateTime tmp = DateTime.MinValue;
+                            DateTime.TryParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
+
+                            if (tmp == DateTime.MinValue)
+                            {
+                                DateTime.TryParseExact(item.State, "yyyy-MM-ddTHH:mm:ss.fffK", CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
+                            }
+
+                            if (tmp == DateTime.MinValue)
+                            {
+                                CrossLogger.Current.Error("Calendar", "Failed to DateTime convert: '" + item.State + "'");
+                            }
                             calEvents[id].End = tmp;
                         }
                     }

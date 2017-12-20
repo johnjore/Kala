@@ -3,7 +3,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.Views;
 using Xamarin.Forms;
-
+using Android.OS;
 
 [assembly: Dependency(typeof(Kala.Droid.ScreenLayout))]
 namespace Kala.Droid
@@ -49,6 +49,16 @@ namespace Kala.Droid
             {
                 activity.Window.AddFlags(WindowManagerFlags.Fullscreen);
                 activity.SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
+
+                //Removes on-screen navigation buttons. Are all options required?
+                activity.Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(
+                    SystemUiFlags.LayoutStable |
+                    SystemUiFlags.HideNavigation |
+                    SystemUiFlags.LayoutFullscreen |
+                    SystemUiFlags.Fullscreen |
+                    SystemUiFlags.LowProfile |
+                    SystemUiFlags.ImmersiveSticky
+                );
             }
             else
             {

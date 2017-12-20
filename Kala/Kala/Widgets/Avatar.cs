@@ -7,6 +7,8 @@ using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using Plugin.Logger;
 
+/**/// A bug in OH2, String items causes a crash, but Number items don't. This is a workaround, but should be made more general
+
 namespace Kala
 {
     public partial class Widgets
@@ -14,6 +16,7 @@ namespace Kala
         public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JObject data)
         {
             CrossLogger.Current.Debug("Avatar", "Creating Avatar Widget");
+            //Home=0, Away=1
 
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);

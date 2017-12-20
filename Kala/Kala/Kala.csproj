@@ -38,6 +38,7 @@
     <Compile Include="App.cs" />
     <Compile Include="CustomControls\CircularProgressBar.cs" />
     <Compile Include="CustomControls\ItemButton.cs" />
+    <Compile Include="CustomControls\ItemImage.cs" />
     <Compile Include="CustomControls\ItemLabel.cs" />
     <Compile Include="CustomControls\ShapeView.cs" />
     <Compile Include="Data\IRestService.cs" />
