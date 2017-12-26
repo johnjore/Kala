@@ -1,18 +1,25 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Views;
 using Xamarin.Forms;
-using Android.OS;
 
 [assembly: Dependency(typeof(Kala.Droid.ScreenLayout))]
 namespace Kala.Droid
 {
     public class ScreenLayout : IScreen
     {
+        static Context _context;
+
+        public static void Init(Context context)
+        {
+            _context = context;
+        }
+
         public void SetBacklight(float factor)
         {
-            var activity = (Activity)Forms.Context;
+            var activity = (Activity)_context;
             var attributes = activity.Window.Attributes;
 
             attributes.ScreenBrightness = factor;
@@ -21,14 +28,14 @@ namespace Kala.Droid
 
         public void SetScreenOrientation(string Screenorientation)
         {
-            var activity = (Activity)Forms.Context;
+            var activity = (Activity)_context;
             activity.RequestedOrientation = (ScreenOrientation)Enum.Parse(typeof(ScreenOrientation), Screenorientation);
             activity.RequestedOrientation = ScreenOrientation.Locked;
         }
 
         public void ScreenSaver(long screensaver)
         {
-            var activity = (Activity)Forms.Context;
+            var activity = (Activity)_context;
 
             if (screensaver > 0)
             {
@@ -42,7 +49,7 @@ namespace Kala.Droid
 
         public void SetFullScreen(bool fullscreen)
         {
-            var activity = (Activity)Forms.Context;
+            var activity = (Activity)_context;
             var attributes = activity.Window.Attributes;
 
             if (fullscreen)

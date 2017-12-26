@@ -1,16 +1,14 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using DrawShape;
 using DrawShape.Android;
-using Android.Graphics;
 
 [assembly:ExportRenderer (typeof(ShapeView), typeof(ShapeRenderer))]
 namespace DrawShape.Android
 {
 	public class ShapeRenderer : ViewRenderer<ShapeView, Shape>
 	{
-		public ShapeRenderer ()
+		public ShapeRenderer()
 		{
 		}
 

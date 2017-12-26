@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using com.refractored.monodroidtoolkit;
 using CircularProgressBar.FormsPlugin.Abstractions;
 using CircularProgressBar.FormsPlugin.Android;
@@ -29,7 +28,7 @@ namespace CircularProgressBar.FormsPlugin.Android
             {
                 return;
             }
-            
+
             var progress = new HoloCircularProgressBar(Forms.Context)
             {
                 Progress = progressBar.Progress,

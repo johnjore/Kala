@@ -1,5 +1,4 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Droid;
@@ -21,8 +20,11 @@ namespace Kala.Droid
             Xamarin.Forms.Forms.Init(this, bundle);
             //App.Speech = new Speech();
 
+            //Init special handlers
+            ScreenLayout.Init(this);
+
             // Library for Image handling as XF does not support authentication
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(true);
 
             // Xamarin.Forms.GoogleMaps initialization
             Xamarin.FormsGoogleMaps.Init(this, bundle);
