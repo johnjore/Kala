@@ -53,6 +53,7 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Itemtypes.cs" />
+    <Compile Include="Models\ScreenSaverTypes.cs" />
     <Compile Include="Models\Sitemap.cs" />
     <Compile Include="Models\Sitemaps.cs" />
     <Compile Include="PlatformSpecifics\IScreen.cs" />

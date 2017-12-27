@@ -65,12 +65,31 @@ namespace Kala
                     IScreen ss = DependencyService.Get<IScreen>();                    
                     ss.ScreenSaver(App.config.ScreenSaver);
                     ss = null;
+
+                    App.config.ScreenSaverType = Models.ScreenSaverTypes.Clock;
+                    if (entry.ContainsKey("screensavertype"))
+                    {
+                        App.config.ScreenSaverType = (Models.ScreenSaverTypes)Enum.Parse(typeof(Models.ScreenSaverTypes), entry["screensavertype"], true);
+                    }
+
+                    switch (App.config.ScreenSaverType)
+                    {
+                        case Models.ScreenSaverTypes.Images:
+                            if (entry.ContainsKey("screensaverurl"))
+                            {
+                                Widgets.url = entry["screensaverurl"];
+                            }
+                            else
+                            {
+                                App.config.ScreenSaverType = Models.ScreenSaverTypes.Clock;
+                            }
+                            break;
+                    }
                 }
                 catch (Exception ex)
                 {
                     CrossLogger.Current.Error("Kala", "Failed to convert 'screensaver' value: '" + entry["screensaver"].ToString() + "', " + ex.ToString());
                 }
-
             }
 
             if (entry.ContainsKey("kala"))

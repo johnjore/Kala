@@ -28,9 +28,10 @@ namespace Kala
             public bool Initialized = false;
             public bool Settings = true;
             public long ScreenSaver = -1;
+            public Models.ScreenSaverTypes ScreenSaverType = Models.ScreenSaverTypes.Clock;
             public Color BackGroundColor = Color.FromHex("212121");
             public Color CellColor = Color.FromHex("424242");
-            public Color TextColor = Color.FromHex("ffffff"); // Color.White;
+            public Color TextColor = Color.FromHex("ffffff");
             public Color ValueColor = Color.Blue;
             public DateTime LastActivity = DateTime.Now;            
             public List<trackItem> items = new List<trackItem>();
