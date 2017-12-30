@@ -31,9 +31,10 @@ namespace Kala
                 {
                     CrossLogger.Current.Debug("Screensaver", "Enable Screensaver");
 
-                    IScreen dim = DependencyService.Get<IScreen>();
-                    dim.SetBacklight(0.0f);
-                    dim = null;
+                    IScreen screen = DependencyService.Get<IScreen>();
+                    screen.SetFullScreen(App.config.FullScreen);
+                    screen.SetBacklight(0.0f);
+                    screen = null;
                     active = true;
 
                     PreviousPage = Application.Current.MainPage;
@@ -54,68 +55,78 @@ namespace Kala
             App.tp.CurrentPage = App.tp.Children[0];        //Revert to first tab when resuming
             App.config.LastActivity = DateTime.Now;         //Update lastactivity to reset Screensaver timer
 
-            IScreen dim = DependencyService.Get<IScreen>();
-            dim.SetBacklight(0.8f);
-            dim = null;
+            IScreen screen = DependencyService.Get<IScreen>();
+            screen.SetBacklight(0.8f);
+            screen.SetFullScreen(App.config.FullScreen);
+            screen = null;
         }
 
         private static ContentPage CreatePage()
         {
-            AbsoluteLayout absoluteLayout = new AbsoluteLayout
+            try
             {
-                BackgroundColor = App.config.BackGroundColor
-            };
+                AbsoluteLayout absoluteLayout = new AbsoluteLayout
+                {
+                    BackgroundColor = App.config.BackGroundColor
+                };
 
-            switch (App.config.ScreenSaverType)
-            {
-                case Models.ScreenSaverTypes.Clock:
-                    l_clock = new Label
-                    {
-                        FontSize = 72,
-                        TextColor = App.config.TextColor,
-                        BackgroundColor = App.config.BackGroundColor,
-                    };
-                    AbsoluteLayout.SetLayoutFlags(l_clock, AbsoluteLayoutFlags.PositionProportional);
-                    absoluteLayout.Children.Add(l_clock);
-                    break;
-                case Models.ScreenSaverTypes.Images:
-                    //Source is added later
-                    image = new CachedImage()
-                    {
-                        DownsampleToViewSize = true,
-                        CacheDuration = TimeSpan.FromMilliseconds(1000),
-                        RetryCount = 0,
-                        RetryDelay = 250,
-                        Aspect = Aspect.AspectFit,
-                        HorizontalOptions = LayoutOptions.CenterAndExpand,
-                        VerticalOptions = LayoutOptions.CenterAndExpand,
-                        WidthRequest = 2000,
-                        HeightRequest = 2000,
-                        BitmapOptimizations = true,
-                    };
-                    AbsoluteLayout.SetLayoutBounds(image, new Rectangle(0.0, 0.0, 1.0, 1.0));
-                    AbsoluteLayout.SetLayoutFlags(image, AbsoluteLayoutFlags.All);
-                    absoluteLayout.Children.Add(image);
-                    break;
+                switch (App.config.ScreenSaverType)
+                {
+                    case Models.ScreenSaverTypes.Clock:
+                        l_clock = new Label
+                        {
+                            FontSize = 72,
+                            TextColor = App.config.TextColor,
+                            BackgroundColor = App.config.BackGroundColor,
+                        };
+                        AbsoluteLayout.SetLayoutFlags(l_clock, AbsoluteLayoutFlags.PositionProportional);
+                        absoluteLayout.Children.Add(l_clock);
+                        break;
+                    case Models.ScreenSaverTypes.Images:
+                        //Source is added later
+                        image = new CachedImage()
+                        {
+                            DownsampleToViewSize = true,
+                            CacheDuration = TimeSpan.FromMilliseconds(1000),
+                            RetryCount = 0,
+                            RetryDelay = 250,
+                            Aspect = Aspect.AspectFit,
+                            HorizontalOptions = LayoutOptions.CenterAndExpand,
+                            VerticalOptions = LayoutOptions.CenterAndExpand,
+                            WidthRequest = 2000,
+                            HeightRequest = 2000,
+                            BitmapOptimizations = true,
+                        };
+                        AbsoluteLayout.SetLayoutBounds(image, new Rectangle(0.0, 0.0, 1.0, 1.0));
+                        AbsoluteLayout.SetLayoutFlags(image, AbsoluteLayoutFlags.All);
+                        absoluteLayout.Children.Add(image);
+                        break;
+                }
+
+                Button resumeButton = new Button
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.Transparent,
+                    AnchorX = 0,
+                    AnchorY = 0,
+                    HeightRequest = 1000,
+                    WidthRequest = 1000,
+                };
+                resumeButton.Clicked += OnResumeButtonClicked;
+                AbsoluteLayout.SetLayoutFlags(resumeButton, AbsoluteLayoutFlags.None);
+                absoluteLayout.Children.Add(resumeButton);
+
+                return (new ContentPage
+                {
+                    Content = absoluteLayout
+                });
             }
-
-            Button resumeButton = new Button
+            catch (Exception ex)
             {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                BackgroundColor = Color.Transparent,
-                AnchorX = 0,
-                AnchorY = 0,
-                HeightRequest = 1000,
-                WidthRequest = 1000,
-            };
-            resumeButton.Clicked += OnResumeButtonClicked;
-            AbsoluteLayout.SetLayoutFlags(resumeButton, AbsoluteLayoutFlags.None);
-            absoluteLayout.Children.Add(resumeButton);
-
-            return (new ContentPage {
-                Content = absoluteLayout
-            });
+                CrossLogger.Current.Error("ScreenSaver", "Failed to CreatePage(), " + ex.ToString());
+            }
+            return null;
         }
 
         private async static void InfiniteLoop()
@@ -138,26 +149,33 @@ namespace Kala
 
         public static void GetImage(string url)
         {
-            HttpClient client = new HttpClient
+            try
             {
-                MaxResponseContentBufferSize = 256000
-            };
-            var response = client.GetAsync(url).Result;
+                HttpClient client = new HttpClient
+                {
+                    MaxResponseContentBufferSize = 256000
+                };
+                var response = client.GetAsync(url).Result;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                CrossLogger.Current.Error("Screensaver", "Failed: " + response.StatusCode.ToString());
-                return;
+                if (!response.IsSuccessStatusCode)
+                {
+                    CrossLogger.Current.Error("Screensaver", "Failed: " + response.StatusCode.ToString());
+                    return;
+                }
+
+                string html = response.Content.ReadAsStringAsync().Result;
+                Regex regex = new Regex("<a href=\".*\">(?<name>.*)</a>");
+                MatchCollection matches = regex.Matches(html);
+                if (matches.Count > 0)
+                {
+                    Random random = new Random();
+                    int randomNumber = random.Next(0, matches.Count);
+                    image.Source = url + "/" + matches[randomNumber].Groups["name"].ToString();
+                }
             }
-
-            string html = response.Content.ReadAsStringAsync().Result;
-            Regex regex = new Regex("<a href=\".*\">(?<name>.*)</a>");
-            MatchCollection matches = regex.Matches(html);
-            if (matches.Count > 0)
+            catch (Exception ex)
             {
-                Random random = new Random();
-                int randomNumber = random.Next(0, matches.Count);
-                image.Source = url + "/" + matches[randomNumber].Groups["name"].ToString();
+                CrossLogger.Current.Error("ScreenSaver", "Failed to GetImage() from '" + url + "', " + ex.ToString());
             }
         }
     }

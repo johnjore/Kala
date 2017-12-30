@@ -28,6 +28,7 @@ namespace Kala
             public bool Initialized = false;
             public bool Settings = true;
             public long ScreenSaver = -1;
+            public bool FullScreen = false;
             public Models.ScreenSaverTypes ScreenSaverType = Models.ScreenSaverTypes.Clock;
             public Color BackGroundColor = Color.FromHex("212121");
             public Color CellColor = Color.FromHex("424242");
