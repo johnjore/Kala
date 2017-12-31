@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Newtonsoft.Json.Linq;
@@ -96,7 +94,7 @@ namespace Kala
 
                 grid.Children.Add(map, px, px + sx, py, py + sy);
                 map.MapClicked += Map_MapClicked;
-                map.CameraChanged += Map_CameraChanged;
+                map.CameraIdled += Map_CameraIdled;
             }
             catch (Exception ex)
             {
@@ -104,7 +102,7 @@ namespace Kala
             }
         }
 
-        private static void Map_CameraChanged(object sender, CameraChangedEventArgs e)
+        private static void Map_CameraIdled(object sender, CameraIdledEventArgs e)
         {
             App.config.LastActivity = DateTime.Now;
         }
