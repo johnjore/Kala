@@ -33,8 +33,10 @@ namespace Kala
 
                     RowDefinitions = new RowDefinitionCollection
                     {
-                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
-                    }   
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                    }
                 };
 
                 //Columns
@@ -99,7 +101,7 @@ namespace Kala
                             Type = Models.Itemtypes.Weathericon
                         };
                         App.config.itemlabels.Add(l_image);
-                        t_grid.Children.Add(l_image, day, 0);
+                        t_grid.Children.Add(l_image, day, 1);
                     }
                     #endregion Condition
 
@@ -121,7 +123,7 @@ namespace Kala
                             Digits = digits.Item2
                         };
                         App.config.itemlabels.Add(l_temp_high);
-                        t_grid.Children.Add(l_temp_high, day, 0);
+                        t_grid.Children.Add(l_temp_high, day, 2);
                     }
 
                     if (items[i].label.Contains("temperature-low"))
@@ -140,7 +142,7 @@ namespace Kala
                             Digits = digits.Item2
                         };
                         App.config.itemlabels.Add(l_temp_low);
-                        t_grid.Children.Add(l_temp_low, day, 0);
+                        t_grid.Children.Add(l_temp_low, day, 2);
                     }
                     #endregion Temperature
                 }

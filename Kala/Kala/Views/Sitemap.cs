@@ -308,6 +308,13 @@ namespace Kala
                                 Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
+                        case "FLOORMAP":
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Floormap(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], 
+                                    itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
+                            }
+                            break;
                         case "SENSOR":
                             string sx = "1";
                             string sy = "1";
