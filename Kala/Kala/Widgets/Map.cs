@@ -6,6 +6,12 @@ using Xamarin.Forms.GoogleMaps;
 using Newtonsoft.Json.Linq;
 using Plugin.Logger;
 
+/*
+Get SHA1 code for MAPS API:
+keytool -list -keystore "%USERPROFILE%\AppData\Local\Xamarin\Mono for Android/debug.keystore" -alias androiddebugkey -storepass android -keypass android
+https://console.developers.google.com/apis/credentials/key/
+*/
+
 namespace Kala
 {
     public partial class Widgets
