@@ -5,4 +5,13 @@ Frame label="Kala's walks (Average, Yesterday, Today) {widget=gauge-group,px=0,p
 	Text item=whistle_02	label="{min=0,max=150,unit=Minutes,icon=ic_pets_white_48dp,digits=0}"
 }
 
+Frame label="Kala's Vitals {widget=gauge-group,px=3,py=0,sx=2,sy=3,rx=2,ry=3}" {
+	Text item=whistle_01    label="{min=0,max=100,unit=Percent,icon=ic_battery_80_white_48dp,digits=0}"
+        Text item=whistle_06    label="{min=0,max=365,unit=Days,icon=ic_update_white_48dp}"
+        Text item=whistle_05    label="{min=0,max=150,unit=Minutes,icon=ic_pets_white_48dp}"
+        Text item=Weight_Kala   label="{min=16,max=20,unit=Kg,icon=ic_scale_bathroom_white_48dp,digits=1}"
+        Text item=whistle_05    label="{min=0,max=150,unit=Minutes,icon=ic_pets_white_48dp}"
+        Text item=Weight_Kala   label="{min=16,max=20,unit=Kg,icon=ic_scale_bathroom_white_48dp,digits=1}"}
+
 'Digits' is optional
+'rx and ry is optional and controls layout within sx/sy

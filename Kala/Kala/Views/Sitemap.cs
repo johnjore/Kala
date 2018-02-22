@@ -336,9 +336,17 @@ namespace Kala
                             }
                             break;
                         case "GAUGE-GROUP":
+                            string rx = String.Empty;
+                            string ry = String.Empty;
+                            if (itemKeyValuePairs.ContainsKey("rx") && itemKeyValuePairs.ContainsKey("ry"))
+                            {
+                                rx = itemKeyValuePairs["rx"];
+                                ry = itemKeyValuePairs["ry"];
+                            }
+
                             if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
+                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], rx, ry, itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
                             }
                             break;
                         case "IMAGE":

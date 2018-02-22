@@ -22,6 +22,9 @@ Gauge
 Gauge-Group
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Gauge-Group%2C%203x1.png)
 
+Gauge-Group
+![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Gauge-Group%2C%20AxB.png)
+
 Image
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Image%2C%201x1.png)
 
