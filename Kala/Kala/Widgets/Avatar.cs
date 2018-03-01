@@ -7,16 +7,13 @@ using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using Plugin.Logger;
 
-/**/// A bug in OH2, String items causes a crash, but Number items don't. This is a workaround, but should be made more general
-
 namespace Kala
 {
     public partial class Widgets
     {
-        public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JObject data)
+        public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
         {
             CrossLogger.Current.Debug("Avatar", "Creating Avatar Widget");
-            //Home=0, Away=1
 
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);
@@ -25,8 +22,8 @@ namespace Kala
 
             try
             {
-                Models.avatar item = data.ToObject<Models.avatar>();
-
+                List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
+               
                 #region w_grid
                 Grid w_grid = new Grid
                 {
@@ -49,37 +46,42 @@ namespace Kala
                 grid.Children.Add(w_grid, px, px + sx, py, py + sy);
                 #endregion w_grid
 
-                var image = new CachedImage()
+                foreach (Models.Sitemap.Widget3 item in items)
                 {
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.StartAndExpand,
-                    DownsampleToViewSize = false,
-                    CacheDuration = TimeSpan.FromMilliseconds(1000),
-                    Aspect = Aspect.AspectFill,
-                    RetryCount = 0,
-                    RetryDelay = 250,
-                    BitmapOptimizations = true,
-                    Transformations = new List<ITransformation>()
-                    {
-                        new CircleTransformation()
-                    },
-                    Source = item.url,
-                };
-                w_grid.Children.Add(image, 0, 0);
-
-                ItemLabel l_mode = new ItemLabel
-                {
-                    Text = item.item.state,
-                    FontSize = 20,
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = Color.Transparent,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.End,
-                    Name = item.item.name
-                };
-                App.config.itemlabels.Add(l_mode);
-                w_grid.Children.Add(l_mode, 0, 1);
-
+                    if (item.url != null) {
+                        var image = new CachedImage()
+                        {
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.StartAndExpand,
+                            DownsampleToViewSize = false,
+                            CacheDuration = TimeSpan.FromMilliseconds(1000),
+                            Aspect = Aspect.AspectFill,
+                            RetryCount = 0,
+                            RetryDelay = 250,
+                            BitmapOptimizations = true,
+                            Transformations = new List<ITransformation>()
+                            {
+                                new CircleTransformation()
+                            },
+                            Source = item.url,
+                        };
+                        w_grid.Children.Add(image, 0, 0);
+                    } else {
+                        ItemLabel l_mode = new ItemLabel
+                        {
+                            Text = item.item.state,
+                            FontSize = 20,
+                            TextColor = App.config.TextColor,
+                            BackgroundColor = Color.Transparent,
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.End,
+                            Name = item.item.name
+                        };
+                        App.config.itemlabels.Add(l_mode);
+                        w_grid.Children.Add(l_mode, 0, 1);
+                    }
+                }
+ 
                 //Button must be last to be added to work
                 Button dummyButton = new Button
                 {

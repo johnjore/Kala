@@ -278,7 +278,7 @@ namespace Kala
                         case "AVATAR":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], (JObject)item.widgets[0]);
+                                Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], JArray.FromObject(item.widgets));
                             }
                             break;
                         case "BLIND":

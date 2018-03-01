@@ -8,6 +8,7 @@ namespace Kala.Models.Sitemap
         public string type { get; set; }
         public string label { get; set; }
         public string icon { get; set; }
+        public string url { get; set; }
         public List<object> mappings { get; set; }
         public Item item { get; set; }
         public List<object> widgets { get; set; }      
