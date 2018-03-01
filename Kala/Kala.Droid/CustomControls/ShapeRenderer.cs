@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Android.Content;
+using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using DrawShape;
 using DrawShape.Android;
@@ -8,7 +9,7 @@ namespace DrawShape.Android
 {
 	public class ShapeRenderer : ViewRenderer<ShapeView, Shape>
 	{
-		public ShapeRenderer()
+        public ShapeRenderer(Context context) : base(context)
 		{
 		}
 

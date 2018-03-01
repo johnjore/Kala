@@ -1,16 +1,21 @@
+using Android.Content;
 using com.refractored.monodroidtoolkit;
 using CircularProgressBar.FormsPlugin.Abstractions;
 using CircularProgressBar.FormsPlugin.Android;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-//From https://github.com/jamesmontemagno
+//Based on https://github.com/jamesmontemagno
 
 [assembly: ExportRenderer(typeof(CircularProgressBarView), typeof(CircularProgressBarRenderer))]
 namespace CircularProgressBar.FormsPlugin.Android
 {
     public class CircularProgressBarRenderer : ViewRenderer<CircularProgressBarView, HoloCircularProgressBar>
     {
+        public CircularProgressBarRenderer(Context context) : base(context)
+        {
+        }
+
         /// <summary>
         /// Used for registration with dependency service
         /// </summary>
@@ -29,7 +34,7 @@ namespace CircularProgressBar.FormsPlugin.Android
                 return;
             }
 
-            var progress = new HoloCircularProgressBar(Forms.Context)
+            var progress = new HoloCircularProgressBar(Context)
             {
                 Progress = progressBar.Progress,
                 ProgressColor = progressBar.ProgressColor.ToAndroid(),

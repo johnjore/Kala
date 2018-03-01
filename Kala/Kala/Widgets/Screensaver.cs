@@ -143,7 +143,7 @@ namespace Kala
                         GetImage(url);
                         break;
                 }
-                await Task.Delay(5000);
+                await Task.Delay(10000);
             }
         }
 
