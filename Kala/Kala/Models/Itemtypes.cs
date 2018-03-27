@@ -10,5 +10,6 @@
         Dimmer = 5,
         Blind = 6,
         NameOfDay = 7,
+        Floormap = 8,
     };
 }

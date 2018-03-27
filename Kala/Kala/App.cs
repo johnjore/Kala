@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Plugin.Logger;
+using FFImageLoading.Svg.Forms;
 
 namespace Kala
 {
@@ -19,6 +20,7 @@ namespace Kala
             public string unit { get; set; }
             public Models.Itemtypes type { get; set; }
             public string name { get; set; }
+            public SvgCachedImage svgImage { get; set; }
         }
 
         public class Configuration

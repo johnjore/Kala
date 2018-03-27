@@ -173,118 +173,125 @@ namespace Kala
         //Update GUI
         public static void GUI_Update(Models.Events item)
         {
-            #region Generic labels
-            foreach (ItemLabel lbl in App.config.itemlabels)
+            try
             {
-                if (lbl.Name != null && lbl.Name.Equals(item.topic) && item.value != null)
+                #region Generic labels
+                foreach (ItemLabel lbl in App.config.itemlabels)
                 {
-                    //Manage special cases
-                    switch (lbl.Type)
+                    if (lbl.Name != null && lbl.Name.Equals(item.topic) && item.value != null)
                     {
-                        case Models.Itemtypes.Winddirection:
-                            int w_direction = 0;
-                            wind_direction.TryGetValue(item.value.ToLower(), out w_direction);
-                            lbl.Rotation = w_direction;
-                            break;
-                        case Models.Itemtypes.Weathericon:
-                            lbl.Text = Widgets.WeatherCondition(item.value);
-                            break;
-                        default:
-                            //If Digits is set, round off the value
-                            if (lbl.Digits > -1)
-                            {
-                                item.value = Math.Round(Convert.ToDouble(item.value), lbl.Digits).ToString("f" + lbl.Digits);
-                            }
+                        //Manage special cases
+                        switch (lbl.Type)
+                        {
+                            case Models.Itemtypes.Winddirection:
+                                int w_direction = 0;
+                                wind_direction.TryGetValue(item.value.ToLower(), out w_direction);
+                                lbl.Rotation = w_direction;
+                                break;
+                            case Models.Itemtypes.Weathericon:
+                                lbl.Text = Widgets.WeatherCondition(item.value);
+                                break;
+                            default:
+                                //If Digits is set, round off the value
+                                if (lbl.Digits > -1)
+                                {
+                                    item.value = Math.Round(Convert.ToDouble(item.value), lbl.Digits).ToString("f" + lbl.Digits);
+                                }
 
-                            lbl.Text = lbl.Pre + item.value + lbl.Post;
-                            break;
+                                lbl.Text = lbl.Pre + item.value + lbl.Post;
+                                break;
+                        }
                     }
                 }
-            }
-            #endregion Generic labels
+                #endregion Generic labels
 
-            #region Calendar
-            foreach (Models.calItems lbl in Widgets.itemCalendar)
-            {
-                if (lbl.Name.Equals(item.topic))
+                #region Calendar
+                foreach (Models.calItems lbl in Widgets.itemCalendar)
                 {
-                    Widgets.Calendar_Update(item);
+                    if (lbl.Name.Equals(item.topic))
+                    {
+                        Widgets.Calendar_Update(item);
+                    }
                 }
-            }
-            #endregion Calendar
+                #endregion Calendar
 
-            #region ShapeViews
-            List<ShapeView> tmp = new List<ShapeView>(App.config.itemShapeViews);
-            foreach (ShapeView sv in tmp)
-            {
-                if (sv.Name.Equals(item.topic) && item.value != null)
+                #region ShapeViews
+                List<ShapeView> tmp = new List<ShapeView>(App.config.itemShapeViews);
+                foreach (ShapeView sv in tmp)
+                {
+                    if (sv.Name.Equals(item.topic) && item.value != null)
+                    {
+                        try
+                        {
+                            float.TryParse(item.value, out float state);
+
+                            //Basic sanity checks
+                            if (state > sv.Max) sv.Max = state;
+                            if (state < sv.Min) sv.Min = state;
+
+                            //Handle negative ranges
+                            if (sv.Min < 0)
+                            {
+                                sv.Max += Math.Abs(sv.Min);
+                                state += (float)Math.Abs(sv.Min);
+                                sv.Min = 0;
+                            }
+
+                            sv.IndicatorPercentage = (float)((state - sv.Min) / (sv.Max - sv.Min) * 100.0f);
+
+                            //Update GUI
+                            Grid g = (Grid)sv.Parent;
+                            g.Children.Remove(sv);
+                            g.Children.Add(sv);
+                        }
+                        catch (Exception ex)
+                        {
+                            CrossLogger.Current.Error("Update", "DrawShape Update Crashed: " + ex.ToString());
+                        }
+                    }
+                }
+                #endregion ShapeViews
+
+                #region Maps
+                foreach (Map map in Widgets.itemMaps)
                 {
                     try
                     {
-                        float.TryParse(item.value, out float state);
+                        var latitudes = new List<double>();
+                        var longitudes = new List<double>();
+                        bool update = false;
 
-                        //Basic sanity checks
-                        if (state > sv.Max) sv.Max = state;
-                        if (state < sv.Min) sv.Min = state;
-
-                        //Handle negative ranges
-                        if (sv.Min < 0)
+                        foreach (Pin pin in map.Pins)
                         {
-                            sv.Max += Math.Abs(sv.Min);
-                            state += (float)Math.Abs(sv.Min);
-                            sv.Min = 0;
+                            if (pin.Tag.Equals(item.topic) && item.value != null)
+                            {
+                                CrossLogger.Current.Info("Map", "Update");
+                                var b = item.value.Split(',');
+                                if (b.Count() > 2)
+                                {
+                                    pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
+                                    update = true;
+                                }
+                            }
+
+                            latitudes.Add(pin.Position.Latitude);
+                            longitudes.Add(pin.Position.Longitude);
                         }
 
-                        sv.IndicatorPercentage = (float)((state - sv.Min) / (sv.Max - sv.Min) * 100.0f);
-
-                        //Update GUI
-                        Grid g = (Grid)sv.Parent;
-                        g.Children.Remove(sv);
-                        g.Children.Add(sv);                        
+                        if (update)
+                            Widgets.MapUpdate(latitudes, longitudes, map);
                     }
                     catch (Exception ex)
                     {
-                        CrossLogger.Current.Error("Update", "DrawShape Update Crashed: " + ex.ToString());
+                        CrossLogger.Current.Error("Kala", "Map Update crashed: " + ex.ToString());
                     }
                 }
+                #endregion Maps
             }
-            #endregion ShapeViews
-
-            #region Maps
-            foreach (Map map in Widgets.itemMaps)
+            catch (Exception ex)
             {
-                try
-                {
-                    var latitudes = new List<double>();
-                    var longitudes = new List<double>();
-                    bool update = false;
-
-                    foreach (Pin pin in map.Pins)
-                    {
-                        if (pin.Tag.Equals(item.topic) && item.value != null)
-                        {
-                            CrossLogger.Current.Info("Map", "Update");
-                            var b = item.value.Split(',');
-                            if (b.Count() > 2)
-                            {
-                                pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
-                                update = true;
-                            }
-                        }
-
-                        latitudes.Add(pin.Position.Latitude);
-                        longitudes.Add(pin.Position.Longitude);
-                    }
-
-                    if (update)
-                        Widgets.MapUpdate(latitudes, longitudes, map);
-                }
-                catch (Exception ex)
-                {
-                    CrossLogger.Current.Error("Kala", "Map Update crashed: " + ex.ToString());
-                }
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("GUI Update", "Crashed: " + ex.ToString()));
             }
-            #endregion Maps
         }
     }
 }

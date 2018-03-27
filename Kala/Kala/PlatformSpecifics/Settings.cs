@@ -26,7 +26,7 @@ namespace Kala
         private static string ProtocolDefault = "http";
 
         private const string ServerKey = "server_key";
-        private static string ServerDefault = "openhabserver";
+        private static string ServerDefault = "openhabserver.local";
 
         private const string PortKey = "port_key";
         private static int PortDefault = 8080;

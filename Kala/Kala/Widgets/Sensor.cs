@@ -67,6 +67,8 @@ namespace Kala
 
         public static void Sensor_update(bool Create, App.trackItem item)
         {
+            Floorplan_update(item);
+
             item.grid.Children.Clear();
 
             #region Header
@@ -106,7 +108,7 @@ namespace Kala
             }
             #endregion State
 
-            #region Image     
+            #region Image
             item.grid.Children.Add(new Image
             {
                 Source = item.icon,

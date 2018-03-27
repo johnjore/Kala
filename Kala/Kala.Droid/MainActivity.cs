@@ -5,6 +5,16 @@ using FFImageLoading.Forms.Droid;
 using Plugin.Logger;
 using Plugin.Logger.Abstractions;
 
+/*
+Steps to sign APK:
+    "keytool.exe" -genkey -v -keystore Kala.keystore -alias Kala -keyalg RSA -keysize 2048 -validity 20000
+    "jarsigner.exe" -verbose -keystore Kala.keystore .\Kala.Droid.apk Kala
+    "jarsigner.exe" -verify .\Kala.Droid.apk
+
+Install:
+    adb install Kala.Droid.apk
+ */
+
 namespace Kala.Droid
 {
     [Activity(Label = "Kala", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -30,7 +40,10 @@ namespace Kala.Droid
             Xamarin.FormsGoogleMaps.Init(this, bundle);
 
             //Logger
+            #if DEBUG
             CrossLogger.Current.Configure("Kala.log", 3, 100, LogLevel.Debug, true);
+            #endif
+            CrossLogger.Current.Purge();
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Log Started");
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Folder for Log file: " + CrossLogger.Current.GetLocalStoragePath().ToString());
 

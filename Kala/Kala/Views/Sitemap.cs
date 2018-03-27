@@ -311,8 +311,7 @@ namespace Kala
                         case "FLOORMAP":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Floormap(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], 
-                                    itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
+                                Widgets.FloormapAsync(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
                         case "SENSOR":
