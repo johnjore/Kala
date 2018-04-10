@@ -38,7 +38,7 @@ Kala is a play on Kaala, the dogs name. All donations go to Kala (the dog) or to
 Contribution are always welcome and helps both the overall quality, as well as speeds up development work.
 
 # License
-Copyright 2016, 2017 - John Jore
+Copyright 2016, 2017, 2018 - John Jore
 
 Software licensed under GPL version 3 available in GPLv3.TXT and online on http://www.gnu.org/licenses/gpl.txt.
 
