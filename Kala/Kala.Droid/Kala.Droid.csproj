@@ -12757,6 +12757,11 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_zoom_out_map_white_48dp.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_zoom_out_white_48dp.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_door_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_door_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_door_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_door_white_48dp.png" />
+    <AndroidResource Include="Resources\drawable\ic_door_white_48dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
