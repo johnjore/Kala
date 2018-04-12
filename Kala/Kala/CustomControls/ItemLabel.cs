@@ -7,6 +7,7 @@ public class ItemLabel : Label
     public static readonly BindableProperty PostProperty = BindableProperty.Create(nameof(Post), typeof(string), typeof(ItemLabel), null);
     public static readonly BindableProperty TypeProperty = BindableProperty.Create(nameof(Type), typeof(Kala.Models.Itemtypes), typeof(ItemLabel), Kala.Models.Itemtypes.Notused);
     public static readonly BindableProperty DigitsProperty = BindableProperty.Create(nameof(Digits), typeof(int), typeof(ItemLabel), -1);
+    public static readonly BindableProperty TransformProperty = BindableProperty.Create(nameof(Transformed), typeof(bool), typeof(ItemLabel), false);
 
     public string Name
     {
@@ -36,5 +37,11 @@ public class ItemLabel : Label
     {
         get { return (int)GetValue(DigitsProperty); }
         set { SetValue(DigitsProperty, value); }
+    }
+
+    public bool Transformed
+    {
+        get { return (bool)GetValue(TransformProperty); }
+        set { SetValue(TransformProperty, value); }
     }
 }

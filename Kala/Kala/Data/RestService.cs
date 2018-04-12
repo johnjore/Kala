@@ -149,6 +149,33 @@ namespace Kala
             return;
         }
 
+        public string GetItem(string name)
+        {
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Items + name));
+            CrossLogger.Current.Debug("Kala", "GetItem() - URI: " + uri.ToString());
+
+            try
+            {
+                var response = client.GetAsync(uri).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"{response.StatusCode} received from server");
+                }
+
+                string resultString = response.Content.ReadAsStringAsync().Result;
+                CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
+
+                Models.Item updatedItem = JsonConvert.DeserializeObject<Models.Item>(resultString);
+                return updatedItem.transformedState.ToString();
+            }
+            catch (Exception ex)
+            {
+                CrossLogger.Current.Error("Kala", "GetItem() - Failed: " + ex.ToString());
+            }
+            return null;
+        }
+
         public async Task GetUpdateAsync()
         {
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Events, string.Empty));

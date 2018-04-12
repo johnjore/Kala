@@ -1,9 +1,15 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
 using FFImageLoading.Forms.Droid;
 using Plugin.Logger;
 using Plugin.Logger.Abstractions;
+using Kala;
 
 /*
 Steps to sign APK:
@@ -17,9 +23,10 @@ Install:
 
 namespace Kala.Droid
 {
-    [Activity(Label = "Kala", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "Kala.Droid", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        public event EventHandler<ActivityResultEventArgs> ActivityResult = delegate { };
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -28,8 +35,7 @@ namespace Kala.Droid
             base.OnCreate(bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);
-            //App.Speech = new Speech();
-
+            
             //Init special handlers
             ScreenLayout.Init(this);
 
@@ -48,6 +54,16 @@ namespace Kala.Droid
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Folder for Log file: " + CrossLogger.Current.GetLocalStoragePath().ToString());
 
             LoadApplication(new App());
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            ActivityResult(this, new ActivityResultEventArgs
+            {
+                RequestCode = requestCode,
+                ResultCode = resultCode,
+                Data = data
+            });
         }
     }
 }

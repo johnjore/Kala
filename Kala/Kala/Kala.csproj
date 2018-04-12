@@ -58,10 +58,10 @@
     <Compile Include="Models\ScreenSaverTypes.cs" />
     <Compile Include="Models\Sitemap.cs" />
     <Compile Include="Models\Sitemaps.cs" />
-    <Compile Include="PlatformSpecifics\IScreen.cs" />
-    <Compile Include="PlatformSpecifics\IPlatformInfo.cs" />
-    <Compile Include="PlatformSpecifics\ITextToSpeech.cs" />
-    <Compile Include="PlatformSpecifics\Settings.cs" />
+    <Compile Include="CustomControls\IScreen.cs" />
+    <Compile Include="CustomControls\IPlatformInfo.cs" />
+    <Compile Include="CustomControls\ISpeechToText.cs" />
+    <Compile Include="CustomControls\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -85,6 +85,7 @@
     <Compile Include="Widgets\Map.cs" />
     <Compile Include="Widgets\Screensaver.cs" />
     <Compile Include="Widgets\Slider.cs" />
+    <Compile Include="Widgets\Voice.cs" />
     <Compile Include="Widgets\Switch.cs" />
     <Compile Include="Widgets\WeatherForecast.cs" />
     <Compile Include="Widgets\Weather.cs" />
@@ -161,6 +162,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

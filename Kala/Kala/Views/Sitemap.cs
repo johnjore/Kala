@@ -370,6 +370,12 @@ namespace Kala
                                 Widgets.Switch(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
+                        case "VOICE":
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Voice(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                            }
+                            break;
                         case "WEATHER":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))                            
                             {

@@ -36,13 +36,6 @@ namespace Kala
                     BackgroundColor = App.config.CellColor,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
-
-                    /*RowDefinitions = new RowDefinitionCollection {
-                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
-                    },
-                    ColumnDefinitions = new ColumnDefinitionCollection {
-                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                    },*/                   
                 };
                 grid.Children.Add(w_grid, px, px + sx, py, py + sy);
                 #endregion w_grid

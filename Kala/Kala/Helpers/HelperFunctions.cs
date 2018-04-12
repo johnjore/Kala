@@ -8,6 +8,7 @@ using DrawShape;
 using Xamarin.Forms.GoogleMaps;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Kala
 {
@@ -192,10 +193,17 @@ namespace Kala
                                 lbl.Text = Widgets.WeatherCondition(item.value);
                                 break;
                             default:
-                                //If Digits is set, round off the value
+                                //If Digits, round off the value
                                 if (lbl.Digits > -1)
                                 {
                                     item.value = Math.Round(Convert.ToDouble(item.value), lbl.Digits).ToString("f" + lbl.Digits);
+                                }
+
+                                //This is horrible...
+                                if (lbl.Transformed)
+                                {                                   
+                                    RestService GetItemUpdate = new RestService();
+                                    item.value = GetItemUpdate.GetItem(lbl.Name);
                                 }
 
                                 lbl.Text = lbl.Pre + item.value + lbl.Post;
@@ -291,6 +299,18 @@ namespace Kala
             catch (Exception ex)
             {
                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("GUI Update", "Crashed: " + ex.ToString()));
+            }
+        }
+
+        public static Tuple<string, bool> GetTrueState(Models.Sitemap.Widget3 item)
+        {
+            if (item.item.transformedState == null || item.item.transformedState.Equals(string.Empty))
+            {
+                return Tuple.Create(item.item.state, false);
+            }
+            else
+            {
+                return Tuple.Create(item.item.transformedState, true);
             }
         }
     }

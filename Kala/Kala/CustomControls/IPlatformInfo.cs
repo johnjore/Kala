@@ -5,5 +5,7 @@
         string GetModel();
 
         string GetVersion();
+
+        string GetWifiMacAddress();
     }
 }

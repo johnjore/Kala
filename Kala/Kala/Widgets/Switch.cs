@@ -5,6 +5,7 @@ using DrawShape;
 using Newtonsoft.Json.Linq;
 using Plugin.Logger;
 using CircularProgressBar.FormsPlugin.Abstractions;
+using System.Linq;
 
 namespace Kala
 {
@@ -64,7 +65,7 @@ namespace Kala
 
             item.grid.Children.Clear();
             
-            //Header (Also clears the old status)
+            //Header
             item.grid.Children.Add(new Label
             {
                 Text = item.header,
@@ -190,32 +191,30 @@ namespace Kala
             Button button = sender as Button;
             string name = button.StyleId;
 
-            foreach (App.trackItem item in App.config.items)
+            //foreach (App.trackItem item in App.config.items)
+            foreach (App.trackItem item in App.config.items.Where(n => n.name == name))
             {
-                if (item.name.Equals(name))
+                if (!item.state.ToLower().Equals("uninitialized"))
                 {
-                    if (!item.state.ToLower().Equals("uninitialized"))
+                    if (int.TryParse(item.state, out int stat))
                     {
-                        if (int.TryParse(item.state, out int stat))
-                        {
-                            item.state = (stat > 0) ? "OFF" : "ON";
-                        }
-                        else
-                        {
-                            item.state = (item.state.ToUpper().Equals("ON")) ? "OFF" : "ON";
-                        }
+                        item.state = (stat > 0) ? "OFF" : "ON";
                     }
                     else
                     {
-                        item.state = "ON";
+                        item.state = (item.state.ToUpper().Equals("ON")) ? "OFF" : "ON";
                     }
-
-                    CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.state + "'");
-                    Switch_update(false, item);
-                    #pragma warning disable CS4014
-                    new RestService().SendCommand(name, item.state);
-                    #pragma warning restore CS4014
                 }
+                else
+                {
+                    item.state = "ON";
+                }
+
+                CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.state + "'");
+                Switch_update(false, item);
+                #pragma warning disable CS4014
+                new RestService().SendCommand(name, item.state);
+                #pragma warning restore CS4014
             }
         }
     }

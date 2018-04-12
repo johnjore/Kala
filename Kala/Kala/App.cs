@@ -44,7 +44,6 @@ namespace Kala
         public static Configuration config = null;
         public static TabbedPage tp = new TabbedPage();
         public static Models.Sitemaps.Sitemap sitemaps = null;
-
         #endregion Variables
 
         public App()
@@ -55,6 +54,7 @@ namespace Kala
                 IPlatformInfo platformInfo = DependencyService.Get<IPlatformInfo>();
                 CrossLogger.Current.Info("Kala", "Model: " + platformInfo.GetModel());
                 CrossLogger.Current.Info("Kala", "Version: " + platformInfo.GetVersion());
+                CrossLogger.Current.Info("Kala", "Wifi MAC address: " + platformInfo.GetWifiMacAddress());
 
                 CrossLogger.Current.Debug("Kala", @"URL Settings: '" + Settings.Protocol + "://" + Settings.Server + ":" + Settings.Port.ToString() + "'");
                 CrossLogger.Current.Debug("Kala", @"Auth Settings: '" + Settings.Username + " / " + Settings.Password + "'");
@@ -78,16 +78,23 @@ namespace Kala
                     CrossLogger.Current.Debug("Kala", "Reset Screensaver timer");
                 };
 
-                /**/ //Show a busy signal here as we can't display anything until we have downloaded the sitemap with its items. No async. Pointless..
-                sitemaps = Sitemap.GetActiveSitemap(Settings.Sitemap);
+                //Auto configured sitemap?
+                var WifiMac = DependencyService.Get<IPlatformInfo>().GetWifiMacAddress();
+                sitemaps = Sitemap.GetActiveSitemap(WifiMac);
 
-                //Selected sitemap was not found, display settings page to make change
                 if (sitemaps == null)
                 {
-                    //Add settings tab
-                    MainPage = new Views.Page1();
+                    sitemaps = Sitemap.GetActiveSitemap(Settings.Sitemap);
+
+                    //Selected sitemap was not found, display settings page to make change
+                    if (sitemaps == null)
+                    {
+                        //Add settings tab
+                        MainPage = new Views.Page1();                        
+                    }
                 }
-                else
+
+                if (sitemaps != null)
                 {
                     Sitemap sitemap = new Sitemap();
                     sitemap.GetUpdates();
@@ -104,7 +111,7 @@ namespace Kala
             }
             else
             {
-                MainPage = tp;
+                MainPage = tp;                
             }
             config.Initialized = true;
         }
@@ -120,6 +127,5 @@ namespace Kala
         protected override void OnResume()
         {
         }
-
     }
 }

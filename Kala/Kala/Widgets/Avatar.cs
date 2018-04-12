@@ -67,15 +67,17 @@ namespace Kala
                         };
                         w_grid.Children.Add(image, 0, 0);
                     } else {
+                        var state = Helpers.GetTrueState(item);
                         ItemLabel l_mode = new ItemLabel
                         {
-                            Text = item.item.state,
+                            Text = state.Item1,
                             FontSize = 20,
                             TextColor = App.config.TextColor,
                             BackgroundColor = Color.Transparent,
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.End,
-                            Name = item.item.name
+                            Name = item.item.name,
+                            Transformed = state.Item2
                         };
                         App.config.itemlabels.Add(l_mode);
                         w_grid.Children.Add(l_mode, 0, 1);
