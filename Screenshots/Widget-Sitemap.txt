@@ -1,1 +1,13 @@
-Text label="{widget=sitemap,name=NameOfNextSitemap}"
+Simple / sample sitemap:
+
+	sitemap Kala label="Test {kala=true,screensaver=600,fullscreen=true,background=212121,cell=424242,text=ffffff,screenorientation=Landscape,settings=false}" {
+
+		Text label="Page 1 {sx=3,sy=2}" {
+
+			Frame label="{widget=clock,sx=1,sy=1,px=0,py=0}"
+
+		}
+	}
+
+Include other sitemaps:
+	Text label="{widget=sitemap,name=NameOfNextSitemap}"

@@ -273,6 +273,9 @@ namespace Kala
 
                 if (itemKeyValuePairs != null && itemKeyValuePairs.ContainsKey("widget") && itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py"))
                 {
+                    string sx = "1";
+                    string sy = "1";
+
                     switch (itemKeyValuePairs["widget"].ToUpper())
                     {
                         case "AVATAR":
@@ -314,9 +317,19 @@ namespace Kala
                                 Widgets.FloormapAsync(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
                             }
                             break;
+                        case "LAUNCHER":
+                            if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                            {
+                                sx = itemKeyValuePairs["sx"];
+                                sy = itemKeyValuePairs["sy"];
+                            }
+
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Launcher(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                            }
+                            break;
                         case "SENSOR":
-                            string sx = "1";
-                            string sy = "1";
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
                                 sx = itemKeyValuePairs["sx"];

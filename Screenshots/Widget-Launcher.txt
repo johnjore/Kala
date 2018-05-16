@@ -1,0 +1,9 @@
+Frame label="Launch Camera {widget=launcher,sx=1,sy=1,px=1,py=1}" {
+	Text label="{icon=ic_linked_camera_white_48dp,url=com.amazon.camera}"
+
+}
+
+Frame label="Launch Kindle {widget=launcher,sx=1,sy=1,px=2,py=1}" {
+	Text label="{icon=ic_chrome_reader_mode_white_48dp,url=com.amazon.kindle}"
+
+}

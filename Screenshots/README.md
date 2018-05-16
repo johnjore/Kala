@@ -28,6 +28,9 @@ Gauge-Group
 Image
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Image%2C%201x1.png)
 
+Launcher
+![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Launcher.png)
+
 Map
 ![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Map%2C%202x2.png)
 
