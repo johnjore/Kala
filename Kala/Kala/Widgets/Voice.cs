@@ -87,7 +87,9 @@ namespace Kala
                 voiceButton.OnTextChanged += (s) =>
                 {
                     CrossLogger.Current.Debug("Voice", "Text: " + s);
+                    #pragma warning disable CS4014
                     new RestService().SendCommand(voiceButton.StyleId, s);
+                    #pragma warning restore CS4014
                 };
             }
             catch (Exception ex)

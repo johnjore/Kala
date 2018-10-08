@@ -114,8 +114,9 @@ namespace Kala
                 off = 1;
             }
 
-            svg = Regex.Replace(svg, "(.*" + item.name + ".on.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + on.ToString() + m.Groups[3].Value);
-            svg = Regex.Replace(svg, "(.*" + item.name + ".off.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + off.ToString() + m.Groups[3].Value);
+            RegexOptions options = RegexOptions.IgnoreCase;
+            svg = Regex.Replace(svg, "(.*" + item.name + ".on.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + on.ToString() + m.Groups[3].Value, options);
+            svg = Regex.Replace(svg, "(.*" + item.name + ".off.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + off.ToString() + m.Groups[3].Value, options);
 
             return svg;
         }

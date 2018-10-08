@@ -200,7 +200,7 @@ namespace Kala
                                     string updates = reader.ReadLine();
 
                                     //Don't add junk to the queue...
-                                    if (updates.Contains("data: {"))
+                                    if ((updates.Contains("data: {") == true) && (updates.Contains("statechanged") == true))
                                     {
                                         lock (queueUpdates)
                                         {

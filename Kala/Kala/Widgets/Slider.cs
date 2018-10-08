@@ -9,7 +9,7 @@ namespace Kala
     {
         private static ContentPage CreateSliderPage(App.trackItem item)
         {
-            Double.TryParse(item.state, out double value);
+            double.TryParse(item.state, out double value);
 
             Slider slider = new Slider
             {

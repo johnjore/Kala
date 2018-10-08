@@ -90,7 +90,7 @@ namespace Kala
                     if (sitemaps == null)
                     {
                         //Add settings tab
-                        MainPage = new Views.Page1();                        
+                        MainPage = new Views.Page1();
                     }
                 }
 
@@ -111,11 +111,11 @@ namespace Kala
             }
             else
             {
-                MainPage = tp;                
+                MainPage = tp;
             }
             config.Initialized = true;
         }
-
+        
         protected override void OnStart()
         {
         }

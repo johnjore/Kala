@@ -36,7 +36,7 @@ namespace Kala.Droid
 
             Xamarin.Forms.Forms.Init(this, bundle);
             
-            //Init special handlers
+            // Init special handlers
             ScreenLayout.Init(this);
 
             // Library for Image handling as XF does not support authentication
@@ -45,9 +45,12 @@ namespace Kala.Droid
             // Xamarin.Forms.GoogleMaps initialization
             Xamarin.FormsGoogleMaps.Init(this, bundle);
 
-            //Logger
+            // Init barcode library
+            ZXing.Net.Mobile.Forms.Android.Platform.Init();
+
+            // Logger
             #if DEBUG
-            CrossLogger.Current.Configure("Kala.log", 3, 100, LogLevel.Debug, true);
+                CrossLogger.Current.Configure("Kala.log", 3, 100, LogLevel.Debug, true);
             #endif
             CrossLogger.Current.Purge();
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Log Started");
@@ -64,6 +67,11 @@ namespace Kala.Droid
                 ResultCode = resultCode,
                 Data = data
             });
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

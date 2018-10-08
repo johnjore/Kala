@@ -96,8 +96,8 @@ namespace Kala
                                 if (tmpS.StartsWith("data: "))
                                 {
                                     tmpS = tmpS.Remove(0, 6);
-                                    System.Diagnostics.Debug.WriteLine("Updates " + tmpS);
                                 }
+                                System.Diagnostics.Debug.WriteLine("Update: " + tmpS);
 
                                 try
                                 {
@@ -106,7 +106,7 @@ namespace Kala
                                     //Rewrite topic to only use item name
                                     var tmpA = itemData.topic.Split('/');
                                     itemData.topic = tmpA[tmpA.Count() - 2];
-                                    
+
                                     //Add value to item
                                     Models.Payload payload = JsonConvert.DeserializeObject<Models.Payload>(itemData.payload);
                                     itemData.value = payload.value;

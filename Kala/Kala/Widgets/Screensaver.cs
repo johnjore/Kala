@@ -12,11 +12,11 @@ namespace Kala
 {
     public partial class Widgets
     {
-        static Random random = new Random();
-        static Page PreviousPage;
+        static Random random = new Random();       
         static Label l_clock;
         static bool active = false;
         static CachedImage image = null;
+        public static Page PreviousPage;
         public static string url = String.Empty;
 
         public static void Screensaver(Int64 timeOut)
