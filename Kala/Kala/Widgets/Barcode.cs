@@ -89,17 +89,17 @@ namespace Kala
                     UseNativeScanning = true,
                     UseFrontCameraIfAvailable = bool.Parse(strUseFrontCameraIfAvailable),
 
-                    //PossibleFormats = new List<ZXing.BarcodeFormat> {
-                    //    ZXing.BarcodeFormat.EAN_13,
-                    //    ZXing.BarcodeFormat.EAN_8
-                    //},
+                    PossibleFormats = new List<ZXing.BarcodeFormat> {
+                        ZXing.BarcodeFormat.EAN_13,
+                        ZXing.BarcodeFormat.EAN_8
+                    },
 
                     CameraResolutionSelector = availableResolutions =>
                     {
-                        string[] resolution = null;
+                        string[] resolution = new string[0];
                         if (widgetKeyValuePairs.ContainsKey("CameraResolutionSelector")) {
                             resolution = widgetKeyValuePairs["CameraResolutionSelector"].Split('x');
-                        }                     
+                        }
                         foreach (var ar in availableResolutions)
                         {
                             CrossLogger.Current.Debug("Barcode", "Resolution: " + ar.Width + "x" + ar.Height);
@@ -143,7 +143,7 @@ namespace Kala
             App.config.LastActivity = DateTime.Now;
 
             BarcodeButton barcodeButton = sender as BarcodeButton;
-            CrossLogger.Current.Error("Barcode", "Barcode Item: " + barcodeButton.Name);
+            CrossLogger.Current.Debug("Barcode", "Barcode Item: " + barcodeButton.Name);
 
             PreviousPage = Application.Current.MainPage;
             Application.Current.MainPage = new NavigationPage(new BarcodePage(barcodeButton.Name, barcodeButton.Options));

@@ -15,7 +15,8 @@ namespace Kala
 
             scanPage.OnScanResult += (result) => {
                 scanPage.IsScanning = false;
-                CrossLogger.Current.Debug("Barcode", "Barcode: " + result.Text);
+                
+                CrossLogger.Current.Debug("Barcode", "Barcode: '" + result.Text + "', Format: " + result.BarcodeFormat);
 
                 #pragma warning disable CS4014
                 new RestService().SendCommand(barcodeButtonId, result.Text);
