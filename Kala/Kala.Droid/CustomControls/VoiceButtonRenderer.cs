@@ -105,6 +105,8 @@ namespace Kala.Droid
 
         private void HandleActivityResult(object sender, ActivityResultEventArgs e)
         {
+            DependencyService.Get<IScreen>().SetFullScreen(App.config.FullScreen);
+
             if (e.RequestCode == VOICE)
             {
                 if (e.ResultCode == Result.Ok)

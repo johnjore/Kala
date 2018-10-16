@@ -47,10 +47,8 @@ namespace Kala
             {
                 try
                 {
-                    App.config.FullScreen = true;
-                    IScreen fs = DependencyService.Get<IScreen>();
-                    fs.SetFullScreen(Convert.ToBoolean(entry["fullscreen"]));
-                    fs = null;                    
+                    App.config.FullScreen = Convert.ToBoolean(entry["fullscreen"]);
+                    DependencyService.Get<IScreen>().SetFullScreen(App.config.FullScreen);
                 }
                 catch (Exception ex)
                 {
