@@ -27,7 +27,7 @@ GUI used here is inspired by that client, but distributed for free.
 * ++
 
 # Build Status
-[![Azure](https://dev.azure.com/johnjore/Kala/_apis/build/status/Kala-CI?branchName=master)
+![Azure](https://dev.azure.com/johnjore/Kala/_apis/build/status/Kala-CI?branchName=master)
 
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.
