@@ -26,6 +26,9 @@ GUI used here is inspired by that client, but distributed for free.
 * https://materialdesignicons.com/
 * ++
 
+# Build Status
+[![Azure](https://dev.azure.com/johnjore/Kala/_apis/build/status/Kala-CI?branchName=master)
+
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.
 If you use the client, and would like to donate, feel free to send any amount through paypal.
