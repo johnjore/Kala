@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Kala.Animations;assembly=Kala"
+             x:Class="Kala.Pages.NumericInputPage">
+    <pages:PopupPage.Animation>
+        <animations:UserAnimation/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <Frame BackgroundColor="Silver">
+            <StackLayout Spacing="0">
+                <Entry x:Name="entryField" Keyboard="Numeric" MaxLength="20" Completed="OnClose" VerticalOptions="Center" HorizontalTextAlignment="End" WidthRequest="120"/>
+                <Button Text="Ok" Clicked="OnClose"></Button>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>
+ 

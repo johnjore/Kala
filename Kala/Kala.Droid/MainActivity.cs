@@ -10,6 +10,7 @@ using FFImageLoading.Forms.Droid;
 using Plugin.Logger;
 using Plugin.Logger.Abstractions;
 using Kala;
+using Debug = System.Diagnostics.Debug;
 
 /*
 Steps to sign APK:
@@ -35,7 +36,7 @@ namespace Kala.Droid
             base.OnCreate(bundle);
 
             Xamarin.Forms.Forms.Init(this, bundle);
-            
+
             // Init special handlers
             ScreenLayout.Init(this);
 
@@ -47,6 +48,9 @@ namespace Kala.Droid
 
             // Init barcode library
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
+
+            // Popup library
+            Rg.Plugins.Popup.Popup.Init(this, bundle);
 
             // Logger
             #if DEBUG
@@ -72,6 +76,18 @@ namespace Kala.Droid
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public override void OnBackPressed()
+        {
+            if (Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed))
+            {
+                Debug.WriteLine("Android back button: There are some pages in the PopupStack");
+            }
+            else
+            {
+                Debug.WriteLine("Android back button: There are not any pages in the PopupStack");
+            }
         }
     }
 }

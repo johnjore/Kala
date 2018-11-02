@@ -10,16 +10,26 @@ using Plugin.Logger;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         static Random random = new Random();       
         static Label l_clock;
         static bool active = false;
         static CachedImage image = null;
-        public static Page PreviousPage;
-        public static string url = String.Empty;
+        static Page PreviousPage;
+        static string url = string.Empty;
 
-        public static void Screensaver(Int64 timeOut)
+        public static Page GetPreviousPage()
+        {
+            return PreviousPage;
+        }
+
+        public static void SetUrl(string strUrl)
+        {
+            url = strUrl;
+        }
+
+        public static void Screensaver(long timeOut)
         {
             CrossLogger.Current.Debug("Screensaver", "Configuring screensaver, using timeout of " + timeOut.ToString());
 
@@ -27,14 +37,13 @@ namespace Kala
             {
                 CrossLogger.Current.Debug("Screensaver", "Check if time to show screensaver");
 
-                if ((App.config.LastActivity.AddSeconds(timeOut) < DateTime.Now) && active==false)
+                if ((App.Config.LastActivity.AddSeconds(timeOut) < DateTime.Now) && !active)
                 {
                     CrossLogger.Current.Debug("Screensaver", "Enable Screensaver");
 
                     IScreen screen = DependencyService.Get<IScreen>();
-                    screen.SetFullScreen(App.config.FullScreen);
+                    screen.SetFullScreen(App.Config.FullScreen);
                     screen.SetBacklight(0.0f);
-                    screen = null;
                     active = true;
 
                     PreviousPage = Application.Current.MainPage;
@@ -52,13 +61,12 @@ namespace Kala
             CrossLogger.Current.Debug("Screensaver", "Button Pressed");
             active = false;
             Application.Current.MainPage = PreviousPage;
-            App.tp.CurrentPage = App.tp.Children[0];        //Revert to first tab when resuming
-            App.config.LastActivity = DateTime.Now;         //Update lastactivity to reset Screensaver timer
+            App.Tp.CurrentPage = App.Tp.Children[0];        //Revert to first tab when resuming
+            App.Config.LastActivity = DateTime.Now;         //Update lastactivity to reset Screensaver timer
 
             IScreen screen = DependencyService.Get<IScreen>();
             screen.SetBacklight(0.8f);
-            screen.SetFullScreen(App.config.FullScreen);
-            screen = null;
+            screen.SetFullScreen(App.Config.FullScreen);
         }
 
         private static ContentPage CreatePage()
@@ -67,17 +75,17 @@ namespace Kala
             {
                 AbsoluteLayout absoluteLayout = new AbsoluteLayout
                 {
-                    BackgroundColor = App.config.BackGroundColor
+                    BackgroundColor = App.Config.BackGroundColor
                 };
 
-                switch (App.config.ScreenSaverType)
+                switch (App.Config.ScreenSaverType)
                 {
                     case Models.ScreenSaverTypes.Clock:
                         l_clock = new Label
                         {
                             FontSize = 72,
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.BackGroundColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.BackGroundColor,
                         };
                         AbsoluteLayout.SetLayoutFlags(l_clock, AbsoluteLayoutFlags.PositionProportional);
                         absoluteLayout.Children.Add(l_clock);
@@ -131,9 +139,9 @@ namespace Kala
 
         private async static void InfiniteLoop()
         {
-            while (active == true)
+            while (active)
             {
-                switch (App.config.ScreenSaverType)
+                switch (App.Config.ScreenSaverType)
                 {
                     case Models.ScreenSaverTypes.Clock:
                         l_clock.Text = DateTime.Now.ToString("HH:mm");
@@ -159,7 +167,7 @@ namespace Kala
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    CrossLogger.Current.Error("Screensaver", "Failed: " + response.StatusCode.ToString());
+                    CrossLogger.Current.Debug("Screensaver", "Failed: " + response.StatusCode.ToString());
                     return;
                 }
 
@@ -168,8 +176,8 @@ namespace Kala
                 MatchCollection matches = regex.Matches(html);
                 if (matches.Count > 0)
                 {
-                    Random random = new Random();
-                    int randomNumber = random.Next(0, matches.Count);
+                    Random rnd= new Random();
+                    int randomNumber = rnd.Next(0, matches.Count);
                     image.Source = url + "/" + matches[randomNumber].Groups["name"].ToString();
                 }
             }

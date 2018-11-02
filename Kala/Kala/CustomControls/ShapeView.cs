@@ -11,9 +11,9 @@ namespace DrawShape
         public static readonly BindableProperty IndicatorPercentageProperty = BindableProperty.Create(nameof(IndicatorPercentage), typeof(float), typeof(ShapeView), 0f);
         public new static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(float), typeof(ShapeView), 0f);
         public static readonly BindableProperty PaddingProperty = BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(ShapeView), default(Thickness));
-        public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ItemLabel), null);
-        public static readonly BindableProperty MinProperty = BindableProperty.Create(nameof(Min), typeof(double), typeof(ItemLabel), 0.0);
-        public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(ItemLabel), 100.0);
+        public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(Kala.ItemLabel), null);
+        public static readonly BindableProperty MinProperty = BindableProperty.Create(nameof(Min), typeof(double), typeof(Kala.ItemLabel), 0.0);
+        public static readonly BindableProperty MaxProperty = BindableProperty.Create(nameof(Max), typeof(double), typeof(Kala.ItemLabel), 100.0);
 
         public ShapeType ShapeType {
 			get { return (ShapeType)GetValue (ShapeTypeProperty); }

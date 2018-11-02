@@ -1,19 +1,17 @@
-﻿//https://github.com/xamarin/monodroid-samples/blob/master/PlatformFeatures/SpeechToText/SpeechToText/MainActivity.cs
-//https://github.com/ihassantariq/VoiceRecognitionSystem
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using DrawShape;
 using Newtonsoft.Json.Linq;
 using Plugin.Logger;
-using System.Threading.Tasks;
+using Rg.Plugins.Popup.Extensions;
+using Rg.Plugins.Popup.Services;
 
 namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
-        public static void Voice(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static void NumericInput(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);
@@ -24,7 +22,7 @@ namespace Kala
             {
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
                 Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
-                CrossLogger.Current.Debug("Voice", "Label: " + widgetKeyValuePairs["label"]);
+                CrossLogger.Current.Debug("Input", "Label: " + widgetKeyValuePairs["label"]);
 
                 //Master Grid for Widget
                 Grid Widget_Grid = new Grid
@@ -50,8 +48,8 @@ namespace Kala
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = App.Config.TextColor,
                     BackgroundColor = App.Config.CellColor,
-                    HorizontalTextAlignment = Xamarin.Forms.TextAlignment.Center,
-                    VerticalTextAlignment = Xamarin.Forms.TextAlignment.Start
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Start
                 }, 0, 0);
 
                 //Background
@@ -77,28 +75,32 @@ namespace Kala
                 }, 0, 0);
 
                 //Button must be added last
-                var voiceButton = new VoiceButton
-                {                    
+                Button inputButton = new Button
+                {
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
+                    BackgroundColor = Color.Transparent,
                     StyleId = item.Item.Name //StyleID not used on buttons
                 };
-                Widget_Grid.Children.Add(voiceButton, 0, 0);
+                Widget_Grid.Children.Add(inputButton, 0, 0);
+                inputButton.Clicked += OnInputButtonClicked;
 
-                voiceButton.OnTextChanged += (s) =>
-                {
-                    CrossLogger.Current.Debug("Voice", "Text: " + s);
-                    Task.Run(async () =>
-                    {
-                        await new RestService().SendCommand(voiceButton.StyleId, s);
-                    });                    
-                };
+                CrossLogger.Current.Debug("Input", "Button ID: " + inputButton.Id + " created.");
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Voice", "Widgets.Voice crashed: " + ex.ToString());
+                CrossLogger.Current.Error("Input", "Widgets.Input crashed: " + ex.ToString());
                 Error(grid, px, py, 1, 1, ex.ToString());
             }
+        }
+
+        private static async void OnInputButtonClicked(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            string name = button.StyleId;
+
+            CrossLogger.Current.Debug("Input", "Button ID: '" + button.Id.ToString() + ", Name: '" + name + "'");
+            await PopupNavigation.Instance.PushAsync(new Pages.NumericInputPage(name));
         }
     }
 }

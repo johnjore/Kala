@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         private static void Error(Grid grid, int px, int py, int sx, int sy, string errorMessage)
         {
@@ -13,7 +13,7 @@ namespace Kala
                 {
                     Source = "ic_error_white_48dp",
                     Aspect = Aspect.AspectFill,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center
                 }, px, px + sx, py, py + sy);
@@ -22,7 +22,7 @@ namespace Kala
                 {
                     Text = errorMessage,
                     FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                    TextColor = App.config.TextColor,
+                    TextColor = App.Config.TextColor,
                     BackgroundColor = Color.Transparent,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center

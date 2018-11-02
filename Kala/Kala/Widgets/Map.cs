@@ -14,9 +14,9 @@ https://console.developers.google.com/apis/credentials/key/
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
-        public static List<Map> itemMaps = new List<Map>();
+        public static List<Map> ItemMaps { get; set; } = new List<Map>();
 
         public static void Map(Grid grid, string x1, string y1, string x2, string y2, string maptype, JArray data)
         {
@@ -36,7 +36,7 @@ namespace Kala
                     MapType = GetMapType(maptype)
                 };
                 map.UiSettings.MyLocationButtonEnabled = false;
-                itemMaps.Add(map);
+                ItemMaps.Add(map);
                 
                 //Items in Map widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
@@ -48,21 +48,21 @@ namespace Kala
                 foreach (Models.Sitemap.Widget3 item in items)
                 {
                     //Add the Pins to list and map
-                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
 
                     double lat = 999.0;
                     double lon = 999.0;
                     string name = string.Empty;
                     
-                    if (item.item != null)
+                    if (item.Item != null)
                     {
-                        var b = item.item.state.Split(',');
+                        var b = item.Item.State.Split(',');
 
                         if (b.Count() >= 2)
                         {
                             double.TryParse(b[0], out lat);
                             double.TryParse(b[1], out lon);
-                            name = item.item.name;
+                            name = item.Item.Name;
                         }
                     }
                     else
@@ -110,12 +110,12 @@ namespace Kala
 
         private static void Map_CameraIdled(object sender, CameraIdledEventArgs e)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
         }
 
         private static void Map_MapClicked(object sender, MapClickedEventArgs e)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
         }
 
         public static void MapUpdate(List<double>latitudes, List<double> longitudes, Map map)
@@ -196,7 +196,7 @@ namespace Kala
             }
         }
 
-        public enum GeoCodeCalcMeasurement : int
+        public enum GeoCodeCalcMeasurement
         {
             Miles = 0,
             Kilometers = 1

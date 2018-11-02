@@ -5,21 +5,21 @@ namespace Kala.Models.Sitemaps
 {
     public class Sitemaps
     {
-        public List<Sitemap> sitemap { get; set; }
+        public List<Sitemap> Sitemap { get; set; }
     }
 
     public class Sitemap
     {
-        public string name { get; set; }
-        public string label { get; set; }
-        public string link { get; set; }
-        public Homepage homepage { get; set; }
+        public string Name { get; set; }
+        public string Label { get; set; }
+        public string Link { get; set; }
+        public Homepage Homepage { get; set; }
     }
     
     public class Homepage
     {
-        public string link { get; set; }
-        public bool leaf { get; set; }
-        public List<object> widgets { get; set; }
+        public string Link { get; set; }
+        public bool Leaf { get; set; }
+        public List<object> Widgets { get; set; }
     }
 }

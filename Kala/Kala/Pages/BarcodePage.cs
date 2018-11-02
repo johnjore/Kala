@@ -3,8 +3,9 @@ using Xamarin.Forms;
 using Plugin.Logger;
 using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
+using System.Threading.Tasks;
 
-namespace Kala
+namespace Kala.Pages
 {
     public class BarcodePage : ContentPage
     {
@@ -18,9 +19,10 @@ namespace Kala
                 
                 CrossLogger.Current.Debug("Barcode", "Barcode: '" + result.Text + "', Format: " + result.BarcodeFormat);
 
-                #pragma warning disable CS4014
-                new RestService().SendCommand(barcodeButtonId, result.Text);
-                #pragma warning restore CS4014
+                Task.Run(async () =>
+                {
+                    await new RestService().SendCommand(barcodeButtonId, result.Text);
+                });
 
                 Device.BeginInvokeOnMainThread(() => {
                     Navigation.PopAsync();
@@ -32,7 +34,7 @@ namespace Kala
 
         private void RestoreMain(object sender, EventArgs e)
         {
-            Application.Current.MainPage = Widgets.PreviousPage;
+            Application.Current.MainPage = Widgets.GetPreviousPage();
         }
     }
 }

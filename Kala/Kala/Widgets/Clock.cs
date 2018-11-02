@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Clock(Grid grid, string x1, string y1, string x2, string y2)
         {
@@ -19,15 +19,15 @@ namespace Kala
 
             grid.Children.Add(new Label
             {
-                BackgroundColor = App.config.CellColor
+                BackgroundColor = App.Config.CellColor
             }, px, px + sx, py, py + sy);
 
             Label l1 = new Label
             {
                 Text = time.ToString(format1),
-                FontSize = (int)((double)(resolution * 24.0 / 72.0)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                FontSize = (int)(resolution * 24.0 / 72.0),
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = -20
@@ -38,8 +38,8 @@ namespace Kala
             {
                 Text = time.ToString(format2).ToUpper(),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = 20

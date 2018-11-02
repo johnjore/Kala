@@ -8,7 +8,7 @@ namespace Kala
     {
         void Start();
         void Stop();
-        event EventHandler<EventArgsVoiceRecognition> textChanged;
+        event EventHandler<VoiceRecognitionEventArgs> TextChanged;
     }
 
     public class VoiceButton : Button
@@ -16,9 +16,9 @@ namespace Kala
         public Action<string> OnTextChanged { get; set; }
     }
 
-    public class EventArgsVoiceRecognition : EventArgs
+    public class VoiceRecognitionEventArgs : EventArgs
     {
-        public EventArgsVoiceRecognition(string text, bool isFinal)
+        public VoiceRecognitionEventArgs(string text, bool isFinal)
         {
             Text = text;
             IsFinal = isFinal;

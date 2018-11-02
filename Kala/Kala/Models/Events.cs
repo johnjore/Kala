@@ -2,15 +2,15 @@
 {
     public class Events
     {
-        public string topic { get; set; }
-        public string payload { get; set; }
-        public string type { get; set; }
-        public string value { get; set; }
+        public string Topic { get; set; }
+        public string Payload { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 
     public class Payload
     {
-        public string type { get; set; }
-        public string value { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 }

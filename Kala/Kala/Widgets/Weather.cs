@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 using Plugin.Logger;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
@@ -44,7 +43,7 @@ namespace Kala
                 w_grid.Padding = new Thickness(0, 20, 0, 2);
                 w_grid.RowSpacing = 0;
                 w_grid.ColumnSpacing = 0;
-                w_grid.BackgroundColor = App.config.CellColor;
+                w_grid.BackgroundColor = App.Config.CellColor;
                 w_grid.VerticalOptions = LayoutOptions.FillAndExpand;
                 w_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
                 #endregion w_grid
@@ -56,13 +55,11 @@ namespace Kala
                 int status_r = 0;
                 foreach (Models.Sitemap.Widget3 item in items)
                 {
-                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
                     if (!widgetKeyValuePairs.ContainsKey("item"))
                     {
                         int tmp_c = Convert.ToInt16(widgetKeyValuePairs["px"]);
-                        int tmp_r = Convert.ToInt16(widgetKeyValuePairs["py"]);
                         if (tmp_c > status_c) status_c = tmp_c;
-                        //if (tmp_r > status_r) status_r = tmp_r;
                     }
                 }
 
@@ -73,7 +70,7 @@ namespace Kala
                 for (int i = 0; i <= status_r; i++)
                 {
                     t_grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                };
+                }
 
                 t_grid.ColumnDefinitions = new ColumnDefinitionCollection();
                 for (int i = 0; i <= status_c; i++)
@@ -83,7 +80,7 @@ namespace Kala
                 t_grid.Padding = new Thickness(0, 0, 0, 0);
                 t_grid.RowSpacing = 0;
                 t_grid.ColumnSpacing = 0;
-                t_grid.BackgroundColor = App.config.CellColor;
+                t_grid.BackgroundColor = App.Config.CellColor;
                 t_grid.VerticalOptions = LayoutOptions.FillAndExpand;
                 t_grid.HorizontalOptions = LayoutOptions.FillAndExpand;
                 w_grid.Children.Add(t_grid, 0, 0 + 3, 3, 3 + 1); //Add in bottom row, across all columns in w_grid
@@ -93,7 +90,7 @@ namespace Kala
                 //Boxview (Line)
                 BoxView bv = new BoxView
                 {
-                    Color = App.config.BackGroundColor
+                    Color = App.Config.BackGroundColor
                 };
                 w_grid.Children.Add(bv, 0, 0+3, 2, 2+1);
                 #endregion Separator
@@ -104,8 +101,8 @@ namespace Kala
                 {
                     Text = header,
                     FontSize = 30,
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.Start,
                     VerticalOptions = LayoutOptions.End,
                     TranslationY = -5
@@ -117,7 +114,7 @@ namespace Kala
                 foreach (Models.Sitemap.Widget3 item in items)
                 {
                     int counter = 0;
-                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
                                         
                     if (widgetKeyValuePairs.ContainsKey("item"))
                     #region mandatory
@@ -127,35 +124,35 @@ namespace Kala
                             case "CONDITION-CAPTION":
                                 ItemLabel l_condition = new ItemLabel
                                 {
-                                    Text = item.item.state,
+                                    Text = item.Item.State,
                                     FontSize = 20,
-                                    TextColor = App.config.TextColor,
-                                    BackgroundColor = App.config.CellColor,
+                                    TextColor = App.Config.TextColor,
+                                    BackgroundColor = App.Config.CellColor,
                                     HorizontalOptions = LayoutOptions.Start,
                                     VerticalOptions = LayoutOptions.Start,
-                                    Name = item.item.name,
+                                    Name = item.Item.Name,
                                     TranslationY = -5
                                 };
-                                App.config.itemlabels.Add(l_condition);
+                                App.Config.Itemlabels.Add(l_condition);
                                 w_grid.Children.Add(l_condition, 1, 1);
                                 break;
                             case "TEMPERATURE":
-                                var temp = Digits(widgetKeyValuePairs, item.item.state);
+                                var temp = Digits(widgetKeyValuePairs, item.Item.State);
 
                                 ItemLabel l_temperature = new ItemLabel
                                 {
                                     Post = "\u00B0" + widgetKeyValuePairs["unit"] + " ",
                                     Text = temp.Item1.ToString() + "\u00B0" + widgetKeyValuePairs["unit"] + " ",
                                     FontSize = 40,
-                                    TextColor = App.config.TextColor,
-                                    BackgroundColor = App.config.CellColor,
+                                    TextColor = App.Config.TextColor,
+                                    BackgroundColor = App.Config.CellColor,
                                     HorizontalOptions = LayoutOptions.End,
                                     VerticalOptions = LayoutOptions.FillAndExpand,
                                     Digits = temp.Item2,
-                                    Name = item.item.name,
+                                    Name = item.Item.Name,
                                     TranslationY = -5
                                 };
-                                App.config.itemlabels.Add(l_temperature);
+                                App.Config.Itemlabels.Add(l_temperature);
                                 w_grid.Children.Add(l_temperature, 2, 2 + 1, 0, 0 + 2);
                                 break;
                             case "CONDITION":
@@ -169,17 +166,17 @@ namespace Kala
 
                                 ItemLabel l_image = new ItemLabel
                                 {
-                                    Text = WeatherCondition(item.item.state),
-                                    TextColor = App.config.TextColor,
+                                    Text = WeatherCondition(item.Item.State),
+                                    TextColor = App.Config.TextColor,
                                     FontFamily = strFontFamily,
                                     FontSize = 68,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.StartAndExpand,
-                                    Name = item.item.name,
+                                    Name = item.Item.Name,
                                     Type = Models.Itemtypes.Weathericon,
                                     TranslationY = -15
                                 };
-                                App.config.itemlabels.Add(l_image);
+                                App.Config.Itemlabels.Add(l_image);
                                 w_grid.Children.Add(l_image, 0, 0 + 1, 0, 0 + 2);
                                 break;
                             case "default":
@@ -193,7 +190,7 @@ namespace Kala
                         {
                             case "WIND":
                                 CrossLogger.Current.Debug("Weather", "Wind");
-                                List<Models.Sitemap.Widget3> winds = (JArray.FromObject(item.widgets)).ToObject<List<Models.Sitemap.Widget3>>();
+                                List<Models.Sitemap.Widget3> winds = (JArray.FromObject(item.Widgets)).ToObject<List<Models.Sitemap.Widget3>>();
                                 
                                 //Wind direction and speed
                                 int w_direction = 0;
@@ -205,18 +202,18 @@ namespace Kala
 
                                 foreach (Models.Sitemap.Widget3 wind in winds)
                                 {
-                                    Dictionary<string, string> windKeyValuePairs = Helpers.SplitCommand(wind.label);
+                                    Dictionary<string, string> windKeyValuePairs = Helpers.SplitCommand(wind.Label);
                                     switch (windKeyValuePairs["item"].ToUpper())
                                     {
                                         case "WIND-DIRECTION":
-                                            Helpers.wind_direction.TryGetValue(wind.item.state.ToLower(), out w_direction);
-                                            wind_direction_name = wind.item.name;
+                                            Helpers.wind_direction.TryGetValue(wind.Item.State.ToLower(), out w_direction);
+                                            wind_direction_name = wind.Item.Name;
                                             break;
                                         case "WIND-SPEED":
-                                            var tmpdigits = Digits(windKeyValuePairs, wind.item.state);
+                                            var tmpdigits = Digits(windKeyValuePairs, wind.Item.State);
                                             digits = tmpdigits.Item2;
                                             wind_speed = tmpdigits.Item1;
-                                            wind_speed_name = wind.item.name;
+                                            wind_speed_name = wind.Item.Name;
                                             wind_speed_post = " " + windKeyValuePairs["unit"];
                                             break;
                                         default:
@@ -239,23 +236,23 @@ namespace Kala
                                     Text = "\uf0b1",
                                     FontSize = 30,
                                     FontFamily = strFontFamily,
-                                    TextColor = App.config.TextColor,
+                                    TextColor = App.Config.TextColor,
                                     Rotation = w_direction,
-                                    BackgroundColor = App.config.CellColor,
+                                    BackgroundColor = App.Config.CellColor,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = -45,
                                     Name = wind_direction_name
                                 };
-                                App.config.itemlabels.Add(l_winddirection);
+                                App.Config.Itemlabels.Add(l_winddirection);
                                 t_grid.Children.Add(l_winddirection, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
 
                                 ItemLabel l_windspeed = new ItemLabel
                                 {
                                     Text = wind_speed + wind_speed_post,
                                     FontSize = 20,
-                                    TextColor = App.config.TextColor,
-                                    BackgroundColor = App.config.CellColor,
+                                    TextColor = App.Config.TextColor,
+                                    BackgroundColor = App.Config.CellColor,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
                                     TranslationX = 20,
@@ -263,7 +260,7 @@ namespace Kala
                                     Post = wind_speed_post,
                                     Digits = digits
                                 };
-                                App.config.itemlabels.Add(l_windspeed);
+                                App.Config.Itemlabels.Add(l_windspeed);
                                 t_grid.Children.Add(l_windspeed, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
                                 break;
                             default:
@@ -275,7 +272,7 @@ namespace Kala
                     }
                     else
                     {
-                        var digits = Digits(widgetKeyValuePairs, item.item.state);
+                        var digits = Digits(widgetKeyValuePairs, item.Item.State);
 
                         string strFontFamily = null;
                         switch (Device.RuntimePlatform)
@@ -290,16 +287,16 @@ namespace Kala
                             Text = widgetKeyValuePairs["font"] + "  " + digits.Item1 + " " + widgetKeyValuePairs["unit"],
                             FontSize = 20,
                             FontFamily = strFontFamily,
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.CellColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.CellColor,
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.Center,
                             Pre = widgetKeyValuePairs["font"] + "  ",
-                            Name = item.item.name,
+                            Name = item.Item.Name,
                             Post = " " + widgetKeyValuePairs["unit"],
                             Digits = digits.Item2
                         };
-                        App.config.itemlabels.Add(l1);
+                        App.Config.Itemlabels.Add(l1);
                         t_grid.Children.Add(l1, Convert.ToInt16(widgetKeyValuePairs["px"]), Convert.ToInt16(widgetKeyValuePairs["py"]));
 
                         CrossLogger.Current.Debug("Weather", "No item defined: " + counter++.ToString() + ", font:"  + widgetKeyValuePairs["font"] + ", pos: " + widgetKeyValuePairs["px"]);

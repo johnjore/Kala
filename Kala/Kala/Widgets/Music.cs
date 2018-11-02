@@ -9,7 +9,7 @@ using Kala.Models;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Music(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
@@ -26,18 +26,18 @@ namespace Kala
             try
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
-                widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
 
-                App.trackItem i = new App.trackItem
+                App.TrackItem i = new App.TrackItem
                 {
-                    grid = grid,
-                    name = item.item.name,
-                    header = header,
-                    icon = widgetKeyValuePairs["icon"],
-                    state = item.item.state,
-                    type = Itemtypes.Sensor
+                    Grid = grid,
+                    Name = item.Item.Name,
+                    Header = header,
+                    Icon = widgetKeyValuePairs["icon"],
+                    State = item.Item.State,
+                    Type = Itemtypes.Sensor
                 };
-                App.config.items.Add(i);
+                App.Config.Items.Add(i);
 
                 Music_update(true, i);
             }
@@ -48,26 +48,26 @@ namespace Kala
             }
         }
 
-        private static void Music_update(bool Create, App.trackItem item)
+        private static void Music_update(bool Create, App.TrackItem item)
         {
             #region Header (Also clears the old status)
-            item.grid.Children.Add(new Label
+            item.Grid.Children.Add(new Label
             {
-                Text = item.header,
+                Text = item.Header,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Start
             }, 0, 0);
             #endregion Header 
 
             #region State
-            if (!item.state.ToUpper().Equals("UNINITIALIZED"))
+            if (!item.State.ToUpper().Equals("UNINITIALIZED"))
             {
                 try
                 {
-                    if (item.state.ToUpper().Equals("CLOSED"))
+                    if (item.State.ToUpper().Equals("CLOSED"))
                     {
                         Music_Off(item);
                     }
@@ -78,19 +78,19 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid,0, 0, 1, 1, ex.ToString());
+                    Error(item.Grid,0, 0, 1, 1, ex.ToString());
                 }
             }
             else
             {
-                item.state = "N/A";
+                item.State = "N/A";
             }
             #endregion State
 
             #region Image
-            item.grid.Children.Add(new Image
+            item.Grid.Children.Add(new Xamarin.Forms.Image
             {
-                Source = item.icon,
+                Source = item.Icon,
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
@@ -101,26 +101,26 @@ namespace Kala
             #region Status Text
             ItemLabel l_status = new ItemLabel
             {
-                Text = item.state.ToUpper(),
+                Text = item.State.ToUpper(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Name = item.name
+                Name = item.Name
             };
-            item.grid.Children.Add(l_status, 0, 0);
+            item.Grid.Children.Add(l_status, 0, 0);
             #endregion Status Text
         }
 
-        private static void Music_On(App.trackItem item)
+        private static void Music_On(App.TrackItem item)
         {
-            item.grid.Children.Add(new ShapeView()
+            item.Grid.Children.Add(new ShapeView()
             {
                 ShapeType = ShapeType.Circle,
-                StrokeColor = App.config.ValueColor,
-                Color = App.config.ValueColor,
+                StrokeColor = App.Config.ValueColor,
+                Color = App.Config.ValueColor,
                 StrokeWidth = 10.0f,
                 Scale = 2,
                 HorizontalOptions = LayoutOptions.Center,
@@ -128,7 +128,7 @@ namespace Kala
             }, 0, 0);
         }
 
-        private static void Music_Off(App.trackItem item)
+        private static void Music_Off(App.TrackItem item)
         {
             int intStrokeThickness = 1;
             switch (Device.RuntimePlatform)
@@ -141,13 +141,13 @@ namespace Kala
                     break;
             }
 
-            item.grid.Children.Add(new CircularProgressBarView
+            item.Grid.Children.Add(new CircularProgressBarView
             {
                 Progress = 100,
                 StrokeThickness = intStrokeThickness,
                 BackgroundColor = Color.Transparent,
-                ProgressBackgroundColor = App.config.BackGroundColor,
-                ProgressColor = App.config.ValueColor,
+                ProgressBackgroundColor = App.Config.BackGroundColor,
+                ProgressColor = App.Config.ValueColor,
                 Scale = 0.5f
             }, 0, 0);
         }

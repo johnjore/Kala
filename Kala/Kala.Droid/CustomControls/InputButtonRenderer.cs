@@ -12,14 +12,14 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(VoiceButton), typeof(VoiceButtonRenderer))]
 namespace Kala.Droid
 {
-    public class VoiceButtonRenderer : ButtonRenderer, Android.Views.View.IOnClickListener
+    public class InputButtonRenderer : ButtonRenderer, Android.Views.View.IOnClickListener
     {
         private readonly int VOICE = 10;
         private MainActivity activity;
         private global::Android.Widget.Button nativeButton;
         private VoiceButton sharedButton;
 
-        public VoiceButtonRenderer(Context context) : base(context)
+        public InputButtonRenderer(Context context) : base(context)
         {
         }
 

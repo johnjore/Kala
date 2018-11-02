@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kala.Views.Page1"
+             x:Class="Kala.Pages.Settings"
              Title="Settings">
     <ContentPage.Icon>
         <OnPlatform x:TypeArguments="FileImageSource" iOS="ic_linked_camera_white_48dp.png" />
@@ -22,3 +22,4 @@
     </StackLayout>
     
   </ContentPage>
+    

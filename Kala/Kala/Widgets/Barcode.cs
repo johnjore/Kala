@@ -20,7 +20,7 @@ namespace Kala
             try
             {
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
-                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
                 CrossLogger.Current.Debug("Barcode", "Label: " + widgetKeyValuePairs["label"]);
 
                 //Master Grid for Widget
@@ -34,7 +34,7 @@ namespace Kala
                     },
                     RowSpacing = 0,
                     ColumnSpacing = 0,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                 };
@@ -45,8 +45,8 @@ namespace Kala
                 {
                     Text = header,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Start
                 }, 0, 0);
@@ -55,8 +55,8 @@ namespace Kala
                 Widget_Grid.Children.Add(new ShapeView()
                 {
                     ShapeType = ShapeType.Circle,
-                    StrokeColor = App.config.ValueColor,
-                    Color = App.config.ValueColor,
+                    StrokeColor = App.Config.ValueColor,
+                    Color = App.Config.ValueColor,
                     StrokeWidth = 10.0f,
                     Scale = 2,
                     HorizontalOptions = LayoutOptions.Center,
@@ -103,13 +103,10 @@ namespace Kala
                         foreach (var ar in availableResolutions)
                         {
                             CrossLogger.Current.Debug("Barcode", "Resolution: " + ar.Width + "x" + ar.Height);
-                            if (resolution.Length > 0)
+                            if (resolution.Length > 0 && (resolution[0] == ar.Width.ToString() && resolution[1] == ar.Height.ToString()))
                             {
-                                if (resolution[0] == ar.Width.ToString() && resolution[1] == ar.Height.ToString())
-                                {
-                                    CrossLogger.Current.Debug("Barcode", "Found match: " + ar.Width + "x" + ar.Height);
-                                    return ar;
-                                }
+                                CrossLogger.Current.Debug("Barcode", "Found match: " + ar.Width + "x" + ar.Height);
+                                return ar;
                             }
                         }
                         CrossLogger.Current.Debug("Barcode", "Using default resolution");
@@ -123,7 +120,7 @@ namespace Kala
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.Transparent,
-                    Name = item.item.name,
+                    Name = item.Item.Name,
                     Options = mobileBarcodeScanningOptions,
                 };
                 barcodeButton.Clicked += OnBarcodeButtonClicked;
@@ -140,13 +137,13 @@ namespace Kala
 
         private static void OnBarcodeButtonClicked(object sender, EventArgs e)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
 
             BarcodeButton barcodeButton = sender as BarcodeButton;
             CrossLogger.Current.Debug("Barcode", "Barcode Item: " + barcodeButton.Name);
 
             PreviousPage = Application.Current.MainPage;
-            Application.Current.MainPage = new NavigationPage(new BarcodePage(barcodeButton.Name, barcodeButton.Options));
+            Application.Current.MainPage = new NavigationPage(new Pages.BarcodePage(barcodeButton.Name, barcodeButton.Options));
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿namespace Kala.Models
 {
-    public class image
+    public class Image
     {
-        public string widgetId { get; set; }
-        public string name { get; set; }
-        public string label { get; set; }
-        public string icon { get; set; }
-        public string refresh { get; set; }
-        public string url { get; set; }
+        public string WidgetId { get; set; }
+        public string Name { get; set; }
+        public string Label { get; set; }
+        public string Icon { get; set; }
+        public string Refresh { get; set; }
+        public string Url { get; set; }
     }
 }

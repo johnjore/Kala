@@ -14,7 +14,7 @@ namespace Effects.Droid
         protected override void OnAttached()
         {
             var seekBar = (SeekBar)Control;
-            seekBar.ProgressDrawable.SetColorFilter(new PorterDuffColorFilter(Kala.App.config.CellColor.ToAndroid(), PorterDuff.Mode.SrcIn));
+            seekBar.ProgressDrawable.SetColorFilter(new PorterDuffColorFilter(Kala.App.Config.CellColor.ToAndroid(), PorterDuff.Mode.SrcIn));
             seekBar.Thumb.SetColorFilter(new PorterDuffColorFilter(Xamarin.Forms.Color.Accent.ToAndroid(), PorterDuff.Mode.SrcIn));
         }
 

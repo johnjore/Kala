@@ -1,19 +1,23 @@
 ﻿using Xamarin.Forms;
 
-public class ItemImageButton : Button
+namespace Kala
 {
-    public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ItemImageButton), null);
-    public static readonly BindableProperty URLProperty = BindableProperty.Create(nameof(URL), typeof(string), typeof(ItemImageButton), null);
 
-    public string Name
+    public class ItemImageButton : Button
     {
-        get { return (string)GetValue(NameProperty); }
-        set { SetValue(NameProperty, value); }
-    }
+        public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ItemImageButton), null);
+        public static readonly BindableProperty URLProperty = BindableProperty.Create(nameof(URL), typeof(string), typeof(ItemImageButton), null);
 
-    public string URL
-    {
-        get { return (string)GetValue(URLProperty); }
-        set { SetValue(URLProperty, value); }
+        public string Name
+        {
+            get { return (string)GetValue(NameProperty); }
+            set { SetValue(NameProperty, value); }
+        }
+
+        public string URL
+        {
+            get { return (string)GetValue(URLProperty); }
+            set { SetValue(URLProperty, value); }
+        }
     }
 }

@@ -6,10 +6,11 @@ using Newtonsoft.Json.Linq;
 using Plugin.Logger;
 using CircularProgressBar.FormsPlugin.Abstractions;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Switch(Grid grid, string x1, string y1, string header, JObject data)
         {
@@ -19,7 +20,7 @@ namespace Kala
             try
             {
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
-                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
                 CrossLogger.Current.Debug("Switch", "Label: " + widgetKeyValuePairs["label"]);
 
                 //Master Grid for Widget
@@ -33,22 +34,22 @@ namespace Kala
                     },
                     RowSpacing = 0,
                     ColumnSpacing = 0,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                 };
                 grid.Children.Add(Widget_Grid, px, py);
 
-                App.trackItem i = new App.trackItem
+                App.TrackItem i = new App.TrackItem
                 {
-                    grid = Widget_Grid,
-                    name = item.item.name,
-                    header = header,
-                    icon = widgetKeyValuePairs["icon"],
-                    state = item.item.state,
-                    type = Models.Itemtypes.Switch,
+                    Grid = Widget_Grid,
+                    Name = item.Item.Name,
+                    Header = header,
+                    Icon = widgetKeyValuePairs["icon"],
+                    State = item.Item.State,
+                    Type = Models.Itemtypes.Switch,
                 };
-                App.config.items.Add(i);
+                App.Config.Items.Add(i);
 
                 Switch_update(true, i);
             }
@@ -59,28 +60,28 @@ namespace Kala
             }
         }
 
-        public static void Switch_update(bool Create, App.trackItem item)
+        public static void Switch_update(bool Create, App.TrackItem item)
         {
             string status = "N/A";
 
-            item.grid.Children.Clear();
+            item.Grid.Children.Clear();
             
             //Header
-            item.grid.Children.Add(new Label
+            item.Grid.Children.Add(new Label
             {
-                Text = item.header,
+                Text = item.Header,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Start
             }, 0, 0);
 
-            if (item.state != null && !item.state.Equals("Uninitialized"))
+            if (item.State != null && !item.State.Equals("Uninitialized"))
             {
                 try
                 {
-                    if (int.TryParse(item.state, out int stat))
+                    if (int.TryParse(item.State, out int stat))
                     {
                         if (stat > 0)
                         {
@@ -95,7 +96,7 @@ namespace Kala
                     }
                     else
                     {
-                        if (item.state.ToUpper().Equals("OFF"))
+                        if (item.State.ToUpper().Equals("OFF"))
                         {
                             Switch_Off(item);
                             status = "OFF";
@@ -109,14 +110,14 @@ namespace Kala
                 }
                 catch (Exception ex)
                 {
-                    Error(item.grid, 0, 0, 1, 1, ex.ToString());
+                    Error(item.Grid, 0, 0, 1, 1, ex.ToString());
                 }
             }
 
             //Image
-            item.grid.Children.Add(new Image
+            item.Grid.Children.Add(new Image
             {
-                Source = item.icon,
+                Source = item.Icon,
                 Aspect = Aspect.AspectFill,
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
@@ -128,14 +129,14 @@ namespace Kala
             {
                 Text = status.ToUpper(),
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Name = item.name
+                Name = item.Name
             };
-            item.grid.Children.Add(l_status, 0, 0);
+            item.Grid.Children.Add(l_status, 0, 0);
 
             //Button must be last to be added to work
             Button switchButton = new Button
@@ -143,20 +144,20 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 BackgroundColor = Color.Transparent,
-                StyleId = item.name //StyleID is not used on buttons
+                StyleId = item.Name //StyleID is not used on buttons
             };
-            item.grid.Children.Add(switchButton, 0, 0);
+            item.Grid.Children.Add(switchButton, 0, 0);
             switchButton.Clicked += OnSwitchButtonClicked;
             CrossLogger.Current.Debug("Switch", "Button ID: " + switchButton.Id + " created.");
         }
 
-        private static void Switch_On(App.trackItem item)
+        private static void Switch_On(App.TrackItem item)
         {
-            item.grid.Children.Add(new ShapeView()
+            item.Grid.Children.Add(new ShapeView()
             {
                 ShapeType = ShapeType.Circle,
-                StrokeColor = App.config.ValueColor,
-                Color = App.config.ValueColor,
+                StrokeColor = App.Config.ValueColor,
+                Color = App.Config.ValueColor,
                 StrokeWidth = 10.0f,
                 Scale = 2,
                 HorizontalOptions = LayoutOptions.Center,
@@ -164,7 +165,7 @@ namespace Kala
             }, 0, 0);
         }
 
-        private static void Switch_Off(App.trackItem item)
+        private static void Switch_Off(App.TrackItem item)
         {
             int intStrokeThickness = 2;
             switch (Device.RuntimePlatform)
@@ -174,13 +175,13 @@ namespace Kala
                     break;
             }
 
-            item.grid.Children.Add(new CircularProgressBarView
+            item.Grid.Children.Add(new CircularProgressBarView
             {
                 Progress = 100,
                 StrokeThickness = intStrokeThickness,
                 BackgroundColor = Color.Transparent,
-                ProgressBackgroundColor = App.config.BackGroundColor,
-                ProgressColor = App.config.ValueColor,
+                ProgressBackgroundColor = App.Config.BackGroundColor,
+                ProgressColor = App.Config.ValueColor,
                 Scale = 0.5f
             }, 0, 0);
         }
@@ -191,30 +192,31 @@ namespace Kala
             Button button = sender as Button;
             string name = button.StyleId;
 
-            //foreach (App.trackItem item in App.config.items)
-            foreach (App.trackItem item in App.config.items.Where(n => n.name == name))
+            //foreach (App.TrackItem item in App.Config.items)
+            foreach (App.TrackItem item in App.Config.Items.Where(n => n.Name == name))
             {
-                if (!item.state.ToLower().Equals("uninitialized"))
+                if (!item.State.ToLower().Equals("uninitialized"))
                 {
-                    if (int.TryParse(item.state, out int stat))
+                    if (int.TryParse(item.State, out int stat))
                     {
-                        item.state = (stat > 0) ? "OFF" : "ON";
+                        item.State = (stat > 0) ? "OFF" : "ON";
                     }
                     else
                     {
-                        item.state = (item.state.ToUpper().Equals("ON")) ? "OFF" : "ON";
+                        item.State = (item.State.ToUpper().Equals("ON")) ? "OFF" : "ON";
                     }
                 }
                 else
                 {
-                    item.state = "ON";
+                    item.State = "ON";
                 }
 
-                CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.state + "'");
+                CrossLogger.Current.Debug("Switch", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', New State: '" + item.State + "'");
                 Switch_update(false, item);
-                #pragma warning disable CS4014
-                new RestService().SendCommand(name, item.state);
-                #pragma warning restore CS4014
+                Task.Run(async () =>
+                {
+                    await new RestService().SendCommand(name, item.State);
+                });              
             }
         }
     }

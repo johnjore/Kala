@@ -2,9 +2,9 @@
 {
     public class Item
     {
-        public string state { get; set; }
-        public string transformedState { get; set; }
-        public string type { get; set; }
-        public string name { get; set; }       
+        public string State { get; set; }
+        public string TransformedState { get; set; }
+        public string Type { get; set; }
+        public string Name { get; set; }
     }
 }

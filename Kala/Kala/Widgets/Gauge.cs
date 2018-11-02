@@ -8,7 +8,7 @@ using DrawShape;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Gauge(Grid grid, string x1, string y1, string header, JObject data)
         {
@@ -17,7 +17,7 @@ namespace Kala
 
             try
             {
-                Grid t_grid = Create_GaugeHeader(header, 1, 1, 1);
+                Grid t_grid = Create_GaugeHeader(header, 1, 1);
 
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
 
@@ -31,7 +31,7 @@ namespace Kala
             }
         }
 
-        private static Grid Create_GaugeHeader(string header, int sx, int rx, int ry)
+        private static Grid Create_GaugeHeader(string header, int rx, int ry)
         {
             #region t_grid
             Grid t_grid = new Grid
@@ -39,7 +39,7 @@ namespace Kala
                 Padding = new Thickness(3, 3, 3, 3),
                 RowSpacing = 5,
                 ColumnSpacing = 5,
-                BackgroundColor = App.config.CellColor,
+                BackgroundColor = App.Config.CellColor,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
@@ -64,8 +64,8 @@ namespace Kala
             {
                 Text = header,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Start
             };
@@ -78,16 +78,16 @@ namespace Kala
         {
             try
             {
-                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
-                var digits = Digits(widgetKeyValuePairs, item.item.state);
+                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
+                var digits = Digits(widgetKeyValuePairs, item.Item.State);
 
                 #region Center unit
                 t_grid.Children.Add(new Label
                 {
                     Text = widgetKeyValuePairs["unit"],
                     FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     TranslationY = 5
@@ -101,7 +101,7 @@ namespace Kala
                 {
                     Source = strSource,
                     Aspect = Aspect.AspectFill,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     VerticalOptions = LayoutOptions.End,
                     HorizontalOptions = LayoutOptions.Center
                 }, x, y);
@@ -116,15 +116,15 @@ namespace Kala
                 {
                     Text = s_value,
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     TranslationY = -20,
-                    Name = item.item.name,
+                    Name = item.Item.Name,
                     Digits = digits.Item2
                 };
-                App.config.itemlabels.Add(l_value);
+                App.Config.Itemlabels.Add(l_value);
                 t_grid.Children.Add(l_value, x, y);
 
                 Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
@@ -145,7 +145,7 @@ namespace Kala
                 t_grid.Children.Add(new ShapeView()
                 {
                     ShapeType = ShapeType.Arc,
-                    StrokeColor = App.config.BackGroundColor,
+                    StrokeColor = App.Config.BackGroundColor,
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
@@ -157,18 +157,18 @@ namespace Kala
                 ShapeView progressArc = new ShapeView
                 {
                     ShapeType = ShapeType.Arc,
-                    StrokeColor = App.config.ValueColor,
+                    StrokeColor = App.Config.ValueColor,
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
-                    IndicatorPercentage = (float)((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
+                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    Name = item.item.name,
+                    Name = item.Item.Name,
                     Min = min,
                     Max = max
                 };
-                App.config.itemShapeViews.Add(progressArc);
+                App.Config.ItemShapeViews.Add(progressArc);
                 t_grid.Children.Add(progressArc, x, y);
                 #endregion Arc
 
@@ -193,16 +193,16 @@ namespace Kala
         {
             try
             {
-                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
-                var digits = Digits(widgetKeyValuePairs, item.item.state);
+                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
+                var digits = Digits(widgetKeyValuePairs, item.Item.State);
 
                 #region Center unit
                 t_grid.Children.Add(new Label
                 {
                     Text = widgetKeyValuePairs["unit"],
                     FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     TranslationY = 5
@@ -216,7 +216,7 @@ namespace Kala
                 {
                     Source = strSource,
                     Aspect = Aspect.AspectFill,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     VerticalOptions = LayoutOptions.End,
                     HorizontalOptions = LayoutOptions.Center
                 }, i, 1);
@@ -231,15 +231,15 @@ namespace Kala
                 {
                     Text = s_value,
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     TranslationY = -20,
-                    Name = item.item.name,
+                    Name = item.Item.Name,
                     Digits = digits.Item2
                 };
-                App.config.itemlabels.Add(l_value);
+                App.Config.Itemlabels.Add(l_value);
                 t_grid.Children.Add(l_value, i, 1);
 
                 Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
@@ -260,7 +260,7 @@ namespace Kala
                 t_grid.Children.Add(new ShapeView()
                 {
                     ShapeType = ShapeType.Arc,
-                    StrokeColor = App.config.BackGroundColor,
+                    StrokeColor = App.Config.BackGroundColor,
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
@@ -272,18 +272,18 @@ namespace Kala
                 ShapeView progressArc = new ShapeView
                 {
                     ShapeType = ShapeType.Arc,
-                    StrokeColor = App.config.ValueColor,
+                    StrokeColor = App.Config.ValueColor,
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
-                    IndicatorPercentage = (float)((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
+                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    Name = item.item.name,
+                    Name = item.Item.Name,
                     Min = min,
                     Max = max
                 };
-                App.config.itemShapeViews.Add(progressArc);
+                App.Config.ItemShapeViews.Add(progressArc);
                 t_grid.Children.Add(progressArc, i, 1);
                 #endregion Arc
 

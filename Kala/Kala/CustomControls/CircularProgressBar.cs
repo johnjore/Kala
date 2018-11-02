@@ -1,5 +1,4 @@
 ﻿//From https://github.com/jamesmontemagno
-
 using Xamarin.Forms;
 
 namespace CircularProgressBar.FormsPlugin.Abstractions

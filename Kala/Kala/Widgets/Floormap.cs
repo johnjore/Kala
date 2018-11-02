@@ -10,7 +10,7 @@ using Kala.Models;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static async void FloormapAsync(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
@@ -22,10 +22,35 @@ namespace Kala
             try
             {
                 Floorplan flooritem = data.ToObject<Floorplan>();
-                CrossLogger.Current.Debug("Image", "URL: " + flooritem.Url);
+                CrossLogger.Current.Debug("Floormap", "URL: " + flooritem.Url);
 
                 var httpClient = new HttpClient();
                 var svgString = await httpClient.GetStringAsync(flooritem.Url);
+
+                //Loop through SVG and find "ID" and add as Sensor
+                MatchCollection matches = Regex.Matches(svgString, "(id=\")(.*)(.\\b(on|off))", RegexOptions.IgnoreCase);
+                for (int j=0; j < matches.Count; j++)
+                {
+                    string Itemid = matches[j].Groups[2].Value;
+                    if (App.Config.Items.Find(s => s.Name == Itemid)  == null) 
+                    {
+                        CrossLogger.Current.Debug("Floormap", "Adding: " + Itemid);
+
+                        RestService GetItemUpdate = new RestService();
+                        string state = GetItemUpdate.GetItem(Itemid);
+
+                        if (state != null)
+                        {
+                            App.TrackItem sensor = new App.TrackItem
+                            {
+                                Name = Itemid,
+                                State = state,
+                                Type = Itemtypes.Sensor
+                            };
+                            App.Config.Items.Add(sensor);
+                        }
+                    }
+                }
 
                 #region w_grid
                 Grid w_grid = new Grid
@@ -33,7 +58,7 @@ namespace Kala
                     RowSpacing = 0,
                     ColumnSpacing = 0,
                     Padding = new Thickness(0, 0, 0, 0),
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                 };
@@ -45,13 +70,14 @@ namespace Kala
                 {
                     Text = header,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Start
                 }, 0, 0);
                 #endregion Header
 
+                #region SVG
                 SvgCachedImage svg = new SvgCachedImage
                 {
                     DownsampleToViewSize = false,
@@ -62,19 +88,24 @@ namespace Kala
                 };
                 w_grid.Children.Add(svg, 0, 0);
 
-                App.trackItem i = new App.trackItem
+                App.TrackItem svgImage = new App.TrackItem
                 {
-                    state = svgString,
-                    header = header,
-                    type = Itemtypes.Floormap,
-                    svgImage = svg
+                    State = svgString,
+                    Header = header,
+                    Type = Itemtypes.Floormap,
+                    SvgImage = svg
                 };
-                App.config.items.Add(i);
+                App.Config.Items.Add(svgImage);
+                #endregion SVG
 
-                foreach (App.trackItem item in App.config.items.Where(n => n.type == Itemtypes.Sensor))
+                CrossLogger.Current.Debug("Floormap", "SVGBefore");
+                foreach (App.TrackItem item in App.Config.Items.Where(n => n.Type == Itemtypes.Sensor))
                 {
-                    Floorplan_update(item);
+                    svgImage.State = UpdateOnOff(item, svgImage.State);
                 }
+                svgImage.SvgImage.Source = SvgImageSource.FromSvgString(svgImage.State);
+                svgImage.SvgImage.ReloadImage();
+                CrossLogger.Current.Debug("Floormap", "SVGAfter");
 
                 //Button must be last to be added to work
                 Button dummyButton = new Button
@@ -93,30 +124,30 @@ namespace Kala
             }
         }
 
-        private static void Floorplan_update(App.trackItem item)
+        private static void Floorplan_update(App.TrackItem item)
         {
-            foreach (App.trackItem floormap in App.config.items.Where(n => n.type == Itemtypes.Floormap))
+            foreach (App.TrackItem floormap in App.Config.Items.Where(n => n.Type == Itemtypes.Floormap))
             {
-                floormap.state = UpdateOnOff(item, floormap.state);
-                floormap.svgImage.Source = SvgImageSource.FromSvgString(floormap.state);
-                floormap.svgImage.ReloadImage();
+                floormap.State = UpdateOnOff(item, floormap.State);
+                floormap.SvgImage.Source = SvgImageSource.FromSvgString(floormap.State);
+                floormap.SvgImage.ReloadImage();
             }
         }
 
-        private static string UpdateOnOff(App.trackItem item, string svg)
+        private static string UpdateOnOff(App.TrackItem item, string svg)
         {
             int on = 1;
             int off = 0;
 
-            if (item.state.ToUpper().Equals("CLOSED"))
+            if (item.State.ToUpper().Equals("CLOSED"))
             {
                 on = 0;
                 off = 1;
             }
 
             RegexOptions options = RegexOptions.IgnoreCase;
-            svg = Regex.Replace(svg, "(.*" + item.name + ".on.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + on.ToString() + m.Groups[3].Value, options);
-            svg = Regex.Replace(svg, "(.*" + item.name + ".off.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + off.ToString() + m.Groups[3].Value, options);
+            svg = Regex.Replace(svg, "(.*" + item.Name + ".on.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + on.ToString() + m.Groups[3].Value, options);
+            svg = Regex.Replace(svg, "(.*" + item.Name + ".off.*stroke-opacity:)([0-1])(.*)", m => m.Groups[1].Value + off.ToString() + m.Groups[3].Value, options);
 
             return svg;
         }

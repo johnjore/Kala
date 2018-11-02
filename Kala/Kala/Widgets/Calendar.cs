@@ -9,11 +9,11 @@ using Plugin.Logger;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         //Keep track of calendar items. GUI needs a complete redraw on each update
-        public static List<Models.calItems> itemCalendar = new List<Models.calItems>();
-        private static List<Models.calendar> SortedList = null;
+        public static List<Models.CalItems> ItemCalendar { get; set; } = new List<Models.CalItems>();
+        private static List<Models.Calendar> SortedList { get; set; } = null;
 
         //Intial creation
         public static void Calendar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
@@ -31,8 +31,6 @@ namespace Kala
 
                 foreach (Models.Sitemap.Widget3 item in items)
                 {
-                    Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
-
                     //Master Grid for Widget
                     Grid Widget_Grid = new Grid
                     {
@@ -44,22 +42,22 @@ namespace Kala
                     },
                         RowSpacing = 0,
                         ColumnSpacing = 0,
-                        BackgroundColor = App.config.CellColor,
+                        BackgroundColor = App.Config.CellColor,
                         HorizontalOptions = LayoutOptions.StartAndExpand,
                         VerticalOptions = LayoutOptions.StartAndExpand,
                     };
                     grid.Children.Add(Widget_Grid, px, px + sx, py, py + sy);
 
-                    itemCalendar.Add(new Models.calItems
+                    ItemCalendar.Add(new Models.CalItems
                     {
-                        Label = item.label,
-                        State = item.item.state,
-                        Name = item.item.name,
-                        grid = Widget_Grid,
+                        Label = item.Label,
+                        State = item.Item.State,
+                        Name = item.Item.Name,
+                        Grid = Widget_Grid,
                     });
                 }
 
-                lock (itemCalendar)
+                lock (ItemCalendar)
                 {
                     Create_Calendar();
                 }
@@ -70,7 +68,7 @@ namespace Kala
                     if ((SortedList != null) && (SortedList.Count > 0) && (DateTime.Today.Date != SortedList[0].Start.Date))
                     {
                         CrossLogger.Current.Debug("Calendar", "Update Calendar as we've crossed midnight");
-                        lock (itemCalendar)
+                        lock (ItemCalendar)
                         {
                             Create_Calendar();
                         }
@@ -91,15 +89,15 @@ namespace Kala
             CrossLogger.Current.Debug("Calendar", "Update" + item.ToString());
 
             //Loop and update with new data
-            foreach (Models.calItems itemCal in itemCalendar)
+            foreach (Models.CalItems itemCal in ItemCalendar)
             {
-                if (itemCal.Name.Equals(item.topic))
+                if (itemCal.Name.Equals(item.Topic))
                 {
-                    itemCal.State = item.value;
+                    itemCal.State = item.Value;
                 }
             }
 
-            lock (itemCalendar)
+            lock (ItemCalendar)
             {
                 Create_Calendar();
             }
@@ -112,15 +110,15 @@ namespace Kala
             {
                 #region ParseItems
                 //We know there are x items. Divide by 4 and create and initialize an array for the items
-                Models.calendar[] calEvents = new Models.calendar[itemCalendar.Count / 4];
+                Models.Calendar[] calEvents = new Models.Calendar[ItemCalendar.Count / 4];
 
                 //Make sure we have something to process
-                if (itemCalendar.Count == 0) return;
+                if (ItemCalendar.Count == 0) return;
 
-                itemCalendar[0].grid.Children.Clear();
+                ItemCalendar[0].Grid.Children.Clear();
 
                 //Loop through the items
-                foreach (Models.calItems item in itemCalendar)
+                foreach (Models.CalItems item in ItemCalendar)
                 {
                     Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
 
@@ -131,9 +129,8 @@ namespace Kala
                         id--;
 
                         //Initialize
-                        if (calEvents[id] == null) calEvents[id] = new Models.calendar();
+                        if (calEvents[id] == null) calEvents[id] = new Models.Calendar();
 
-                        //CrossLogger.Current.Debug("Calendar", "Item nr: " + id.ToString() + ", item: " + widgetKeyValuePairs["item"].ToUpper());
                         if (widgetKeyValuePairs["item"].ToLower().Contains("title"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", Title:" + item.State);
@@ -147,7 +144,6 @@ namespace Kala
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("start-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", Start:" + item.State);
-                            //DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
                             DateTime tmp = DateTime.MinValue;
                             DateTime.TryParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
@@ -159,7 +155,7 @@ namespace Kala
 
                             if (tmp == DateTime.MinValue)
                             {
-                                CrossLogger.Current.Error("Calendar", "Failed to DateTime convert: '" + item.State + "'");
+                                CrossLogger.Current.Debug("Calendar", "Failed to DateTime convert: '" + item.State + "'");
                             }
 
                             calEvents[id].Start = tmp;
@@ -167,7 +163,6 @@ namespace Kala
                         else if (widgetKeyValuePairs["item"].ToLower().Contains("end-time"))
                         {
                             CrossLogger.Current.Debug("Calendar", "Nr: " + id.ToString() + ", End:" + item.State);
-                            //DateTime tmp = DateTime.ParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
                             DateTime tmp = DateTime.MinValue;
                             DateTime.TryParseExact(item.State, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp);
@@ -179,7 +174,7 @@ namespace Kala
 
                             if (tmp == DateTime.MinValue)
                             {
-                                CrossLogger.Current.Error("Calendar", "Failed to DateTime convert: '" + item.State + "'");
+                                CrossLogger.Current.Debug("Calendar", "Failed to DateTime convert: '" + item.State + "'");
                             }
                             calEvents[id].End = tmp;
                         }
@@ -195,7 +190,7 @@ namespace Kala
 
                 #region GUI
                 //calEvents contain the list of events. Parse it to create the GUI as elements may span multiple days
-                List<Models.calendar> guiEvents = new List<Models.calendar>();
+                List<Models.Calendar> guiEvents = new List<Models.Calendar>();
 
                 for (int i = 0; i < calEvents.Length; i++)
                 {
@@ -205,7 +200,7 @@ namespace Kala
                     {
                         for (int j = 0; j < days; j++)
                         {
-                            Models.calendar a = GuiRecord(calEvents[i], j);
+                            Models.Calendar a = GuiRecord(calEvents[i], j);
                             if (a != null)
                             {
                                 guiEvents.Add(a);
@@ -214,7 +209,7 @@ namespace Kala
                     }
                     else
                     {
-                        Models.calendar a = GuiRecord(calEvents[i], 0);
+                        Models.Calendar a = GuiRecord(calEvents[i], 0);
                         if (a != null)
                         {
                             guiEvents.Add(a);
@@ -243,7 +238,7 @@ namespace Kala
                 //Add today if missing from list
                 if (SortedList.Count > 0 && SortedList[0].Start.Date > DateTime.Today.Date)
                 {
-                    Models.calendar a = new Models.calendar
+                    Models.Calendar a = new Models.Calendar
                     {
                         Start = DateTime.Today.Date,
                         Day = DateTime.Now.Day.ToString(),
@@ -260,8 +255,8 @@ namespace Kala
                 {
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
-                    SeparatorColor = App.config.BackGroundColor,
-                    BackgroundColor = App.config.CellColor,
+                    SeparatorColor = App.Config.BackGroundColor,
+                    BackgroundColor = App.Config.CellColor,
                     SeparatorVisibility = SeparatorVisibility.Default,
                     RowHeight = 100,
                     HasUnevenRows = true,
@@ -272,8 +267,8 @@ namespace Kala
                         Label titleLabel = new Label
                         {
                             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.CellColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.CellColor,
                             FontAttributes = FontAttributes.Bold,
                         };
                         titleLabel.SetBinding(Label.TextProperty, "Title");
@@ -281,24 +276,24 @@ namespace Kala
                         Label hourLabel = new Label
                         {
                             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.CellColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.CellColor,
                         };
                         hourLabel.SetBinding(Label.TextProperty, "Hours");
 
                         Label locationLabel = new Label
                         {
                             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.CellColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.CellColor,
                         };
                         locationLabel.SetBinding(Label.TextProperty, "Location");
 
                         Label dayLabel = new Label
                         {
                             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                            TextColor = App.config.ValueColor,
-                            BackgroundColor = App.config.CellColor,
+                            TextColor = App.Config.ValueColor,
+                            BackgroundColor = App.Config.CellColor,
                             FontAttributes = FontAttributes.Bold,
                             HorizontalTextAlignment = TextAlignment.End
                         };
@@ -307,8 +302,8 @@ namespace Kala
                         Label whenLabel = new Label
                         {
                             FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                            TextColor = App.config.ValueColor,
-                            BackgroundColor = App.config.CellColor,
+                            TextColor = App.Config.ValueColor,
+                            BackgroundColor = App.Config.CellColor,
                             FontAttributes = FontAttributes.Bold,
                             HorizontalTextAlignment = TextAlignment.End
                         };
@@ -355,7 +350,7 @@ namespace Kala
                 };
                 lvCalendar.ItemTapped += OnItemTapped; //Prevent selection of items and background color
 
-                itemCalendar[0].grid.Children.Add(lvCalendar, 0, 0); //, px, px + sx, py, py + sy);
+                ItemCalendar[0].Grid.Children.Add(lvCalendar, 0, 0);
                 #endregion Render               
 
                 lvCalendar.ItemAppearing += LvCalendar_ItemAppearing;
@@ -368,22 +363,22 @@ namespace Kala
 
         private static void LvCalendar_ItemAppearing(object sender, ItemVisibilityEventArgs e)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
         }
 
         private static void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            App.config.LastActivity = DateTime.Now; //Update lastActivity to reset Screensaver timer
+            App.Config.LastActivity = DateTime.Now; //Update lastActivity to reset Screensaver timer
 
             if (e == null) return;
             ((ListView)sender).SelectedItem = null;
         }
 
-        private static Models.calendar GuiRecord(Models.calendar item, int j)
+        private static Models.Calendar GuiRecord(Models.Calendar item, int j)
         {
             if ((item.Start != DateTime.MinValue) && (item.Start.AddDays(j) >= DateTime.Now.Date))
             {
-                Models.calendar a = new Models.calendar
+                Models.Calendar a = new Models.Calendar
                 {
                     Day = item.Start.AddDays(j).Day.ToString(),
                     DayOfWeek = item.Start.AddDays(j).DayOfWeek.ToString().Substring(0, 3),

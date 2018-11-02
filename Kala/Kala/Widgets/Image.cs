@@ -8,7 +8,7 @@ using Plugin.Logger;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         /// <summary>
         /// Create Image Widget
@@ -27,8 +27,8 @@ namespace Kala
 
             try
             {
-                Models.image item = data.ToObject<Models.image>();
-                CrossLogger.Current.Debug("Image", "URL: " + item.url);
+                Models.Image item = data.ToObject<Models.Image>();
+                CrossLogger.Current.Debug("Image", "URL: " + item.Url);
 
                 //Aspect ratio
                 switch (straspect.ToLower())
@@ -44,7 +44,7 @@ namespace Kala
                         break;
                 }
 
-                var image = new CachedImage()
+                var img = new CachedImage()
                 {
                     DownsampleToViewSize = false,
                     CacheDuration = TimeSpan.FromMilliseconds(1000),
@@ -52,15 +52,15 @@ namespace Kala
                     RetryCount = 0,
                     RetryDelay = 250,
                     BitmapOptimizations = true,
-                    Source = item.url
+                    Source = item.Url
                 };
-                grid.Children.Add(image, px, px + sx, py, py + sy);
+                grid.Children.Add(img, px, px + sx, py, py + sy);
 
                 Label l_header = new Label
                 {
                     Text = header,
                     FontSize = 20,
-                    TextColor = App.config.TextColor,
+                    TextColor = App.Config.TextColor,
                     BackgroundColor = Color.Transparent,
                     HorizontalOptions = LayoutOptions.Start,
                     VerticalOptions = LayoutOptions.Start
@@ -74,15 +74,15 @@ namespace Kala
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.Transparent,
                     Name = header,
-                    URL = item.url,
+                    URL = item.Url,
                 };
                 grid.Children.Add(ImageButton, px, px + sx, py, py + sy);
                 ImageButton.Clicked += OnImageButtonClicked;
 
                 // Start the refresh time
-                if (item.refresh != string.Empty)
+                if (item.Refresh != string.Empty)
                 {
-                    int refresh = Convert.ToInt32(item.refresh);
+                    int refresh = Convert.ToInt32(item.Refresh);
                     if (refresh > 0)
                     {
                         Device.StartTimer(TimeSpan.FromMilliseconds(refresh), () =>
@@ -90,7 +90,7 @@ namespace Kala
                             //If not clearing the cache, image does not refresh
                             ImageService.Instance.InvalidateCacheAsync(CacheType.All);
 
-                            CrossLogger.Current.Debug("Image", "Refresh Image: " + image.Id.ToString());
+                            CrossLogger.Current.Debug("Image", "Refresh Image: " + item.Url);                           
                             try
                             {
                                 image.ReloadImage();
@@ -123,9 +123,9 @@ namespace Kala
 
         private static ContentPage CreateImagePage(ItemImageButton ImageInfo)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
 
-            var image = new CachedImage()
+            var img = new CachedImage()
             {
                 DownsampleToViewSize = false,
                 CacheDuration = TimeSpan.FromMilliseconds(1000),
@@ -143,8 +143,8 @@ namespace Kala
             {
                 Text = "Close",
                 FontSize = 50,
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.BackGroundColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.BackGroundColor,
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.End,
             };
@@ -160,13 +160,13 @@ namespace Kala
                         {
                             Text = ImageInfo.Name,
                             FontSize = 24,
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.BackGroundColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.BackGroundColor,
                             HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Start
                         },
-                        image, button },
-                    BackgroundColor = App.config.BackGroundColor,
+                        img, button },
+                    BackgroundColor = App.Config.BackGroundColor,
                     Orientation = StackOrientation.Vertical,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -14,17 +13,17 @@ using Newtonsoft.Json.Linq;
 
 namespace Kala
 {
-	public class RestService : IRestService
+    public class RestService : IRestService
 	{
-        HttpClient client;
+        private HttpClient Client { get; set; } = null;
 
         //Keep track of updates
-        public static Queue<string> queueUpdates = new Queue<string>();
-        public static bool boolExit = true;
+        public static Queue<string> QueueUpdates { get; set; } = new Queue<string>();
+        public static bool BoolExit { get; set; } = true;
 
         public RestService()
 		{
-            client = new HttpClient
+            Client = new HttpClient
             {
                 MaxResponseContentBufferSize = 256000
             };
@@ -33,19 +32,19 @@ namespace Kala
             {
                 var authData = string.Format("{0}:{1}", Settings.Username, Settings.Password);
                 var authHeaderValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(authData));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+                Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
             }
         }
         
         public Models.Sitemaps.Sitemaps ListSitemaps()
 		{
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Sitemaps));
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            Client.DefaultRequestHeaders.Add("Accept", "application/json");
             CrossLogger.Current.Debug(@"URI: '" + uri.ToString() + "'");
 
             try
             {
-                var response = client.GetAsync(uri).Result;
+                var response = Client.GetAsync(uri).Result;
                 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -60,10 +59,10 @@ namespace Kala
                 {
                     Models.Sitemaps.Sitemaps sitemaps = new Models.Sitemaps.Sitemaps
                     {
-                        sitemap = ((JArray)JToken.Parse(resultString)).ToObject<List<Models.Sitemaps.Sitemap>>()
+                        Sitemap = ((JArray)JToken.Parse(resultString)).ToObject<List<Models.Sitemaps.Sitemap>>()
                     };
 
-                    CrossLogger.Current.Debug("RestService", "Found " + sitemaps.sitemap.Count().ToString() + " sitemaps");
+                    CrossLogger.Current.Debug("RestService", "Found " + sitemaps.Sitemap.Count.ToString() + " sitemaps");
                     return sitemaps;
                 }
                 catch
@@ -81,22 +80,21 @@ namespace Kala
 
         public Models.Sitemap.Sitemap LoadItemsFromSitemap(Models.Sitemaps.Sitemap sitemap)
         {
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-            var uri = new Uri(sitemap.link);
-            CrossLogger.Current.Debug("Kala", @"URI: '" + uri.ToString() + "'");
-
             try
             {
-                var response = client.GetAsync(uri).Result;
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                var uri = new Uri(sitemap.Link);
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", @"URI: '" + uri.ToString() + "'"));
+
+                var response = Client.GetAsync(uri).Result;
 
                 if (!response.IsSuccessStatusCode)
                 {
                     Application.Current.MainPage.DisplayAlert("Alert", response.StatusCode.ToString(), "OK");
-                    throw new Exception($"{response.StatusCode} received from server");
                 }
 
                 string resultString = response.Content.ReadAsStringAsync().Result;
-                CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'"));
 
                 try
                 {
@@ -117,57 +115,47 @@ namespace Kala
             }
         }
 
-        public async Task SendCommand(string name, string command)
+        public async Task SendCommand(string link, string command)
         {
-            App.config.LastActivity = DateTime.Now; //Update lastActivity to reset Screensaver timer
+            App.Config.LastActivity = DateTime.Now; //Update lastActivity to reset Screensaver timer
 
-            var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Items + name));
-            CrossLogger.Current.Debug("Kala", "SendCommand() - URI: " + uri + ", Command:" + command);
+            var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Items + link));
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "SendCommand() - URI: " + uri + ", Command:" + command));
 
             try
             {
                 StringContent queryString = new StringContent(command, Encoding.UTF8);
-                //HttpResponseMessage response = 
-                await client.PostAsync(uri, queryString);
-                //No point waiting for the response as we dont do anything with it...
-                /*response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    CrossLogger.Current.Debug("Kala", "SendCommand - Success");
-                }
-                else
-                {
-                    CrossLogger.Current.Debug("Kala", "Sendcommand - Failed: " + response.ToString());
-                }*/         
+                await Client.PostAsync(uri, queryString);
             }
             catch (Exception ex)
             {
                 CrossLogger.Current.Error("Kala", "SendCommand - Failed: " + ex.ToString());
             }
-            return;
         }
 
         public string GetItem(string name)
         {
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            Client.DefaultRequestHeaders.Add("Accept", "application/json");
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Items + name));
             CrossLogger.Current.Debug("Kala", "GetItem() - URI: " + uri.ToString());
 
             try
             {
-                var response = client.GetAsync(uri).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"{response.StatusCode} received from server");
-                }
+                var response = Client.GetAsync(uri).Result;
+                if (!response.IsSuccessStatusCode) return null;
 
                 string resultString = response.Content.ReadAsStringAsync().Result;
                 CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
 
                 Models.Item updatedItem = JsonConvert.DeserializeObject<Models.Item>(resultString);
-                return updatedItem.transformedState.ToString();
+                if (updatedItem.TransformedState != null)
+                {
+                    return updatedItem.TransformedState.ToString();
+                }
+                else if (updatedItem.State != null)
+                { 
+                    return updatedItem.State.ToString();
+                }
             }
             catch (Exception ex)
             {
@@ -178,21 +166,20 @@ namespace Kala
 
         public async Task GetUpdateAsync()
         {
-            var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Events, string.Empty));
+            var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Events));
             CrossLogger.Current.Debug("Updates", "URI: " + uri);
 
             await Task.Run(async() =>
             {
-                client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
+                Client.Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite);
                 while (true)
                 {
                     try
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get, uri);
-                        using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                        using (var response = await Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                         {
-                            using (var body = await response.Content.ReadAsStreamAsync())
-                            using (var reader = new StreamReader(body))
+                            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                             {
                                 //Loop through this as quickly as possible to not loose any messages
                                 while (!reader.EndOfStream)
@@ -200,29 +187,27 @@ namespace Kala
                                     string updates = reader.ReadLine();
 
                                     //Don't add junk to the queue...
-                                    if ((updates.Contains("data: {") == true) && (updates.Contains("statechanged") == true))
+                                    if ((updates.Contains("data: {")) && (updates.Contains("statechanged")))
                                     {
-                                        lock (queueUpdates)
+                                        lock (QueueUpdates)
                                         {
-                                            queueUpdates.Enqueue(updates);
+                                            QueueUpdates.Enqueue(updates);
 
-                                            if (boolExit == true && App.config.Initialized == true && queueUpdates.Count() > 0)
+                                            if (BoolExit && App.Config.Initialized && QueueUpdates.Count > 0)
                                             {
                                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "RestService - GetUpdateAsync() - Creating Updates() thread"));
 
-                                                #pragma warning disable CS4014
                                                 Task.Run(async () =>
                                                 {
                                                     await Helpers.Updates();
                                                 });
-                                                #pragma warning restore CS4014
                                             }
                                             else
                                             {
                                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "RestService - GetUpdateAsync() - Updates() already running, or not initialized"));
                                             }
 
-                                            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "RestService - GetUpdateAsync() - Updates in queue: " + queueUpdates.Count.ToString() + ", new update:" + updates));
+                                            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "RestService - GetUpdateAsync() - Updates in queue: " + QueueUpdates.Count.ToString() + ", new update:" + updates));
                                         }
                                     }
                                 }

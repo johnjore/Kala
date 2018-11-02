@@ -95,19 +95,21 @@ namespace DrawShape.Android
 		/// <param name="drawFill">If set to <c>true</c> draw fill.</param>
 		protected virtual void HandleStandardDraw (Canvas canvas, Action<Paint> drawShape, float? lineWidth = null, bool drawFill = true)
 		{
-			var strokePaint = new Paint (PaintFlags.AntiAlias);
-			strokePaint.SetStyle (Paint.Style.Stroke);
-			strokePaint.StrokeWidth = Resize (lineWidth ?? ShapeView.StrokeWidth);
-			strokePaint.StrokeCap = Paint.Cap.Round;
-			strokePaint.Color = ShapeView.StrokeColor.ToAndroid();
 			var fillPaint = new Paint();
 			fillPaint.SetStyle (Paint.Style.Fill);
 			fillPaint.Color = ShapeView.Color.ToAndroid();
 
-			if (drawFill)
-				drawShape (fillPaint);
+            if (drawFill)
+            {
+                drawShape(fillPaint);
+            }
 
-			drawShape (strokePaint);
+            var strokePaint = new Paint(PaintFlags.AntiAlias);
+            strokePaint.SetStyle(Paint.Style.Stroke);
+            strokePaint.StrokeWidth = Resize(lineWidth ?? ShapeView.StrokeWidth);
+            strokePaint.StrokeCap = Paint.Cap.Round;
+            strokePaint.Color = ShapeView.StrokeColor.ToAndroid();
+            drawShape(strokePaint);
 		}
 
 		// Helper functions for dealing with pizel density

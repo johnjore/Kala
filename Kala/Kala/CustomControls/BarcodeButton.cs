@@ -1,20 +1,23 @@
 ﻿using Xamarin.Forms;
 using ZXing.Mobile;
 
-public class BarcodeButton : Button
+namespace Kala
 {
-    public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(ItemButton), null);
-    public static readonly BindableProperty OptionsProperty = BindableProperty.Create(nameof(Options), typeof(MobileBarcodeScanningOptions), typeof(BarcodeButton), null);
-
-    public string Name
+    public class BarcodeButton : Button
     {
-        get { return (string)GetValue(NameProperty); }
-        set { SetValue(NameProperty, value); }
-    }
+        public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(Kala.ItemButton), null);
+        public static readonly BindableProperty OptionsProperty = BindableProperty.Create(nameof(Options), typeof(MobileBarcodeScanningOptions), typeof(BarcodeButton), null);
 
-    public MobileBarcodeScanningOptions Options
-    {
-        get { return (MobileBarcodeScanningOptions)GetValue(OptionsProperty); }
-        set { SetValue(OptionsProperty, value); }
+        public string Name
+        {
+            get { return (string)GetValue(NameProperty); }
+            set { SetValue(NameProperty, value); }
+        }
+
+        public MobileBarcodeScanningOptions Options
+        {
+            get { return (MobileBarcodeScanningOptions)GetValue(OptionsProperty); }
+            set { SetValue(OptionsProperty, value); }
+        }
     }
 }

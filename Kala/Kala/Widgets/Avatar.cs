@@ -9,7 +9,7 @@ using Plugin.Logger;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
         {
@@ -30,7 +30,7 @@ namespace Kala
                     Padding = new Thickness(0, 0, 0, 0),
                     RowSpacing = 0,
                     ColumnSpacing = 0,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     RowDefinitions = new RowDefinitionCollection
@@ -48,8 +48,8 @@ namespace Kala
 
                 foreach (Models.Sitemap.Widget3 item in items)
                 {
-                    if (item.url != null) {
-                        var image = new CachedImage()
+                    if (item.Url != null) {
+                        var img = new CachedImage()
                         {
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.StartAndExpand,
@@ -63,23 +63,23 @@ namespace Kala
                             {
                                 new CircleTransformation()
                             },
-                            Source = item.url,
+                            Source = item.Url,
                         };
-                        w_grid.Children.Add(image, 0, 0);
+                        w_grid.Children.Add(img, 0, 0);
                     } else {
                         var state = Helpers.GetTrueState(item);
                         ItemLabel l_mode = new ItemLabel
                         {
                             Text = state.Item1,
                             FontSize = 20,
-                            TextColor = App.config.TextColor,
+                            TextColor = App.Config.TextColor,
                             BackgroundColor = Color.Transparent,
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.End,
-                            Name = item.item.name,
+                            Name = item.Item.Name,
                             Transformed = state.Item2
                         };
-                        App.config.itemlabels.Add(l_mode);
+                        App.Config.Itemlabels.Add(l_mode);
                         w_grid.Children.Add(l_mode, 0, 1);
                     }
                 }

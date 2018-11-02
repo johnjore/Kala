@@ -22,23 +22,12 @@ namespace Kala
         }
 
         #region Setting Constants
-        private const string ProtocolKey = "protocol_key";
-        private static string ProtocolDefault = "http";
-
-        private const string ServerKey = "server_key";
-        private static string ServerDefault = "openhabserver.local";
-
-        private const string PortKey = "port_key";
-        private static int PortDefault = 8080;
-
-        private const string UsernameKey = "username_key";
-        private static string UsernameDefault = string.Empty;
-
-        private const string PasswordKey = "password_key";
-        private static string PasswordDefault = string.Empty;
-
-        private const string SitemapKey = "sitemap_key";
-        private static string SitemapDefault = "Kala";
+        private const string ProtocolDefault = "http";
+        private const string ServerDefault = "openhabserver.local";
+        private const int PortDefault = 8080;
+        private const string UsernameDefault = "";
+        private const string PasswordDefault = "";
+        private const string SitemapDefault = "Kala";
         #endregion
 
         public static string Protocol

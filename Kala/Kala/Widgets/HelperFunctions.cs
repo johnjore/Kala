@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static string WeatherCondition(string state)
         {
@@ -70,7 +70,7 @@ namespace Kala
 
         private static void OnDummyButtonClicked(object sender, EventArgs e)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
         }
     }
 }

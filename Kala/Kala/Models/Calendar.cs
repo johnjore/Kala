@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace Kala.Models
 {
-    public class calendar
+    public class Calendar
     {
         public string Day { get; set; }
         public string DayOfWeek { get; set; }
@@ -14,11 +14,11 @@ namespace Kala.Models
         public DateTime End { get; set; }
     }
 
-    public class calItems
+    public class CalItems
     {
         public string Label { get; set; }
         public string State { get; set; }
         public string Name { get; set; }
-        public Grid grid { get; set; }
+        public Grid Grid { get; set; }
     }
 }

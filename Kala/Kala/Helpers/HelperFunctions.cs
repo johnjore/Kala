@@ -8,7 +8,7 @@ using DrawShape;
 using Xamarin.Forms.GoogleMaps;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+using System.Collections.Immutable;
 
 namespace Kala
 {
@@ -22,7 +22,7 @@ namespace Kala
 
     public class Helpers : Application
     {
-        public static Dictionary<string, int> wind_direction = new Dictionary<string, int>
+        public readonly static ImmutableDictionary<string, int> wind_direction = new Dictionary<string, int>
         {
             {"n",      0},
             {"nne",   23},
@@ -40,7 +40,7 @@ namespace Kala
             {"wnw",  293},
             {"nw",   315},
             {"nnw",  338}
-        };
+        }.ToImmutableDictionary();
 
         public static Dictionary<string, string> SplitCommand(string instructions)
         {
@@ -73,25 +73,23 @@ namespace Kala
         }
 
         //Process Update Messages
-        #pragma warning disable CS1998
         public static async Task Updates()
         {
-            RestService.boolExit = false;
+            RestService.BoolExit = false;
             try
             {
                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Processing updates"));
 
-                while (RestService.boolExit == false)
+                while (!RestService.BoolExit)
                 {
-                    lock (RestService.queueUpdates)
+                    lock (RestService.QueueUpdates)
                     {
-                        while (RestService.queueUpdates.Count > 0)
+                        while (RestService.QueueUpdates.Count > 0)
                         {
                             string tmpS = string.Empty;
                             try
                             {
-                                tmpS = RestService.queueUpdates.Dequeue();
-                                //System.Diagnostics.Debug.WriteLine("Updates in queue: " + RestService.queueUpdates.Count.ToString() + ", old update:" + tmpS);
+                                tmpS = RestService.QueueUpdates.Dequeue();
 
                                 if (tmpS.StartsWith("data: "))
                                 {
@@ -104,43 +102,41 @@ namespace Kala
                                     Models.Events itemData = JsonConvert.DeserializeObject<Models.Events>(tmpS);
 
                                     //Rewrite topic to only use item name
-                                    var tmpA = itemData.topic.Split('/');
-                                    itemData.topic = tmpA[tmpA.Count() - 2];
+                                    var tmpA = itemData.Topic.Split('/');
+                                    itemData.Topic = tmpA[tmpA.Count() - 2];
 
                                     //Add value to item
-                                    Models.Payload payload = JsonConvert.DeserializeObject<Models.Payload>(itemData.payload);
-                                    itemData.value = payload.value;
-                                    System.Diagnostics.Debug.WriteLine("Found: " + itemData.topic + ", New State: " + itemData.value);
+                                    Models.Payload payload = JsonConvert.DeserializeObject<Models.Payload>(itemData.Payload);
+                                    itemData.Value = payload.Value;
+                                    System.Diagnostics.Debug.WriteLine("Found: " + itemData.Topic + ", New State: " + itemData.Value);
 
                                     Device.BeginInvokeOnMainThread(() => GUI_Update(itemData));
 
                                     //Specials. To be removed and cleaned up later
-                                    foreach (App.trackItem item in App.config.items)
+                                    foreach (App.TrackItem Item in App.Config.Items.Where(n => n.Name == itemData.Topic && itemData.Value != null))
                                     {
-                                        if (item.name.Equals(itemData.topic) && itemData.value != null)
-                                        {
-                                            item.state = itemData.value;
+                                        Item.State = itemData.Value;
 
-                                            switch (item.type)
-                                            {
-                                                case Models.Itemtypes.Dimmer:
-                                                    Device.BeginInvokeOnMainThread(() => Widgets.Dimmer_update(false, item));
-                                                    break;
-                                                case Models.Itemtypes.Switch:
-                                                    Device.BeginInvokeOnMainThread(() => Widgets.Switch_update(false, item));
-                                                    break;
-                                                case Models.Itemtypes.Sensor:
-                                                    Device.BeginInvokeOnMainThread(() => Widgets.Sensor_update(false, item));
-                                                    break;
-                                                default:
-                                                    Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Warn("Updates", "Not processed: " + item.ToString()));
-                                                    break;
-                                            }
+                                        switch (Item.Type)
+                                        {
+                                            case Models.Itemtypes.Dimmer:
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Dimmer_update(false, Item));
+                                                break;
+                                            case Models.Itemtypes.Switch:
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Switch_update(false, Item));
+                                                break;
+                                            case Models.Itemtypes.Sensor:
+                                                Device.BeginInvokeOnMainThread(() => Widgets.Sensor_update(false, Item));
+                                                break;
+                                            default:
+                                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Warn("Updates", "Not processed: " + Item.ToString()));
+                                                break;
                                         }
                                     }
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
+                                    Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Updates", "Crashed on " + tmpS + ", " + ex.ToString()));
                                 }
                             }
                             catch (Exception ex)
@@ -148,17 +144,17 @@ namespace Kala
                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Updates", "Crashed on " + tmpS + ", " + ex.ToString()));
                             }
 
-                            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Messages in queue: " + RestService.queueUpdates.Count.ToString()));
+                            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "Messages in queue: " + RestService.QueueUpdates.Count.ToString()));
 
                             //Get out of here asap if exit signal is sent
-                            if (RestService.boolExit)
+                            if (RestService.BoolExit)
                             {
                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Info("Updates", "Asked to exit"));
                                 return;
                             }
                         }
 
-                        RestService.boolExit = true;
+                        RestService.BoolExit = true;
                         Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "No more messages to send. Task will now end"));
                     }
                 }
@@ -167,9 +163,7 @@ namespace Kala
             {
                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Updates", "Crashed: " + ex.ToString()));
             }
-            return;
         }
-        #pragma warning restore CS1998
 
         //Update GUI
         public static void GUI_Update(Models.Events item)
@@ -177,36 +171,36 @@ namespace Kala
             try
             {
                 #region Generic labels
-                foreach (ItemLabel lbl in App.config.itemlabels)
+                foreach (ItemLabel lbl in App.Config.Itemlabels)
                 {
-                    if (lbl.Name != null && lbl.Name.Equals(item.topic) && item.value != null)
+                    if (lbl.Name != null && lbl.Name.Equals(item.Topic) && item.Value != null)
                     {
                         //Manage special cases
                         switch (lbl.Type)
                         {
                             case Models.Itemtypes.Winddirection:
                                 int w_direction = 0;
-                                wind_direction.TryGetValue(item.value.ToLower(), out w_direction);
+                                wind_direction.TryGetValue(item.Value.ToLower(), out w_direction);
                                 lbl.Rotation = w_direction;
                                 break;
                             case Models.Itemtypes.Weathericon:
-                                lbl.Text = Widgets.WeatherCondition(item.value);
+                                lbl.Text = Widgets.WeatherCondition(item.Value);
                                 break;
                             default:
                                 //If Digits, round off the value
                                 if (lbl.Digits > -1)
                                 {
-                                    item.value = Math.Round(Convert.ToDouble(item.value), lbl.Digits).ToString("f" + lbl.Digits);
+                                    item.Value = Math.Round(Convert.ToDouble(item.Value), lbl.Digits).ToString("f" + lbl.Digits);
                                 }
 
                                 //This is horrible...
                                 if (lbl.Transformed)
                                 {                                   
                                     RestService GetItemUpdate = new RestService();
-                                    item.value = GetItemUpdate.GetItem(lbl.Name);
+                                    item.Value = GetItemUpdate.GetItem(lbl.Name);
                                 }
 
-                                lbl.Text = lbl.Pre + item.value + lbl.Post;
+                                lbl.Text = lbl.Pre + item.Value + lbl.Post;
                                 break;
                         }
                     }
@@ -214,24 +208,22 @@ namespace Kala
                 #endregion Generic labels
 
                 #region Calendar
-                foreach (Models.calItems lbl in Widgets.itemCalendar)
+                foreach (Models.CalItems lbl in Widgets.ItemCalendar.FindAll(i => i.Name == item.Topic))
                 {
-                    if (lbl.Name.Equals(item.topic))
-                    {
-                        Widgets.Calendar_Update(item);
-                    }
+                    Widgets.Calendar_Update(item);
                 }
+
                 #endregion Calendar
 
                 #region ShapeViews
-                List<ShapeView> tmp = new List<ShapeView>(App.config.itemShapeViews);
+                List<ShapeView> tmp = new List<ShapeView>(App.Config.ItemShapeViews);
                 foreach (ShapeView sv in tmp)
                 {
-                    if (sv.Name.Equals(item.topic) && item.value != null)
+                    if (sv.Name.Equals(item.Topic) && item.Value != null)
                     {
                         try
                         {
-                            float.TryParse(item.value, out float state);
+                            float.TryParse(item.Value, out float state);
 
                             //Basic sanity checks
                             if (state > sv.Max) sv.Max = state;
@@ -261,7 +253,7 @@ namespace Kala
                 #endregion ShapeViews
 
                 #region Maps
-                foreach (Map map in Widgets.itemMaps)
+                foreach (Map map in Widgets.ItemMaps)
                 {
                     try
                     {
@@ -271,10 +263,10 @@ namespace Kala
 
                         foreach (Pin pin in map.Pins)
                         {
-                            if (pin.Tag.Equals(item.topic) && item.value != null)
+                            if (pin.Tag.Equals(item.Topic) && item.Value != null)
                             {
                                 CrossLogger.Current.Info("Map", "Update");
-                                var b = item.value.Split(',');
+                                var b = item.Value.Split(',');
                                 if (b.Count() > 2)
                                 {
                                     pin.Position = new Position(Convert.ToDouble(b[0]), Convert.ToDouble(b[1]));
@@ -304,13 +296,13 @@ namespace Kala
 
         public static Tuple<string, bool> GetTrueState(Models.Sitemap.Widget3 item)
         {
-            if (item.item.transformedState == null || item.item.transformedState.Equals(string.Empty))
+            if (item.Item.TransformedState == null || item.Item.TransformedState.Equals(string.Empty))
             {
-                return Tuple.Create(item.item.state, false);
+                return Tuple.Create(item.Item.State, false);
             }
             else
             {
-                return Tuple.Create(item.item.transformedState, true);
+                return Tuple.Create(item.Item.TransformedState, true);
             }
         }
     }

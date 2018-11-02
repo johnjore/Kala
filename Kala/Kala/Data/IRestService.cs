@@ -35,11 +35,5 @@ namespace Kala
         /// </summary>
         /// <returns>The update for an item</returns>
         string GetItem(string name);
-
-        /// <summary>
-        /// Reset the connection to the OpenHAB server after changing the settings in the app
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        //Task ResetConnection();
     }
 }

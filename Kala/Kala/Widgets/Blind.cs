@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Newtonsoft.Json.Linq;
 using Plugin.Logger;
+using System.Threading.Tasks;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Blind(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
@@ -21,7 +22,7 @@ namespace Kala
             try
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
-                widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
             }
             catch (Exception ex)
             {
@@ -36,7 +37,7 @@ namespace Kala
                     RowSpacing = 0,
                     ColumnSpacing = 0,
                     Padding = new Thickness(0, 0, 0, 0),
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                 };
@@ -60,16 +61,16 @@ namespace Kala
                     {
                         Text = header,
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = App.config.TextColor,
-                        BackgroundColor = App.config.CellColor,
+                        TextColor = App.Config.TextColor,
+                        BackgroundColor = App.Config.CellColor,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Start
                     }, 0, 0);
 
                     //Control buttons
-                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.item.name, "UP");
-                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 0, 1, item.item.name, "STOP");
-                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 0, 2, item.item.name, "DOWN");
+                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.Item.Name, "UP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 0, 1, item.Item.Name, "STOP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 0, 2, item.Item.Name, "DOWN");
                 }
                 else if (sx > sy) //Horizontal
                 {
@@ -88,15 +89,15 @@ namespace Kala
                     {
                         Text = header,
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = App.config.TextColor,
-                        BackgroundColor = App.config.CellColor,
+                        TextColor = App.Config.TextColor,
+                        BackgroundColor = App.Config.CellColor,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Start
                     }, 1, 0);
                     
-                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.item.name, "UP");
-                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 1, 0, item.item.name, "STOP");
-                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 2, 0, item.item.name, "DOWN");
+                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.Item.Name, "UP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 1, 0, item.Item.Name, "STOP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 2, 0, item.Item.Name, "DOWN");
                 }
                 else
                 {
@@ -117,16 +118,16 @@ namespace Kala
                     {
                         Text = header,
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = App.config.TextColor,
-                        BackgroundColor = App.config.CellColor,
+                        TextColor = App.Config.TextColor,
+                        BackgroundColor = App.Config.CellColor,
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Start
                     }, 1, 0);
 
                     //Control buttons
-                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.item.name, "UP");
-                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 1, 1, item.item.name, "STOP");
-                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 2, 2, item.item.name, "DOWN");
+                    AddControlImage(w_grid, widgetKeyValuePairs["up_icon"], 0, 0, item.Item.Name, "UP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["icon"], 1, 1, item.Item.Name, "STOP");
+                    AddControlImage(w_grid, widgetKeyValuePairs["down_icon"], 2, 2, item.Item.Name, "DOWN");
                 }
                 #endregion w_grid
             }
@@ -171,11 +172,12 @@ namespace Kala
         private static void OnBlindButtonClicked(object sender, EventArgs e)
         {
             ItemButton button = sender as ItemButton;
-            CrossLogger.Current.Error("Blind", "BlindButton: " + button.Name + ", Cmd: " + button.Cmd);
+            CrossLogger.Current.Debug("Blind", "BlindButton: " + button.Name + ", Cmd: " + button.Cmd);
 
-            #pragma warning disable CS4014
-            new RestService().SendCommand(button.Name, button.Cmd);
-            #pragma warning restore CS4014
+            Task.Run(async () =>
+            {
+                await new RestService().SendCommand(button.Name, button.Cmd);
+            });          
         }
     }
 }

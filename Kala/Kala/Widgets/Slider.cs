@@ -2,14 +2,15 @@
 using System;
 using Xamarin.Forms;
 using Plugin.Logger;
+using System.Threading.Tasks;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
-        private static ContentPage CreateSliderPage(App.trackItem item)
+        private static ContentPage CreateSliderPage(App.TrackItem item)
         {
-            double.TryParse(item.state, out double value);
+            double.TryParse(item.State, out double value);
 
             Slider slider = new Slider
             {
@@ -20,7 +21,7 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = 100,
-                StyleId = item.name,
+                StyleId = item.Name,
             };
             slider.Effects.Add(Effect.Resolve("Effects.SliderEffect"));
             slider.ValueChanged += OnSliderValueChanged;
@@ -29,8 +30,8 @@ namespace Kala
             {
                 Text = "Close",
                 FontSize = 50,
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.BackGroundColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.BackGroundColor,
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = 200
@@ -39,22 +40,22 @@ namespace Kala
                 Application.Current.MainPage = PreviousPage;
             };
 
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
 
             return (new ContentPage {
                 Content = new StackLayout
                 {
                     Children = { new Label
                         {
-                            Text = item.header,
+                            Text = item.Header,
                             FontSize = 72,
-                            TextColor = App.config.TextColor,
-                            BackgroundColor = App.config.BackGroundColor,
+                            TextColor = App.Config.TextColor,
+                            BackgroundColor = App.Config.BackGroundColor,
                             HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Start
                         },
                         slider, button },
-                    BackgroundColor = App.config.BackGroundColor,
+                    BackgroundColor = App.Config.BackGroundColor,
                     Orientation = StackOrientation.Vertical,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
@@ -64,15 +65,16 @@ namespace Kala
                 
         private static void OnSliderValueChanged(object sender, ValueChangedEventArgs e)
         {
-            App.config.LastActivity = DateTime.Now;
+            App.Config.LastActivity = DateTime.Now;
 
             Slider slider = sender as Slider;
             string name = slider.StyleId;
             string state = Convert.ToInt16(Math.Round(e.NewValue, MidpointRounding.AwayFromZero)).ToString();
 
-            #pragma warning disable CS4014
-            new RestService().SendCommand(name, state);
-            #pragma warning restore CS4014
+            Task.Run(async () =>
+            {
+                await new RestService().SendCommand(name, state);
+            });
         }
     }
 }

@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Blank(Grid grid, string x, string y)
         {
@@ -12,7 +12,7 @@ namespace Kala
 
             grid.Children.Add(new Label
             {
-                BackgroundColor = App.config.CellColor
+                BackgroundColor = App.Config.CellColor
             }, px, py);
 
             //Button must be last to be added to work

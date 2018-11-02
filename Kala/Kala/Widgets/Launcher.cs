@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xamarin.Forms;
 using DrawShape;
 using Newtonsoft.Json.Linq;
@@ -8,7 +7,7 @@ using Plugin.Logger;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Launcher(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
@@ -20,7 +19,7 @@ namespace Kala
             try
             {
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
-                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                Dictionary<string, string> widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
                 CrossLogger.Current.Debug("Launcher", "Label: " + widgetKeyValuePairs["label"]);
 
                 //Master Grid for Widget
@@ -34,7 +33,7 @@ namespace Kala
                     },
                     RowSpacing = 0,
                     ColumnSpacing = 0,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                 };
@@ -44,8 +43,8 @@ namespace Kala
                 {
                     Text = header,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    TextColor = App.config.TextColor,
-                    BackgroundColor = App.config.CellColor,
+                    TextColor = App.Config.TextColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalTextAlignment = TextAlignment.Center,
                     VerticalTextAlignment = TextAlignment.Start
                 }, 0, 0);
@@ -54,8 +53,8 @@ namespace Kala
                 Widget_Grid.Children.Add(new ShapeView()
                 {
                     ShapeType = ShapeType.Circle,
-                    StrokeColor = App.config.ValueColor,
-                    Color = App.config.ValueColor,
+                    StrokeColor = App.Config.ValueColor,
+                    Color = App.Config.ValueColor,
                     StrokeWidth = 10.0f,
                     Scale = 2,
                     HorizontalOptions = LayoutOptions.Center,

@@ -7,7 +7,7 @@ using CircularProgressBar.FormsPlugin.Abstractions;
 
 namespace Kala
 {
-    public partial class Widgets
+    public partial class Widgets : ContentPage
     {
         public static void Dimmer(Grid grid, string x1, string y1, string header, JObject data)
         {
@@ -20,7 +20,7 @@ namespace Kala
             try
             {
                 item = data.ToObject<Models.Sitemap.Widget3>();
-                widgetKeyValuePairs = Helpers.SplitCommand(item.label);
+                widgetKeyValuePairs = Helpers.SplitCommand(item.Label);
                 CrossLogger.Current.Debug("Dimmer", "Label: " + widgetKeyValuePairs["label"]);
 
                 //Master Grid for Widget
@@ -37,23 +37,23 @@ namespace Kala
                     },
                     RowSpacing = 6,
                     ColumnSpacing = 6,
-                    BackgroundColor = App.config.CellColor,
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand
                 };
                 grid.Children.Add(Widget_Grid, px, py);
 
-                App.trackItem i = new App.trackItem
+                App.TrackItem i = new App.TrackItem
                 {
-                    grid = Widget_Grid,
-                    header = header,
-                    state = item.item.state,
-                    unit = widgetKeyValuePairs["unit"],
-                    icon = widgetKeyValuePairs["icon"],
-                    name = item.item.name,
-                    type = Models.Itemtypes.Dimmer
+                    Grid = Widget_Grid,
+                    Header = header,
+                    State = item.Item.State,
+                    Unit = widgetKeyValuePairs["unit"],
+                    Icon = widgetKeyValuePairs["icon"],
+                    Name = item.Item.Name,
+                    Type = Models.Itemtypes.Dimmer
                 };
-                App.config.items.Add(i);
+                App.Config.Items.Add(i);
 
                 Dimmer_update(true, i);
             }
@@ -64,17 +64,17 @@ namespace Kala
             }
         }
 
-        public static void Dimmer_update(bool Create, App.trackItem item)
+        public static void Dimmer_update(bool Create, App.TrackItem item)
         {
-            item.grid.Children.Clear();
+            item.Grid.Children.Clear();
 
             //Header
-            item.grid.Children.Add(new Label
+            item.Grid.Children.Add(new Label
             {
-                Text = item.header,
+                Text = item.Header,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Start,
                 VerticalOptions = LayoutOptions.Start,
@@ -82,11 +82,11 @@ namespace Kala
             }, 0, 2, 0, 1);
 
             //Center image
-            item.grid.Children.Add(new Image
+            item.Grid.Children.Add(new Image
             {
-                Source = item.icon,
+                Source = item.Icon,
                 Aspect = Aspect.AspectFill,
-                BackgroundColor = App.config.CellColor,
+                BackgroundColor = App.Config.CellColor,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
             }, 0, 2, 1, 2);
@@ -102,51 +102,54 @@ namespace Kala
                         break;
                 }
 
-                item.grid.Children.Add(new CircularProgressBarView
+                item.Grid.Children.Add(new CircularProgressBarView
                 {
-                    Progress = Convert.ToInt16(item.state),
+                    Progress = Convert.ToInt16(item.State),
                     StrokeThickness = intStrokeThickness,
                     BackgroundColor = Color.Transparent,
-                    ProgressBackgroundColor = App.config.BackGroundColor,
-                    ProgressColor = App.config.ValueColor,
+                    ProgressBackgroundColor = App.Config.BackGroundColor,
+                    ProgressColor = App.Config.ValueColor,
                     Scale = 0.8f
                 }, 0, 2, 1, 2);
             }
-            catch { }
+            catch
+            {
+                    //Nothing to process
+            }
 
             //Number value of progress bar
-            switch (item.state.ToUpper())
+            switch (item.State.ToUpper())
             {
-                case "ON": item.state = "100";
+                case "ON": item.State = "100";
                     break;
-                case "OFF": item.state = "0";
+                case "OFF": item.State = "0";
                     break;
             }
-            item.grid.Children.Add(new ItemLabel
+            item.Grid.Children.Add(new ItemLabel
             {
-                Text = item.state,
+                Text = item.State,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalTextAlignment = TextAlignment.End,
                 VerticalTextAlignment = TextAlignment.Start,
                 HorizontalOptions = LayoutOptions.End,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Name = item.name
+                Name = item.Name
             }, 0, 2);
             
             //Unit of progress bar
-            item.grid.Children.Add(new ItemLabel
+            item.Grid.Children.Add(new ItemLabel
             {
-                Text = item.unit,
+                Text = item.Unit,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = App.config.TextColor,
-                BackgroundColor = App.config.CellColor,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = App.Config.CellColor,
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
-                Name = item.name
+                Name = item.Name
             }, 1, 2);
 
             Button dimmerButton = new Button
@@ -154,31 +157,22 @@ namespace Kala
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 BackgroundColor = Color.Transparent,
-                StyleId = item.name //StyleID is not used on buttons
+                StyleId = item.Name //StyleID is not used on buttons
             };
             dimmerButton.Clicked += OnDimmerButtonClicked;
             CrossLogger.Current.Debug("Dimmer", "Button ID: " + dimmerButton.Id + " created.");
-            item.grid.Children.Add(dimmerButton, 0, 2, 0, 3);
+            item.Grid.Children.Add(dimmerButton, 0, 2, 0, 3);
         }
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private static void OnDimmerButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
-            App.trackItem item = null;
             string name = button.StyleId;
 
-            //Find current item
-            foreach (App.trackItem i in App.config.items)
-            {
-                if (i.name.Equals(name))
-                {
-                    item = i;
-                    break;
-                }
-            }
-
-            CrossLogger.Current.Debug("Dimmer", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + item.state + "'");
+            //Find item
+            App.TrackItem item = App.Config.Items.Find(i => i.Name == name);
+            CrossLogger.Current.Debug("Dimmer", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + item.State + "'");
 
             PreviousPage = Application.Current.MainPage;
             Application.Current.MainPage = CreateSliderPage(item);

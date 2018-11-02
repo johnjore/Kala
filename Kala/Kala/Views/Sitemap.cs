@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 using Plugin.Logger;
+using System.Threading.Tasks;
 
 namespace Kala
 {
@@ -12,16 +13,16 @@ namespace Kala
         {
             Models.Sitemaps.Sitemaps sitemaps = new RestService().ListSitemaps();
 
-            if (sitemaps != null && sitemaps.sitemap != null)
+            if (sitemaps != null && sitemaps.Sitemap != null)
             {
                 //Loop through each sitemap
-                foreach (Models.Sitemaps.Sitemap s in sitemaps.sitemap)
+                foreach (Models.Sitemaps.Sitemap s in sitemaps.Sitemap)
                 {
-                    if (s.label.Contains("kala=true") && (Helpers.SplitCommand(s.label) != null) && (s.name.Equals(SitemapName)))
+                    if (s.Label.Contains("kala=true") && (Helpers.SplitCommand(s.Label) != null) && (s.Name.Equals(SitemapName)))
                     {
-                        CrossLogger.Current.Info("Kala", "Label: " + s.label);
-                        CrossLogger.Current.Info("Kala", "Name: " + s.name);
-                        CrossLogger.Current.Info("Kala", "Link: " + s.link);
+                        CrossLogger.Current.Info("Kala", "Label: " + s.Label);
+                        CrossLogger.Current.Info("Kala", "Name: " + s.Name);
+                        CrossLogger.Current.Info("Kala", "Link: " + s.Link);
 
                         return s;
                     }
@@ -40,15 +41,15 @@ namespace Kala
             Models.Sitemap.Sitemap items = new RestService().LoadItemsFromSitemap(sitemap);
 
             //Configuration
-            Dictionary<string, string> entry = Helpers.SplitCommand(items.label);
+            Dictionary<string, string> entry = Helpers.SplitCommand(items.Label);
 
             //Settings
             if (entry.ContainsKey("fullscreen"))
             {
                 try
                 {
-                    App.config.FullScreen = Convert.ToBoolean(entry["fullscreen"]);
-                    DependencyService.Get<IScreen>().SetFullScreen(App.config.FullScreen);
+                    App.Config.FullScreen = Convert.ToBoolean(entry["fullscreen"]);
+                    DependencyService.Get<IScreen>().SetFullScreen(App.Config.FullScreen);
                 }
                 catch (Exception ex)
                 {
@@ -60,27 +61,26 @@ namespace Kala
             {
                 try
                 {
-                    App.config.ScreenSaver = Convert.ToInt64(entry["screensaver"]);
+                    App.Config.ScreenSaver = Convert.ToInt64(entry["screensaver"]);
                     IScreen ss = DependencyService.Get<IScreen>();                    
-                    ss.ScreenSaver(App.config.ScreenSaver);
-                    ss = null;
+                    ss.ScreenSaver(App.Config.ScreenSaver);
 
-                    App.config.ScreenSaverType = Models.ScreenSaverTypes.Clock;
+                    App.Config.ScreenSaverType = Models.ScreenSaverTypes.Clock;
                     if (entry.ContainsKey("screensavertype"))
                     {
-                        App.config.ScreenSaverType = (Models.ScreenSaverTypes)Enum.Parse(typeof(Models.ScreenSaverTypes), entry["screensavertype"], true);
+                        App.Config.ScreenSaverType = (Models.ScreenSaverTypes)Enum.Parse(typeof(Models.ScreenSaverTypes), entry["screensavertype"], true);
                     }
 
-                    switch (App.config.ScreenSaverType)
+                    switch (App.Config.ScreenSaverType)
                     {
                         case Models.ScreenSaverTypes.Images:
                             if (entry.ContainsKey("screensaverurl"))
                             {
-                                Widgets.url = entry["screensaverurl"];
+                                Widgets.SetUrl(entry["screensaverurl"]);
                             }
                             else
                             {
-                                App.config.ScreenSaverType = Models.ScreenSaverTypes.Clock;
+                                App.Config.ScreenSaverType = Models.ScreenSaverTypes.Clock;
                             }
                             break;
                     }
@@ -95,7 +95,7 @@ namespace Kala
             {
                 try
                 {
-                    App.config.Valid = Convert.ToBoolean(entry["kala"]);
+                    App.Config.Valid = Convert.ToBoolean(entry["kala"]);
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +107,7 @@ namespace Kala
             {
                 try
                 {
-                    App.config.BackGroundColor = Color.FromHex(entry["background"]);
+                    App.Config.BackGroundColor = Color.FromHex(entry["background"]);
                 }
                 catch (Exception ex)
                 {
@@ -119,7 +119,7 @@ namespace Kala
             {
                 try
                 {
-                    App.config.CellColor = Color.FromHex(entry["cell"]);
+                    App.Config.CellColor = Color.FromHex(entry["cell"]);
                 }
                 catch (Exception ex)
                 {
@@ -131,7 +131,7 @@ namespace Kala
             {
                 try
                 {
-                    App.config.TextColor = Color.FromHex(entry["text"]);
+                    App.Config.TextColor = Color.FromHex(entry["text"]);
                 }
                 catch (Exception ex)
                 {
@@ -143,7 +143,7 @@ namespace Kala
             {
                 try
                 {
-                    App.config.ValueColor = Color.FromHex(entry["value"]);
+                    App.Config.ValueColor = Color.FromHex(entry["value"]);
                 }
                 catch (Exception ex)
                 {
@@ -157,7 +157,6 @@ namespace Kala
                 {
                     IScreen so = DependencyService.Get<IScreen>();
                     so.SetScreenOrientation(entry["screenorientation"]);
-                    so = null;
                 }
                 catch (Exception ex)
                 {                    
@@ -169,7 +168,7 @@ namespace Kala
             {
                 try
                 {
-                    App.config.Settings = Convert.ToBoolean(entry["settings"]);
+                    App.Config.Settings = Convert.ToBoolean(entry["settings"]);
                 }
                 catch (Exception ex)
                 {
@@ -177,15 +176,15 @@ namespace Kala
                 }
             }
 
-            if (App.config.Valid)
+            if (App.Config.Valid)
             {
                 ParseSitemap(items);
 
                 //Enable screensaver?
-                if (App.config.ScreenSaver > 0)
+                if (App.Config.ScreenSaver > 0)
                 {
-                    Widgets.Screensaver(App.config.ScreenSaver);
-                    App.config.ScreenSaver = 0;
+                    Widgets.Screensaver(App.Config.ScreenSaver);
+                    App.Config.ScreenSaver = 0;
                 }
             }
         }
@@ -198,18 +197,18 @@ namespace Kala
         {
             try
             {
-                foreach (Models.Sitemap.Widget page in items.homepage.widgets)
+                foreach (Models.Sitemap.Widget page in items.Homepage.Widgets)
                 {
-                    CrossLogger.Current.Debug("Kala", "Label: " + page.label);
+                    CrossLogger.Current.Debug("Kala", "Label: " + page.Label);
 
                     //Populate Page, if it contains elements to parse
-                    if (page.label != string.Empty)
+                    if (page.Label != string.Empty)
                     {
-                        Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.label);
+                        Dictionary<string, string> pageKeyValuePairs = Helpers.SplitCommand(page.Label);
                         CrossLogger.Current.Debug("Kala", "Label: " + pageKeyValuePairs["label"]);
 
                         #region page
-                        if (page.linkedPage != null)
+                        if (page.LinkedPage != null)
                         {
                             if (pageKeyValuePairs.ContainsKey("sx") && pageKeyValuePairs.ContainsKey("sy") && pageKeyValuePairs.ContainsKey("label"))
                             {
@@ -221,7 +220,7 @@ namespace Kala
                                 CrossLogger.Current.Debug("Kala", "Sitemap - Create Grid using: " + pageKeyValuePairs["label"] + ", " + pageKeyValuePairs["sx"] + ", " + pageKeyValuePairs["sy"] + ", " + pageKeyValuePairs["icon"]);
                                 Grid grid = CreatePage(pageKeyValuePairs["label"], pageKeyValuePairs["sx"], pageKeyValuePairs["sy"], pageKeyValuePairs["icon"]);
 
-                                foreach (Models.Sitemap.Widget3 item in page.linkedPage.widgets)
+                                foreach (Models.Sitemap.Widget3 item in page.LinkedPage.Widgets)
                                 {
                                     ParseWidgets(grid, item);
                                 }
@@ -266,8 +265,8 @@ namespace Kala
         {
             try
             {
-                CrossLogger.Current.Debug("Kala", "ID: " + item.widgetId);
-                Dictionary<string, string> itemKeyValuePairs = Helpers.SplitCommand(item.label);
+                CrossLogger.Current.Debug("Kala", "ID: " + item.WidgetId);
+                Dictionary<string, string> itemKeyValuePairs = Helpers.SplitCommand(item.Label);
 
                 if (itemKeyValuePairs != null && itemKeyValuePairs.ContainsKey("widget") && itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py"))
                 {
@@ -279,19 +278,19 @@ namespace Kala
                         case "AVATAR":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], JArray.FromObject(item.widgets));
+                                Widgets.Avatar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], JArray.FromObject(item.Widgets));
                             }
                             break;
                         case "BARCODE":
                             if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Barcode(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Barcode(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "BLIND":
                             if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Blind(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Blind(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "BLANK":
@@ -300,7 +299,7 @@ namespace Kala
                         case "CALENDAR":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], JArray.FromObject(item.widgets));
+                                Widgets.Calendar(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], JArray.FromObject(item.Widgets));
                             }
                             break;
                         case "CLOCK":
@@ -312,13 +311,13 @@ namespace Kala
                         case "DIMMER":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Dimmer(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "FLOORMAP":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.FloormapAsync(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.FloormapAsync(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "LAUNCHER":
@@ -330,7 +329,13 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Launcher(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Launcher(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
+                            }
+                            break;
+                        case "NUMERICINPUT":
+                            if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
+                            {
+                                Widgets.NumericInput(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "SENSOR":
@@ -342,13 +347,13 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Sensor(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Sensor(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "GAUGE":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Gauge(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "GAUGE-GROUP":
@@ -362,7 +367,7 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("label") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], rx, ry, itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
+                                Widgets.Gauge_Group(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], rx, ry, itemKeyValuePairs["label"], JArray.FromObject(item.Widgets));
                             }
                             break;
                         case "IMAGE":
@@ -370,7 +375,7 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("px") && itemKeyValuePairs.ContainsKey("py") && itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.widgets[0]);
+                                Widgets.Image(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "MAP":
@@ -378,31 +383,31 @@ namespace Kala
 
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy"))
                             {
-                                Widgets.Map(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["type"], JArray.FromObject(item.widgets));
+                                Widgets.Map(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["type"], JArray.FromObject(item.Widgets));
                             }
                             break;
                         case "SWITCH":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Switch(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Switch(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "VOICE":
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.Voice(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.widgets[0]);
+                                Widgets.Voice(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "WEATHER":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))                            
                             {
-                                Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
+                                Widgets.Weather(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.Widgets));
                             }
                             break;
                         case "WEATHERFORECAST":
                             if (itemKeyValuePairs.ContainsKey("sx") && itemKeyValuePairs.ContainsKey("sy") && itemKeyValuePairs.ContainsKey("label"))
                             {
-                                Widgets.WeatherForecast(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.widgets));
+                                Widgets.WeatherForecast(grid, itemKeyValuePairs["px"], itemKeyValuePairs["py"], itemKeyValuePairs["sx"], itemKeyValuePairs["sy"], itemKeyValuePairs["label"], JArray.FromObject(item.Widgets));
                             }
                             break;
                         default:
@@ -432,18 +437,20 @@ namespace Kala
             {
                 cp.Icon = icon;
             }
-            cp.BackgroundColor = App.config.BackGroundColor;
+            cp.BackgroundColor = App.Config.BackGroundColor;
             cp.Title = title;
             cp.Content = grid;
 
-            cp.Padding = new Thickness(0, 0, 0, 0);
             switch (Device.RuntimePlatform)
             {
                 case Device.iOS:
-                    new Thickness(0, 20, 0, 0);
+                    cp.Padding = new Thickness(0, 20, 0, 0);
+                    break;
+                default:
+                    cp.Padding = new Thickness(0, 0, 0, 0);
                     break;
             }
-            App.tp.Children.Add(cp);
+            App.Tp.Children.Add(cp);
 
             return grid;
         }
@@ -468,14 +475,15 @@ namespace Kala
 
             grid.RowSpacing = 6;
             grid.ColumnSpacing = 6;
-            grid.BackgroundColor = App.config.BackGroundColor;
+            grid.BackgroundColor = App.Config.BackGroundColor;
         }
 
-        #pragma warning disable CS4014
         public void GetUpdates()
         {
-            new RestService().GetUpdateAsync();
+            Task.Run(async () =>
+            {
+                await new RestService().GetUpdateAsync();
+            });
         }
-        #pragma warning restore CS4014
     }
 }
