@@ -14,6 +14,8 @@ namespace Kala
     {
         public static void Switch(Grid grid, string x1, string y1, string header, JObject data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Switch Widget");
+
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);
             

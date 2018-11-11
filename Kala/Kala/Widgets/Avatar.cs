@@ -13,6 +13,7 @@ namespace Kala
     {
         public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Avatar Widget");
             CrossLogger.Current.Debug("Avatar", "Creating Avatar Widget");
 
             int.TryParse(x1, out int px);

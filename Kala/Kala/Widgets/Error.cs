@@ -7,6 +7,8 @@ namespace Kala
     {
         private static void Error(Grid grid, int px, int py, int sx, int sy, string errorMessage)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Error Widget");
+
             try
             {
                 grid.Children.Add(new Image

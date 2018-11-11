@@ -11,6 +11,8 @@ namespace Kala
     {
         public static void Dimmer(Grid grid, string x1, string y1, string header, JObject data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Dimmer Widget");
+
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);
 

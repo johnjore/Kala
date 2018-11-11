@@ -7,6 +7,8 @@ namespace Kala
     {
         public static void Clock(Grid grid, string x1, string y1, string x2, string y2)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Clock Widget");
+
             DateTime time = DateTime.Now;
             string format1 = "HH:mm";
             string format2 = "dddd d MMMM";

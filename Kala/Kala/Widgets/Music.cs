@@ -13,6 +13,7 @@ namespace Kala
     {
         public static void Music(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Music Widget");
             CrossLogger.Current.Debug("Music", "Creating Music Widget");
 
             int.TryParse(x1, out int px);

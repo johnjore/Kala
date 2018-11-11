@@ -16,6 +16,7 @@ namespace Kala
         /// <returns>nothing</returns>
         public static void Image(Grid grid, string x1, string y1, string x2, string y2, string header, string straspect, JObject data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Image Widget");
             CrossLogger.Current.Debug("Image", "Creating Image Widget");
 
             int.TryParse(x1, out int px);

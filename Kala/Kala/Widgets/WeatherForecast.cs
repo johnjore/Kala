@@ -10,6 +10,7 @@ namespace Kala
     {
         public static void WeatherForecast(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create WeatherForecast Widget");
             CrossLogger.Current.Debug("WeatherForecast", "Creating Weather forecast :" + data.ToString());
 
             int.TryParse(x1, out int px);

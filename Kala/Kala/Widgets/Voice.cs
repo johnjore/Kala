@@ -15,6 +15,8 @@ namespace Kala
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         public static void Voice(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Voice Widget");
+
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);
             int.TryParse(x2, out int sx);

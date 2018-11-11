@@ -9,7 +9,9 @@ using Android.Widget;
 using FFImageLoading.Forms.Droid;
 using Plugin.Logger;
 using Plugin.Logger.Abstractions;
-using Kala;
+using HockeyApp.Android;
+using HockeyApp.Android.Metrics;
+using HockeyApp.Android.Utils;
 using Debug = System.Diagnostics.Debug;
 
 /*
@@ -34,8 +36,12 @@ namespace Kala.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            HockeyLog.LogLevel = 3;
 
-            Xamarin.Forms.Forms.Init(this, bundle);
+            //HockeyApp
+            CrashManager.Register(this);
+            UpdateManager.Register(this);
+            MetricsManager.Register(Application);
 
             // Init special handlers
             ScreenLayout.Init(this);
@@ -60,6 +66,7 @@ namespace Kala.Droid
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Log Started");
             CrossLogger.Current.Log(LogLevel.Info, "Kala", "Folder for Log file: " + CrossLogger.Current.GetLocalStoragePath().ToString());
 
+            Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }
 

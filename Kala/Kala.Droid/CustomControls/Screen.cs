@@ -55,7 +55,8 @@ namespace Kala.Droid
             if (fullscreen)
             {
                 activity.Window.AddFlags(WindowManagerFlags.Fullscreen);
-                activity.SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
+                //Not required, conficts with PopUp
+                //activity.SetTheme(Android.Resource.Style.ThemeBlackNoTitleBar);
 
                 //Removes on-screen navigation buttons. Are all options required?
                 activity.Window.DecorView.SystemUiVisibility = (StatusBarVisibility)(
@@ -69,7 +70,8 @@ namespace Kala.Droid
             }
             else
             {
-                activity.SetTheme(Android.Resource.Style.ThemeHolo);
+                //Not required, conficts with PopUp
+                //activity.SetTheme(Android.Resource.Style.ThemeHolo);
                 activity.Window.ClearFlags(WindowManagerFlags.Fullscreen);
             }
         }

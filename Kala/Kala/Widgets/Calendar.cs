@@ -18,6 +18,7 @@ namespace Kala
         //Intial creation
         public static void Calendar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Calendar Widget");
             CrossLogger.Current.Info("Calendar", "Widget Processing Started");
 
             try

@@ -10,6 +10,8 @@ namespace Kala
     {
         public static void Gauge_Group(Grid grid, string x1, string y1, string x2, string y2, string x3, string y3, string header, JArray data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Gauge_Group Widget");
+
             int.TryParse(x1, out int px);
             int.TryParse(y1, out int py);
             int.TryParse(x2, out int sx);

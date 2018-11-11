@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HockeySDK.Xamarin" Version="5.1.2" />
     <PackageReference Include="Newtonsoft.Json" version="11.0.2" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.1.4.168" />
     <PackageReference Include="SkiaSharp" version="1.60.3" />
@@ -27,6 +28,9 @@
   <ItemGroup>
     <Compile Update="Pages\NumericInputPage.xaml.cs">
       <DependentUpon>NumericInputPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\UserAnimationPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 

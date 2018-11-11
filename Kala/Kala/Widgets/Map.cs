@@ -20,6 +20,7 @@ namespace Kala
 
         public static void Map(Grid grid, string x1, string y1, string x2, string y2, string maptype, JArray data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Map Widget");
             CrossLogger.Current.Debug("Map", "Creating Map Widget");
 
             int.TryParse(x1, out int px);

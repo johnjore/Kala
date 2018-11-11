@@ -10,6 +10,8 @@ namespace Kala
     {
         public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Weather Widget");
+
             try
             {
                 //Size of Weather widget

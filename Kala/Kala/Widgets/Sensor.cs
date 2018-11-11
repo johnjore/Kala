@@ -13,6 +13,7 @@ namespace Kala
     {
         public static void Sensor(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
         {
+            HockeyApp.MetricsManager.TrackEvent("Create Sensor Widget");
             CrossLogger.Current.Debug("Sensor", "Creating Sensor Widget");
 
             int.TryParse(x1, out int px);

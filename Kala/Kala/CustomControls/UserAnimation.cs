@@ -15,7 +15,7 @@ namespace Kala.Animations
 
         public UserAnimation()
         {
-            DurationIn = DurationOut = 750;
+            DurationIn = DurationOut = 0;
             EasingIn = Easing.CubicOut;
             EasingOut = Easing.CubicIn;
         }

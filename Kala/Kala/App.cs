@@ -49,7 +49,7 @@ namespace Kala
         #endregion Variables
 
         public App()
-        {
+        {            
             if (Config == null)
             {
                 Config = new Configuration();
@@ -91,7 +91,8 @@ namespace Kala
                     //Selected sitemap was not found, display settings page to make change
                     if (Sitemaps == null)
                     {
-                        //Add settings tab
+                        //Add settings tab with Wifi Mac as default
+                        Settings.Sitemap = WifiMac;
                         MainPage = new Pages.Settings();
                     }
                 }
@@ -117,7 +118,7 @@ namespace Kala
             }
             Config.Initialized = true;
         }
-        
+
         protected override void OnStart()
         {
             //Not currently used
