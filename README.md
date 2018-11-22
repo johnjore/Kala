@@ -2,7 +2,7 @@
 Xamarin.Forms based client for openHAB (Android, iOS, Universal Windows)
 
 # Screenshot
-![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Sitemap%2C%205x3.png)
+![ScreenShot](https://github.com/johnjore/Kala/blob/master/Screenshots/Demo.gif)
 
 # History
 A non-official Android client went commercial with a rather large price tag.
