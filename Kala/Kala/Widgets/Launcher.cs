@@ -9,14 +9,9 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Launcher(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static void Launcher(Grid grid, int px, int py, int sx, int sy, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Launcher Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Launcher Widget");
 
             try
             {
@@ -99,7 +94,7 @@ namespace Kala
             Button button = sender as Button;
             string name = button.StyleId;
 
-            CrossLogger.Current.Debug("Launcher", "Button ID: '" + button.Id.ToString() + "', URL: '" + name + "'");
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Launcher", "Button ID: '" + button.Id.ToString() + "', URL: '" + name + "'"));
 
             IAppLauncher appLauncher = DependencyService.Get<IAppLauncher>();
             appLauncher.Launch(name);

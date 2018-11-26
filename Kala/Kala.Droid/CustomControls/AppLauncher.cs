@@ -3,13 +3,14 @@ using System;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using OpenAppLaunch.Droid;
+using OpenAppLauncher.Droid;
 using Xamarin.Forms;
 using Kala;
 using Plugin.Logger;
+using Xamarin.Forms.Platform.Android;
 
-[assembly: Xamarin.Forms.Dependency(typeof(AppLauncher))]
-namespace OpenAppLaunch.Droid
+[assembly: Dependency(typeof(AppLauncher))]
+namespace OpenAppLauncher.Droid
 {
     public class AppLauncher : Activity, IAppLauncher
     {
@@ -19,19 +20,16 @@ namespace OpenAppLaunch.Droid
             {
                 Intent intent = Android.App.Application.Context.PackageManager.GetLaunchIntentForPackage(stringUri);
 
-                if (intent == null)
+                if (intent != null)
                 {
-                    return Task.FromResult(false);
+                    intent.AddFlags(ActivityFlags.NewTask);
+                    Android.App.Application.Context.StartActivity(intent);
+                    return Task.FromResult(true);
                 }
-
-                intent.AddFlags(ActivityFlags.NewTask);
-                Forms.Context.StartActivity(intent);
-                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 CrossLogger.Current.Debug("Launcher", "Failed to launch app: '" + stringUri + "'; " + ex.ToString());
-
             }
             return Task.FromResult(false);
         }

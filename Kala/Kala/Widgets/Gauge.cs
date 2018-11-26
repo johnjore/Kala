@@ -10,19 +10,15 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Gauge(Grid grid, string x1, string y1, string header, JObject data)
+        public static void Gauge(Grid grid, int px, int py, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Gauge Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Gauge Widget");
 
             try
             {
-                Grid t_grid = Create_GaugeHeader(header, 1, 1);
-
                 Models.Sitemap.Widget3 item = data.ToObject<Models.Sitemap.Widget3>();
 
+                Grid t_grid = Create_GaugeHeader(header, 1, 1);
                 Create_Gauge(t_grid, 0, item);
                 grid.Children.Add(t_grid, px, py);
             }
@@ -112,7 +108,9 @@ namespace Kala
                 #region Center Text / Value
                 string s_value = "N/A";
                 if (!(digits.Item1.ToLower().Equals("uninitialized")))
+                {
                     s_value = digits.Item1;
+                }    
 
                 ItemLabel l_value = new ItemLabel
                 {
@@ -129,9 +127,9 @@ namespace Kala
                 App.Config.Itemlabels.Add(l_value);
                 t_grid.Children.Add(l_value, x, y);
 
-                Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
-                Single.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float max);
-                Single.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float value);
+                float.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
+                float.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float max);
+                float.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float value);
 
                 if (value > max) max = value;
                 if (value < min) min = value;
@@ -163,7 +161,7 @@ namespace Kala
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
-                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
+                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     Name = item.Item.Name,
@@ -244,9 +242,9 @@ namespace Kala
                 App.Config.Itemlabels.Add(l_value);
                 t_grid.Children.Add(l_value, i, 1);
 
-                Single.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
-                Single.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float max);
-                Single.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float value);
+                float.TryParse(widgetKeyValuePairs["min"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float min);
+                float.TryParse(widgetKeyValuePairs["max"].Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float max);
+                float.TryParse(digits.Item1.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float value);
 
                 if (value > max) max = value;
                 if (value < min) min = value;
@@ -278,7 +276,7 @@ namespace Kala
                     StrokeWidth = 1.0f,
                     Scale = 3.0,
                     Padding = 1,
-                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),   //Calculate indicator percentage
+                    IndicatorPercentage = ((value - min) / (max - min) * 100.0f),
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     Name = item.Item.Name,
@@ -305,6 +303,5 @@ namespace Kala
                 Error(t_grid, i, 1, 1, 1, ex.ToString());
             }
         }
-
     }
 }

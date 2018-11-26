@@ -16,8 +16,8 @@ namespace Kala.Pages
 
             scanPage.OnScanResult += (result) => {
                 scanPage.IsScanning = false;
-                
-                CrossLogger.Current.Debug("Barcode", "Barcode: '" + result.Text + "', Format: " + result.BarcodeFormat);
+
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Barcode", "Barcode: '" + result.Text + "', Format: " + result.BarcodeFormat));
 
                 Task.Run(async () =>
                 {

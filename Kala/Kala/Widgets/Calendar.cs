@@ -16,18 +16,13 @@ namespace Kala
         private static List<Models.Calendar> SortedList { get; set; } = null;
 
         //Intial creation
-        public static void Calendar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
+        public static void Calendar(Grid grid, int px, int py, int sx, int sy, JArray data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Calendar Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Calendar Widget");
             CrossLogger.Current.Info("Calendar", "Widget Processing Started");
 
             try
             {
-                int.TryParse(x1, out int px);
-                int.TryParse(y1, out int py);
-                int.TryParse(x2, out int sx);
-                int.TryParse(y2, out int sy);
-
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
 
                 foreach (Models.Sitemap.Widget3 item in items)
@@ -87,7 +82,7 @@ namespace Kala
         //Update stored list
         public static void Calendar_Update(Models.Events item)
         {
-            CrossLogger.Current.Debug("Calendar", "Update" + item.ToString());
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Calendar", "Update" + item.ToString()));
 
             //Loop and update with new data
             foreach (Models.CalItems itemCal in ItemCalendar)
@@ -397,7 +392,7 @@ namespace Kala
                     a.Hours = item.Start.ToString("HH:mm") + " - " + item.End.ToString("HH:mm");
                 }
 
-                CrossLogger.Current.Debug("Calendar", a.Day + "," + a.DayOfWeek + "," + a.Title + "," + a.Hours + "," + a.Location);
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Calendar", a.Day + "," + a.DayOfWeek + "," + a.Title + "," + a.Hours + "," + a.Location));
                 return a;
             }
             else

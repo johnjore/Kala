@@ -11,15 +11,10 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Avatar(Grid grid, string x1, string y1, string x2, string y2, JArray data)
+        public static void Avatar(Grid grid, int px, int py, int sx, int sy, JArray data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Avatar Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Avatar Widget");
             CrossLogger.Current.Debug("Avatar", "Creating Avatar Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
 
             try
             {
@@ -55,10 +50,9 @@ namespace Kala
                             HorizontalOptions = LayoutOptions.Center,
                             VerticalOptions = LayoutOptions.StartAndExpand,
                             DownsampleToViewSize = false,
-                            CacheDuration = TimeSpan.FromMilliseconds(1000),
                             Aspect = Aspect.AspectFill,
-                            RetryCount = 0,
-                            RetryDelay = 250,
+                            RetryCount = 999,
+                            RetryDelay = 1000,
                             BitmapOptimizations = true,
                             Transformations = new List<ITransformation>()
                             {

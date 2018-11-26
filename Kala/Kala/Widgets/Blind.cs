@@ -9,14 +9,9 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Blind(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static void Blind(Grid grid, int px, int py, int sx, int sy, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Blind Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Blind Widget");
 
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;
@@ -170,11 +165,10 @@ namespace Kala
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private static void OnBlindButtonClicked(object sender, EventArgs e)
         {
             ItemButton button = sender as ItemButton;
-            CrossLogger.Current.Debug("Blind", "BlindButton: " + button.Name + ", Cmd: " + button.Cmd);
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Blind", "BlindButton: " + button.Name + ", Cmd: " + button.Cmd));
 
             Task.Run(async () =>
             {

@@ -49,7 +49,7 @@ namespace Kala
         #endregion Variables
 
         public App()
-        {            
+        {
             if (Config == null)
             {
                 Config = new Configuration();

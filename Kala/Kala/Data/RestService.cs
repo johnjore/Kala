@@ -83,6 +83,10 @@ namespace Kala
             try
             {
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                if (sitemap.Link == null)
+                {
+                    return null;
+                }
                 var uri = new Uri(sitemap.Link);
                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", @"URI: '" + uri.ToString() + "'"));
 
@@ -90,10 +94,10 @@ namespace Kala
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Application.Current.MainPage.DisplayAlert("Alert", response.StatusCode.ToString(), "OK");
+                    return null;
                 }
 
-                string resultString = response.Content.ReadAsStringAsync().Result;
+                string resultString = response.Content.ReadAsStringAsync().Result.ToString();
                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'"));
 
                 try
@@ -103,14 +107,13 @@ namespace Kala
                 }
                 catch
                 {
-                    CrossLogger.Current.Error("RestService", "Failed to parse JSON sitemap response");
+                    Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("RestService", "Failed to parse JSON sitemap response"));
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Kala", @"Exception : '" + ex.ToString() + "'");
-                Application.Current.MainPage.DisplayAlert("Alert", ex.Message, "OK");
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Kala", @"Exception : '" + ex.ToString() + "'"));
                 return null;
             }
         }
@@ -129,7 +132,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Kala", "SendCommand - Failed: " + ex.ToString());
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Kala", "SendCommand - Failed: " + ex.ToString()));
             }
         }
 
@@ -137,7 +140,7 @@ namespace Kala
         {
             Client.DefaultRequestHeaders.Add("Accept", "application/json");
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Items + name));
-            CrossLogger.Current.Debug("Kala", "GetItem() - URI: " + uri.ToString());
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "GetItem() - URI: " + uri.ToString()));
 
             try
             {
@@ -145,7 +148,7 @@ namespace Kala
                 if (!response.IsSuccessStatusCode) return null;
 
                 string resultString = response.Content.ReadAsStringAsync().Result;
-                CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'");
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", @"Content Response: '" + resultString.ToString() + "'"));
 
                 Models.Item updatedItem = JsonConvert.DeserializeObject<Models.Item>(resultString);
                 if (updatedItem.TransformedState != null)
@@ -159,7 +162,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Kala", "GetItem() - Failed: " + ex.ToString());
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Kala", "GetItem() - Failed: " + ex.ToString()));
             }
             return null;
         }
@@ -167,7 +170,7 @@ namespace Kala
         public async Task GetUpdateAsync()
         {
             var uri = new Uri(string.Format("{0}://{1}:{2}/{3}", Settings.Protocol, Settings.Server, Settings.Port.ToString(), Common.Constants.Api.Events));
-            CrossLogger.Current.Debug("Updates", "URI: " + uri);
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Updates", "URI: " + uri));
 
             await Task.Run(async() =>
             {
@@ -196,11 +199,7 @@ namespace Kala
                                             if (BoolExit && App.Config.Initialized && QueueUpdates.Count > 0)
                                             {
                                                 Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "RestService - GetUpdateAsync() - Creating Updates() thread"));
-
-                                                Task.Run(async () =>
-                                                {
-                                                    await Helpers.Updates();
-                                                });
+                                                Task.Run((Action)Helpers.Updates);
                                             }
                                             else
                                             {
@@ -216,7 +215,7 @@ namespace Kala
                     }
                     catch (Exception ex)
                     {
-                        CrossLogger.Current.Error("Kala", "RestService - Update Crashed: "  + ex.ToString());
+                        Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Kala", "RestService - Update Crashed: "  + ex.ToString()));
                     }
                 }
             });

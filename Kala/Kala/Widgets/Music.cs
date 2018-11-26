@@ -11,15 +11,10 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Music(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static void Music(Grid grid, int px, int py, int sx, int sy, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Music Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Music Widget");
             CrossLogger.Current.Debug("Music", "Creating Music Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
 
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;
@@ -31,7 +26,7 @@ namespace Kala
 
                 App.TrackItem i = new App.TrackItem
                 {
-                    Grid = grid,
+                    //Grid = grid,
                     Name = item.Item.Name,
                     Header = header,
                     Icon = widgetKeyValuePairs["icon"],

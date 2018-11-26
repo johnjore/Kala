@@ -10,14 +10,9 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Barcode(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static void Barcode(Grid grid, int px, int py, int sx, int sy, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Barcode Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Barcode Widget");
 
             try
             {
@@ -29,7 +24,9 @@ namespace Kala
                 Grid Widget_Grid = new Grid
                 {
                     RowDefinitions = new RowDefinitionCollection {
-                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                     },
                     ColumnDefinitions = new ColumnDefinitionCollection {
                         new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
@@ -59,11 +56,11 @@ namespace Kala
                     ShapeType = ShapeType.Circle,
                     StrokeColor = App.Config.ValueColor,
                     Color = App.Config.ValueColor,
-                    StrokeWidth = 10.0f,
-                    Scale = 2,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                }, 0, 0);
+                    StrokeWidth = 1.0f,
+                    Scale = 2.5f,
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    VerticalOptions = LayoutOptions.CenterAndExpand
+                }, 0, 1);
 
                 //Image
                 Widget_Grid.Children.Add(new Image
@@ -71,9 +68,9 @@ namespace Kala
                     Source = widgetKeyValuePairs["icon"],
                     Aspect = Aspect.AspectFill,
                     BackgroundColor = Color.Transparent,
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }, 0, 0);
+                    VerticalOptions = LayoutOptions.CenterAndExpand,
+                    HorizontalOptions = LayoutOptions.CenterAndExpand
+                }, 0, 1);
 
                 //Options
                 widgetKeyValuePairs.TryGetValue("UseFrontCameraIfAvailable", out string strUseFrontCameraIfAvailable);
@@ -127,7 +124,7 @@ namespace Kala
                 };
                 barcodeButton.Clicked += OnBarcodeButtonClicked;
 
-                Widget_Grid.Children.Add(barcodeButton, 0, 0);
+                Widget_Grid.Children.Add(barcodeButton, 0, 1, 0, 2);
                 CrossLogger.Current.Debug("Barcode", "Button ID: " + barcodeButton.Id + " created.");
             }
             catch (Exception ex)
@@ -142,7 +139,7 @@ namespace Kala
             App.Config.LastActivity = DateTime.Now;
 
             BarcodeButton barcodeButton = sender as BarcodeButton;
-            CrossLogger.Current.Debug("Barcode", "Barcode Item: " + barcodeButton.Name);
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Barcode", "Barcode Item: " + barcodeButton.Name));
 
             PreviousPage = Application.Current.MainPage;
             Application.Current.MainPage = new NavigationPage(new Pages.BarcodePage(barcodeButton.Name, barcodeButton.Options));

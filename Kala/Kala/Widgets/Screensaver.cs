@@ -31,15 +31,15 @@ namespace Kala
 
         public static void Screensaver(long timeOut)
         {
-            CrossLogger.Current.Debug("Screensaver", "Configuring screensaver, using timeout of " + timeOut.ToString());
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Screensaver", "Configuring screensaver, using timeout of " + timeOut.ToString()));
 
             Device.StartTimer(TimeSpan.FromSeconds(10), () =>
             {
-                CrossLogger.Current.Debug("Screensaver", "Check if time to show screensaver");
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Screensaver", "Check if time to show screensaver"));
 
                 if ((App.Config.LastActivity.AddSeconds(timeOut) < DateTime.Now) && !active)
                 {
-                    CrossLogger.Current.Debug("Screensaver", "Enable Screensaver");
+                    Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Screensaver", "Enable Screensaver"));
 
                     IScreen screen = DependencyService.Get<IScreen>();
                     screen.SetFullScreen(App.Config.FullScreen);
@@ -96,8 +96,8 @@ namespace Kala
                         {
                             DownsampleToViewSize = true,
                             CacheDuration = TimeSpan.FromMilliseconds(1000),
-                            RetryCount = 0,
-                            RetryDelay = 250,
+                            RetryCount = 1,
+                            RetryDelay = 1000,
                             Aspect = Aspect.AspectFit,
                             HorizontalOptions = LayoutOptions.CenterAndExpand,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -132,7 +132,7 @@ namespace Kala
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("ScreenSaver", "Failed to CreatePage(), " + ex.ToString());
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("ScreenSaver", "Failed to CreatePage(), " + ex.ToString()));
             }
             return null;
         }
@@ -178,12 +178,14 @@ namespace Kala
                 {
                     Random rnd= new Random();
                     int randomNumber = rnd.Next(0, matches.Count);
+                    image.IsVisible = false;
                     image.Source = url + "/" + matches[randomNumber].Groups["name"].ToString();
+                    image.IsVisible = true;
                 }
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("ScreenSaver", "Failed to GetImage() from '" + url + "', " + ex.ToString());
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("ScreenSaver", "Failed to GetImage() from '" + url + "', " + ex.ToString()));
             }
         }
     }

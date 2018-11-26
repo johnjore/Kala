@@ -12,14 +12,9 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static async void FloormapAsync(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static async void FloormapAsync(Grid grid, int px, int py, int sx, int sy, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Floormap Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Floormap Widget");
 
             try
             {

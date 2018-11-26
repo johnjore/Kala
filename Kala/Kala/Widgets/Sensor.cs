@@ -11,24 +11,21 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Sensor(Grid grid, string x1, string y1, string x2, string y2, string header, JObject data)
+        public static void Sensor(Grid grid, int px, int py, int sx, int sy, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Sensor Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Sensor Widget");
             CrossLogger.Current.Debug("Sensor", "Creating Sensor Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
 
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;
 
             //Master Grid for Widget
             Grid Widget_Grid = new Grid
-            {
+            {   
                 RowDefinitions = new RowDefinitionCollection {
-                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                 },
                 ColumnDefinitions = new ColumnDefinitionCollection {
                         new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
@@ -119,7 +116,7 @@ namespace Kala
                 BackgroundColor = Color.Transparent,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
-            }, 0, 0);
+            }, 0, 1);
             #endregion Image
 
             #region Status Text
@@ -133,7 +130,7 @@ namespace Kala
                 VerticalOptions = LayoutOptions.End,
                 TranslationY = -10,
                 Name = item.Name
-            }, 0, 0);
+            }, 0, 2);
             #endregion Status Text
 
             //Button must be last to be added to work
@@ -143,7 +140,7 @@ namespace Kala
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 BackgroundColor = Color.Transparent,
             };
-            item.Grid.Children.Add(dummyButton, 0, 0);
+            item.Grid.Children.Add(dummyButton, 0, 1, 0, 2);
             dummyButton.Clicked += OnDummyButtonClicked;
         }
 
@@ -154,32 +151,24 @@ namespace Kala
                 ShapeType = ShapeType.Circle,
                 StrokeColor = App.Config.ValueColor,
                 Color = App.Config.ValueColor,
-                StrokeWidth = 10.0f,
-                Scale = 2,
+                StrokeWidth = 1.0f,
                 HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center
-            }, 0, 0);
+                VerticalOptions = LayoutOptions.Center,
+                Scale = 2.5f,
+            }, 0, 1);
         }
 
         private static void Sensor_Off(App.TrackItem item)
         {
-            int intStrokeThickness = 2;
-            switch (Device.RuntimePlatform)
-            {
-                case Device.Android:
-                    intStrokeThickness = 4;
-                    break;
-            }
-
             item.Grid.Children.Add(new CircularProgressBarView
             {
                 Progress = 100,
-                StrokeThickness = intStrokeThickness,
+                StrokeThickness = 1,
                 BackgroundColor = Color.Transparent,
                 ProgressBackgroundColor = App.Config.BackGroundColor,
                 ProgressColor = App.Config.ValueColor,
-                Scale = 0.5f
-            }, 0, 0);
+                Scale = 1.5f,
+            }, 0, 1);
         }
     }
 }

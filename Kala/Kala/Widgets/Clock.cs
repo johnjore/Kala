@@ -5,24 +5,32 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Clock(Grid grid, string x1, string y1, string x2, string y2)
+        public static void Clock(Grid grid, int px, int py, int sx, int sy)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Clock Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Clock Widget");
 
             DateTime time = DateTime.Now;
             string format1 = "HH:mm";
             string format2 = "dddd d MMMM";
             double resolution = 160.0;
 
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
-
-            grid.Children.Add(new Label
+            //Master Grid for Widget
+            Grid Widget_Grid = new Grid
             {
-                BackgroundColor = App.Config.CellColor
-            }, px, px + sx, py, py + sy);
+                RowDefinitions = new RowDefinitionCollection {
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                },
+                ColumnDefinitions = new ColumnDefinitionCollection {
+                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                },
+                RowSpacing = 0,
+                ColumnSpacing = 0,
+                BackgroundColor = App.Config.CellColor,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+            grid.Children.Add(Widget_Grid, px, px + sx, py, py + sy);
 
             Label l1 = new Label
             {
@@ -30,11 +38,11 @@ namespace Kala
                 FontSize = (int)(resolution * 24.0 / 72.0),
                 TextColor = App.Config.TextColor,
                 BackgroundColor = App.Config.CellColor,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                TranslationY = -20
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.EndAndExpand,
+                TranslationY = 10,
             };
-            grid.Children.Add(l1, px, px + sx, py, py + sy);
+            Widget_Grid.Children.Add(l1, 0, 0);
 
             Label l2 = new Label
             {
@@ -42,12 +50,11 @@ namespace Kala
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 TextColor = App.Config.TextColor,
                 BackgroundColor = App.Config.CellColor,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                TranslationY = 20
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.StartAndExpand,
             };
-            grid.Children.Add(l2, px, px + sx, py, py + sy);
-
+            Widget_Grid.Children.Add(l2, 0, 1);
+            
             //Button must be last to be added to work
             Button dummyButton = new Button
             {
@@ -55,7 +62,7 @@ namespace Kala
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 BackgroundColor = Color.Transparent,
             };
-            grid.Children.Add(dummyButton, px, px + sx, py, py + sy);
+            Widget_Grid.Children.Add(dummyButton, 0, 1, 0, 1);
             dummyButton.Clicked += OnDummyButtonClicked;
 
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>

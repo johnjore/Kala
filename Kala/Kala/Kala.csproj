@@ -7,19 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HockeySDK.Xamarin" Version="5.1.2" />
+    <PackageReference Include="Microsoft.AppCenter" Version="1.11.0" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.11.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.11.0" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.11.0" />
     <PackageReference Include="Newtonsoft.Json" version="11.0.2" />
-    <PackageReference Include="Rg.Plugins.Popup" Version="1.1.4.168" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.180" />
     <PackageReference Include="SkiaSharp" version="1.60.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="wpbest.Plugin.Logger" version="1.0.8" />
     <PackageReference Include="Xam.Plugins.Settings" version="3.1.1" />
-    <PackageReference Include="Xamarin.FFImageLoading" version="2.4.3.840" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" version="2.4.3.840" />
-    <PackageReference Include="Xamarin.FFImageLoading.Svg" version="2.4.3.840" />
-    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" version="2.4.3.840" />
-    <PackageReference Include="Xamarin.FFImageLoading.Transformations" version="2.4.3.840" />
-    <PackageReference Include="Xamarin.Forms" version="3.3.0.967583" />
+    <PackageReference Include="Xamarin.FFImageLoading" version="2.4.5.860-pre" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" version="2.4.5.860-pre" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg" version="2.4.5.860-pre" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" version="2.4.5.860-pre" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" version="2.4.5.860-pre" />
+    <PackageReference Include="Xamarin.Forms" version="3.4.0.1008975" />
     <PackageReference Include="Xamarin.Forms.GoogleMaps" version="3.0.4" />
     <PackageReference Include="ZXing.Net.Mobile" version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" version="2.4.1" />

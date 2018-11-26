@@ -4,7 +4,6 @@ using Android.Graphics;
 using Android.Content;
 using Android.Util;
 using Xamarin.Forms.Platform.Android;
-using Plugin.Logger;
 
 namespace DrawShape.Android
 {
@@ -55,8 +54,8 @@ namespace DrawShape.Android
 			// We need to account for offsetting the coordinates based on the padding
 			var x = GetX () + Resize (this.ShapeView.Padding.Left);
 			var y = GetY () + Resize (this.ShapeView.Padding.Top);
-            var x1 = this.Width;
-            var y1 = this.Height;
+            //var x1 = this.Width;
+            //var y1 = this.Height;
 
             switch (ShapeView.ShapeType) {
 			case ShapeType.Box:
@@ -71,10 +70,10 @@ namespace DrawShape.Android
 				});
 				break;
 			case ShapeType.Circle:
-				HandleStandardDraw (canvas, p => canvas.DrawCircle (x + this.Width / 2, y + this.Height / 2, (this.Width - 10) / 2, p));
+				HandleStandardDraw (canvas, p => canvas.DrawCircle (x + this.Width / 2, y + this.Height / 2, (float)(this.Width - 10) / 2, p));
 				break;
 			case ShapeType.CircleIndicator:
-				HandleStandardDraw (canvas, p => canvas.DrawCircle (x + this.Width / 2, y + this.Height / 2, (this.Width - 10) / 2, p), drawFill: false);
+				HandleStandardDraw (canvas, p => canvas.DrawCircle (x + this.Width / 2, y + this.Height / 2, (float)(this.Width - 10) / 2, p), drawFill: false);
 				HandleStandardDraw (canvas, p => canvas.DrawArc (new RectF (x, y, x + this.Width, y + this.Height), QuarterTurnCounterClockwise, 360 * (ShapeView.IndicatorPercentage / 100), false, p), ShapeView.StrokeWidth + 3, false);
 				break;
             case ShapeType.Arc:

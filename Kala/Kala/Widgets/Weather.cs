@@ -8,18 +8,12 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Weather(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
+        public static void Weather(Grid grid, int px, int py, int sx, int sy, string header, JArray data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Weather Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Weather Widget");
 
             try
             {
-                //Size of Weather widget
-                int.TryParse(x1, out int px);
-                int.TryParse(y1, out int py);
-                int.TryParse(x2, out int sx);
-                int.TryParse(y2, out int sy);
-
                 //Items in Weather widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
                 CrossLogger.Current.Debug("Weather", "Items: " + items.Count.ToString());

@@ -21,6 +21,7 @@ namespace CircularProgressBar.FormsPlugin.Android
         /// </summary>
         public static void Init()
         {
+            //not used
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<CircularProgressBarView> e)

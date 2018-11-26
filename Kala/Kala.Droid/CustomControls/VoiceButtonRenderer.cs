@@ -16,7 +16,6 @@ namespace Kala.Droid
     {
         private readonly int VOICE = 10;
         private MainActivity activity;
-        private global::Android.Widget.Button nativeButton;
         private VoiceButton sharedButton;
 
         public VoiceButtonRenderer(Context context) : base(context)
@@ -25,9 +24,11 @@ namespace Kala.Droid
 
         protected override void OnElementChanged(ElementChangedEventArgs<Button> e)
         {
+            global::Android.Widget.Button nativeButton;
+
             base.OnElementChanged(e);
-            activity = this.Context as MainActivity;
-            nativeButton = new global::Android.Widget.Button(Context);
+            activity = Context as MainActivity;
+            nativeButton = new Android.Widget.Button(Context);
 
             if (e.OldElement == null)
             {
@@ -47,12 +48,7 @@ namespace Kala.Droid
             }
         }
 
-        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            base.OnElementPropertyChanged(sender, e);
-        }
-
-        public void OnClick(Android.Views.View view)
+        public void OnClick(Android.Views.View v)
         {
             try
             {
@@ -65,7 +61,7 @@ namespace Kala.Droid
                     var alert = new AlertDialog.Builder(Context);
                     alert.SetTitle("You don't seem to have a microphone to record with");
                     alert.SetPositiveButton("OK", (sender, e) => {
-                        return;
+                        //nothing
                     });
 
                     alert.Show();
@@ -103,20 +99,19 @@ namespace Kala.Droid
         {
             DependencyService.Get<IScreen>().SetFullScreen(App.Config.FullScreen);
 
-            if (e.RequestCode == VOICE)
+            if (e.RequestCode == VOICE && e.ResultCode == Result.Ok)
             {
-                if (e.ResultCode == Result.Ok)
+                var matches = e.Data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
+                if (matches.Count != 0)
                 {
-                    var matches = e.Data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
-                    if (matches.Count != 0)
-                    {
-                        string textInput = matches[0];
-                        if (textInput.Length > 500)
-                            textInput = textInput.Substring(0, 500);
-                        sharedButton.OnTextChanged?.Invoke(textInput);
-                    }
-                    else
-                        sharedButton.OnTextChanged?.Invoke("No speech was recognised");
+                    string textInput = matches[0];
+                    if (textInput.Length > 500)
+                        textInput = textInput.Substring(0, 500);
+                    sharedButton.OnTextChanged?.Invoke(textInput);
+                }
+                else
+                {
+                    sharedButton.OnTextChanged?.Invoke("No speech was recognised");
                 }
             }
         }

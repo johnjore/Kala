@@ -9,12 +9,9 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Dimmer(Grid grid, string x1, string y1, string header, JObject data)
+        public static void Dimmer(Grid grid, int px, int py, string header, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Dimmer Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Dimmer Widget");
 
             Models.Sitemap.Widget3 item = null;
             Dictionary<string, string> widgetKeyValuePairs = null;
@@ -162,11 +159,10 @@ namespace Kala
                 StyleId = item.Name //StyleID is not used on buttons
             };
             dimmerButton.Clicked += OnDimmerButtonClicked;
-            CrossLogger.Current.Debug("Dimmer", "Button ID: " + dimmerButton.Id + " created.");
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Dimmer", "Button ID: " + dimmerButton.Id + " created."));
             item.Grid.Children.Add(dimmerButton, 0, 2, 0, 3);
         }
         
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Await.Warning", "CS4014:Await.Warning")]
         private static void OnDimmerButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
@@ -174,7 +170,7 @@ namespace Kala
 
             //Find item
             App.TrackItem item = App.Config.Items.Find(i => i.Name == name);
-            CrossLogger.Current.Debug("Dimmer", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + item.State + "'");
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Dimmer", "Button ID: '" + button.Id.ToString() + "', URL: '" + button.StyleId + "', State: '" + item.State + "'"));
 
             PreviousPage = Application.Current.MainPage;
             Application.Current.MainPage = CreateSliderPage(item);

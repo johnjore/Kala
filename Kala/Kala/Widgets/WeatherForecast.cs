@@ -8,15 +8,10 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void WeatherForecast(Grid grid, string x1, string y1, string x2, string y2, string header, JArray data)
+        public static void WeatherForecast(Grid grid, int px, int py, int sx, int sy, string header, JArray data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create WeatherForecast Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create WeatherForecast Widget");
             CrossLogger.Current.Debug("WeatherForecast", "Creating Weather forecast :" + data.ToString());
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
 
             try
             {

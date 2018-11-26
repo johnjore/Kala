@@ -8,16 +8,9 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        public static void Gauge_Group(Grid grid, string x1, string y1, string x2, string y2, string x3, string y3, string header, JArray data)
+        public static void Gauge_Group(Grid grid, int px, int py, int sx, int sy, int rx, int ry, string header, JArray data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Gauge_Group Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
-            int.TryParse(x3, out int rx);
-            int.TryParse(y3, out int ry);
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Gauge_Group Widget");
 
             try
             {

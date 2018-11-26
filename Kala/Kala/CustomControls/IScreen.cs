@@ -4,7 +4,7 @@
     {
         void SetBacklight(float factor);
 
-        void SetScreenOrientation(string ScreenOrientation);
+        void SetScreenOrientation(string Screenorientation);
 
         void ScreenSaver(long screensaver);
 

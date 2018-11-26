@@ -18,15 +18,10 @@ namespace Kala
     {
         public static List<Map> ItemMaps { get; set; } = new List<Map>();
 
-        public static void Map(Grid grid, string x1, string y1, string x2, string y2, string maptype, JArray data)
+        public static void Map(Grid grid, int px, int py, int sx, int sy, string maptype, JArray data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Map Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Map Widget");
             CrossLogger.Current.Debug("Map", "Creating Map Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
 
             try
             {

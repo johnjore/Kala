@@ -7,7 +7,6 @@ using Plugin.Logger;
 using DrawShape;
 using Xamarin.Forms.GoogleMaps;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 using System.Collections.Immutable;
 
 namespace Kala
@@ -53,14 +52,14 @@ namespace Kala
                 string label = instructions.Substring(0, start - 1).Trim();
                 string command = instructions.Substring(start, end - start);
 
-                CrossLogger.Current.Debug("Kala", "Label: " + label + ", Command: " + command);
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Kala", "Label: " + label + ", Command: " + command));
 
                 item_keyValuePairs = command.Split(',').Select(value => value.Split('=')).ToDictionary(pair => pair[0], pair => pair[1]);
                 item_keyValuePairs.Add("label", label);
             }
             catch (Exception ex)
             {
-                CrossLogger.Current.Error("Kala", "Failed to parse instructions:" + ex.ToString());
+                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Kala", "Failed to parse instructions:" + ex.ToString()));
             }
 
             return item_keyValuePairs;
@@ -73,7 +72,7 @@ namespace Kala
         }
 
         //Process Update Messages
-        public static async Task Updates()
+        public static void Updates()
         {
             RestService.BoolExit = false;
             try
@@ -246,7 +245,7 @@ namespace Kala
                         }
                         catch (Exception ex)
                         {
-                            CrossLogger.Current.Error("Update", "DrawShape Update Crashed: " + ex.ToString());
+                            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Update", "DrawShape Update Crashed: " + ex.ToString()));
                         }
                     }
                 }
@@ -265,7 +264,7 @@ namespace Kala
                         {
                             if (pin.Tag.Equals(item.Topic) && item.Value != null)
                             {
-                                CrossLogger.Current.Info("Map", "Update");
+                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Info("Map", "Update"));
                                 var b = item.Value.Split(',');
                                 if (b.Count() > 2)
                                 {
@@ -283,14 +282,14 @@ namespace Kala
                     }
                     catch (Exception ex)
                     {
-                        CrossLogger.Current.Error("Kala", "Map Update crashed: " + ex.ToString());
+                        Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Kala", "Map Update crashed: " + ex.ToString()));
                     }
                 }
                 #endregion Maps
             }
             catch (Exception ex)
             {
-                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("GUI Update", "Crashed: " + ex.ToString()));
+                Device.BeginInvokeOnMainThread(() => Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("GUI Update", "Crashed: " + ex.ToString())));
             }
         }
 

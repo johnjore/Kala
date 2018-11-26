@@ -14,15 +14,10 @@ namespace Kala
         /// Create Image Widget
         /// </summary>
         /// <returns>nothing</returns>
-        public static void Image(Grid grid, string x1, string y1, string x2, string y2, string header, string straspect, JObject data)
+        public static void Image(Grid grid, int px, int py, int sx, int sy, string header, string straspect, JObject data)
         {
-            HockeyApp.MetricsManager.TrackEvent("Create Image Widget");
+            Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Image Widget");
             CrossLogger.Current.Debug("Image", "Creating Image Widget");
-
-            int.TryParse(x1, out int px);
-            int.TryParse(y1, out int py);
-            int.TryParse(x2, out int sx);
-            int.TryParse(y2, out int sy);
 
             Aspect aspect = Aspect.AspectFit;
 
@@ -50,8 +45,8 @@ namespace Kala
                     DownsampleToViewSize = false,
                     CacheDuration = TimeSpan.FromMilliseconds(1000),
                     Aspect = aspect,
-                    RetryCount = 0,
-                    RetryDelay = 250,
+                    RetryCount = 999,
+                    RetryDelay = 2000,
                     BitmapOptimizations = true,
                     Source = item.Url
                 };
@@ -88,17 +83,16 @@ namespace Kala
                     {
                         Device.StartTimer(TimeSpan.FromMilliseconds(refresh), () =>
                         {
-                            //If not clearing the cache, image does not refresh
-                            ImageService.Instance.InvalidateCacheAsync(CacheType.All);
-
-                            CrossLogger.Current.Debug("Image", "Refresh Image: " + item.Url);                           
+                            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Debug("Image", "Refresh Image: " + item.Url));                          
                             try
                             {
+                                //If not clearing the cache, image does not refresh
+                                ImageService.Instance.InvalidateCacheAsync(CacheType.All);
                                 image.ReloadImage();
                             }
                             catch (Exception ex)
                             {
-                                CrossLogger.Current.Error("Image", "Failed to refresh Image: " + ex.ToString());
+                                Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Error("Image", "Failed to refresh Image: " + ex.ToString()));
                             }
                             return true;
                         });
@@ -115,8 +109,8 @@ namespace Kala
         private static void OnImageButtonClicked(object sender, EventArgs e)
         {
             ItemImageButton button = sender as ItemImageButton;
-           
-            CrossLogger.Current.Info("Image", "Button ID: '" + button.Id.ToString() + ", Image ID: " + button.URL + ", Name: " + button.Name);
+
+            Device.BeginInvokeOnMainThread(() => CrossLogger.Current.Info("Image", "Button ID: '" + button.Id.ToString() + ", Image ID: " + button.URL + ", Name: " + button.Name));
 
             PreviousPage = Application.Current.MainPage;
             Application.Current.MainPage = CreateImagePage(button);
@@ -126,28 +120,44 @@ namespace Kala
         {
             App.Config.LastActivity = DateTime.Now;
 
-            var img = new CachedImage()
+            Label label_1 = new Label
+            {
+                Text = ImageInfo.Name,
+                FontSize = 24,
+                TextColor = App.Config.TextColor,
+                BackgroundColor = Color.Transparent,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Start
+            };
+
+            CachedImage img = new CachedImage()
             {
                 DownsampleToViewSize = false,
                 CacheDuration = TimeSpan.FromMilliseconds(1000),
                 Aspect = Aspect.AspectFit,
-                RetryCount = 0,
-                RetryDelay = 250,
+                RetryCount = 999,
+                RetryDelay = 1000,
                 BitmapOptimizations = true,
                 Source = ImageInfo.URL,
-                HeightRequest = 400,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
             };
 
-            Button button = new Button
+            Label label_2 = new Label
             {
                 Text = "Close",
                 FontSize = 50,
                 TextColor = App.Config.TextColor,
-                BackgroundColor = App.Config.BackGroundColor,
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.End,
+                BackgroundColor = Color.Transparent,
+                HorizontalTextAlignment = TextAlignment.End,
+                VerticalTextAlignment = TextAlignment.End
+            };
+
+            Button button = new Button
+            {
+                BackgroundColor = Color.Transparent,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
             };
             button.Clicked += (sender, e) => {
                 Application.Current.MainPage = PreviousPage;
@@ -155,22 +165,12 @@ namespace Kala
 
             return (new ContentPage
             {
-                Content = new StackLayout
+                Content = new Grid
                 {
-                    Children = { new Label
-                        {
-                            Text = ImageInfo.Name,
-                            FontSize = 24,
-                            TextColor = App.Config.TextColor,
-                            BackgroundColor = App.Config.BackGroundColor,
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            VerticalTextAlignment = TextAlignment.Start
-                        },
-                        img, button },
-                    BackgroundColor = App.Config.BackGroundColor,
-                    Orientation = StackOrientation.Vertical,
+                    Children = { img, label_1, label_2, button },
+                    BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand
                 }
             });
         }
