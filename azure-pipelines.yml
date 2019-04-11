@@ -13,6 +13,19 @@ jobs:
   steps:
   - task: NuGetToolInstaller@0
 
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'Secrets.xml'
+
+  # Copy files from source folder to target folder using match patterns (The match patterns will only match file paths, not folder paths)
+  #- task: CopyFiles@2
+  #  inputs:
+  #    sourceFolder: $(Agent.TempDirectory)
+  #    #contents: '**' 
+  #   targetFolder: Kala/Kala.Droid/Resources/values/Secrets.xml
+  #    cleanTargetFolder: false
+  #    overWrite: true
+    
   - task: NuGetCommand@2
     inputs:
       restoreSolution: '**/*.sln'
