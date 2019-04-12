@@ -28,6 +28,7 @@ GUI used here is inspired by that client, but distributed for free.
 
 # Build Status
 [![Build Status](https://johnjore.visualstudio.com/Kala/_apis/build/status/Kala-CI)](https://johnjore.visualstudio.com/Kala/_build/latest?definitionId=2)
+https://johnjore.vsrm.visualstudio.com/_apis/public/Release/badge/f717d501-17e3-4cc9-92b2-ab152d1e57ec/1/1
 
 # Donations
 This client is available for free under the GPL license. No ads will be added to the client to fund the development work.
