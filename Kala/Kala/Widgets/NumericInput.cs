@@ -95,6 +95,8 @@ namespace Kala
 
         private static async void OnInputButtonClicked(object sender, EventArgs e)
         {
+            App.Config.LastActivity = DateTime.Now;
+
             Button button = sender as Button;
             string name = button.StyleId;
 

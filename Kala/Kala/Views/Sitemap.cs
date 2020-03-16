@@ -321,6 +321,12 @@ namespace Kala
                         case "CALENDAR":
                             Widgets.Calendar(grid, px, py, sx, sy, JArray.FromObject(item.Widgets));
                             break;
+                        case "CHART":
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Chart(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
+                            }
+                            break;
                         case "CLOCK":
                             Widgets.Clock(grid, px, py, sx, sy);
                             break;
@@ -334,24 +340,6 @@ namespace Kala
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
                                 Widgets.FloormapAsync(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
-                            }
-                            break;
-                        case "LAUNCHER":
-                            if (itemKeyValuePairs.ContainsKey("label"))
-                            {
-                                Widgets.Launcher(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
-                            }
-                            break;
-                        case "NUMERICINPUT":
-                            if (itemKeyValuePairs.ContainsKey("label"))
-                            {
-                                Widgets.NumericInput(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
-                            }
-                            break;
-                        case "SENSOR":
-                            if (itemKeyValuePairs.ContainsKey("label"))
-                            {
-                                Widgets.Sensor(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
                             }
                             break;
                         case "GAUGE":
@@ -374,12 +362,29 @@ namespace Kala
                                 Widgets.Image(grid, px, py, sx, sy, itemKeyValuePairs["label"], itemKeyValuePairs["aspect"], (JObject)item.Widgets[0]);
                             }
                             break;
+                        case "LAUNCHER":
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Launcher(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
+                            }
+                            break;
                         case "MAP":
                             if (!itemKeyValuePairs.ContainsKey("type")) { itemKeyValuePairs.Add("type", "street"); }
                             Widgets.Map(grid, px, py, sx, sy, itemKeyValuePairs["type"], JArray.FromObject(item.Widgets));
                             break;
+                        case "NUMERICINPUT":
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.NumericInput(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
+                            }
+                            break;
+                        case "SENSOR":
+                            if (itemKeyValuePairs.ContainsKey("label"))
+                            {
+                                Widgets.Sensor(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
+                            }
+                            break;
                         case "SWITCH":
-
                             if (itemKeyValuePairs.ContainsKey("label"))
                             {
                                 Widgets.Switch(grid, px, py, sx, sy, itemKeyValuePairs["label"], (JObject)item.Widgets[0]);
@@ -428,7 +433,7 @@ namespace Kala
             ContentPage cp = new ContentPage();
             if (icon != null)
             {
-                cp.Icon = icon;
+                cp.IconImageSource = icon;
             }
             cp.BackgroundColor = App.Config.BackGroundColor;
             cp.Title = title;

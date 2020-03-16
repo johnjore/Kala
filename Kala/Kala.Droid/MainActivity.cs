@@ -6,7 +6,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using FFImageLoading.Forms.Droid;
+using FFImageLoading.Forms.Platform;
 using Plugin.Logger;
 using Plugin.Logger.Abstractions;
 using Microsoft.AppCenter;

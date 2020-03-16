@@ -86,6 +86,8 @@ namespace Kala
                     TryInverted = false,
                     DisableAutofocus = false,
                     UseNativeScanning = true,
+                    DelayBetweenAnalyzingFrames = 5, //https://blog.verslu.is/xamarin/xamarin-forms-xamarin/zxing-android-skipping-frames/?utm_campaign=Weekly%2BXamarin&utm_medium=email&utm_source=Weekly_Xamarin_220
+                    DelayBetweenContinuousScans = 5, //https://blog.verslu.is/xamarin/xamarin-forms-xamarin/zxing-android-skipping-frames/?utm_campaign=Weekly%2BXamarin&utm_medium=email&utm_source=Weekly_Xamarin_220
                     UseFrontCameraIfAvailable = bool.Parse(strUseFrontCameraIfAvailable),
 
                     PossibleFormats = new List<ZXing.BarcodeFormat> {

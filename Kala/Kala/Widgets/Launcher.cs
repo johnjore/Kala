@@ -91,6 +91,8 @@ namespace Kala
 
         private static void OnLauncherButtonClicked(object sender, EventArgs e)
         {
+            App.Config.LastActivity = DateTime.Now;
+
             Button button = sender as Button;
             string name = button.StyleId;
 
