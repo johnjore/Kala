@@ -38,25 +38,19 @@ namespace Kala.Droid
 
             base.OnCreate(savedInstanceState);
 
-            //AppCenter replacing HockeyApp
-            AppCenter.LogLevel = Microsoft.AppCenter.LogLevel.Verbose;
-
+            //AppCenter
+            AppCenter.LogLevel = Microsoft.AppCenter.LogLevel.Verbose;  /**/ // Move to config
             string androidSecretKey = Application.Context.Resources.GetString(Resource.String.Microsoft_App_Center_AndroidSecretKey);
             AppCenter.Start(androidSecretKey, typeof(Analytics), typeof(Crashes), typeof(Distribute));
-            
+
             // Init special handlers
             ScreenLayout.Init(this);
 
-            // Library for Image handling as XF does not support authentication
-            global::FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
-
-            // Xamarin.Forms.GoogleMaps initialization
+            // Initialize libraries
+            global::FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);          
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
-
-            // Init barcode library
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
-
-            // Popup library
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
 
             // Logger
@@ -83,7 +77,8 @@ namespace Kala.Droid
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
         public override void OnBackPressed()

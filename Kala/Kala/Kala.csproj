@@ -5,26 +5,34 @@
     <Authors>John Jore</Authors>
     <Company />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>C:\Data\Temp\Kala\</OutputPath>
+    <WarningLevel>2</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>C:\Data\Temp\Kala\</OutputPath>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
-    <PackageReference Include="Microsoft.AppCenter" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AppCenter" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AppCenter.Distribute" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" version="12.0.3" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
     <PackageReference Include="SkiaSharp" version="1.68.1.1" />
     <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
     <PackageReference Include="wpbest.Plugin.Logger" version="1.0.8" />
     <PackageReference Include="Xam.Plugins.Settings" version="3.1.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
     <PackageReference Include="Xamarin.FFImageLoading" version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg" version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" version="2.4.11.982" />
-    <PackageReference Include="Xamarin.Forms" version="4.5.0.356" />
+    <PackageReference Include="Xamarin.Forms" version="4.5.0.495" />
     <PackageReference Include="Xamarin.Forms.GoogleMaps" version="3.3.0" />
     <PackageReference Include="ZXing.Net.Mobile" version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" version="2.4.1" />

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
+using Xamarin.Forms;
 
 namespace Kala.Pages
 {
@@ -21,13 +22,23 @@ namespace Kala.Pages
             entryField.Focus();
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            DependencyService.Get<IScreen>().SetFullScreen(App.Config.FullScreen);
+        }
+
         private void OnClose(object sender, EventArgs e)
         {
             PopupNavigation.Instance.PopAsync();
-            Task.Run(async () =>
+
+            if (entryField.Text != string.Empty)
             {
-                await new RestService().SendCommand(OHItemToUpdate, entryField.Text);
-            });
+                Task.Run(async () =>
+                {
+                    await new RestService().SendCommand(OHItemToUpdate, entryField.Text);
+                });
+            }            
         }
     }
 }
