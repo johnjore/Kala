@@ -74,7 +74,7 @@ namespace Kala
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
                     BackgroundColor = Color.Transparent,
-                    StyleId = widgetKeyValuePairs["url"] //StyleID is not used on buttons
+                    StyleId = widgetKeyValuePairs["url"] //StyleID is not used on buttons                    
                 };
                 Widget_Grid.Children.Add(launcherButton, 0, 0);
                 launcherButton.Clicked += OnLauncherButtonClicked;

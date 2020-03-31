@@ -1,4 +1,5 @@
 ﻿//From https://mindofai.github.io/Launching-Apps-thru-URI-with-Xamarin.Forms/
+//From https://docs.microsoft.com/en-us/xamarin/essentials/launcher?tabs=android
 using System;
 using System.Threading.Tasks;
 using Android.App;
@@ -8,6 +9,7 @@ using Xamarin.Forms;
 using Kala;
 using Plugin.Logger;
 using Xamarin.Forms.Platform.Android;
+using Xamarin.Essentials;
 
 [assembly: Dependency(typeof(AppLauncher))]
 namespace OpenAppLauncher.Droid
@@ -18,13 +20,19 @@ namespace OpenAppLauncher.Droid
         {
             try
             {
-                Intent intent = Android.App.Application.Context.PackageManager.GetLaunchIntentForPackage(stringUri);
-
-                if (intent != null)
+                if (stringUri.Contains("//"))
                 {
-                    intent.AddFlags(ActivityFlags.NewTask);
-                    Android.App.Application.Context.StartActivity(intent);
-                    return Task.FromResult(true);
+                    Launcher.TryOpenAsync(new Uri(stringUri)); //"lyft://ridetype?id=lyft_line"
+                }
+                else
+                {
+                    Intent intent = Android.App.Application.Context.PackageManager.GetLaunchIntentForPackage(stringUri); //com.android.deskclock
+                    if (intent != null)
+                    {
+                        intent.AddFlags(ActivityFlags.NewTask);
+                        Android.App.Application.Context.StartActivity(intent);
+                        return Task.FromResult(true);
+                    }
                 }
             }
             catch (Exception ex)
