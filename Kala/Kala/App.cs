@@ -119,19 +119,10 @@ namespace Kala
             Config.Initialized = true;
         }
 
-        protected override void OnStart()
-        {
-            //Not currently used
-        }
-
-        protected override void OnSleep()
-        {
-            //Not currently used
-        }
-
         protected override void OnResume()
         {
-            //Not currently used
+            base.OnResume();
+            DependencyService.Get<IScreen>().SetFullScreen(Config.FullScreen);
         }
     }
 }

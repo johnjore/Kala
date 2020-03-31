@@ -87,7 +87,7 @@ namespace Kala
                     Task.Run(async () =>
                     {
                         await new RestService().SendCommand(voiceButton.StyleId, s);
-                    });                    
+                    });              
                 };
             }
             catch (Exception ex)

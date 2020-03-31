@@ -31,6 +31,7 @@ namespace OpenAppLauncher.Droid
             {
                 CrossLogger.Current.Debug("Launcher", "Failed to launch app: '" + stringUri + "'; " + ex.ToString());
             }
+
             return Task.FromResult(false);
         }
     }
