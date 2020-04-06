@@ -1,19 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Copyright>Copyright @ 2016-2018</Copyright>
+    <Copyright>Copyright @ 2016-2020</Copyright>
     <Authors>John Jore</Authors>
     <Company />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>C:\Data\Temp\Kala\</OutputPath>
+   <IntermediateOutputPath>C:\Data\Temp\Kala\</IntermediateOutputPath>
     <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>C:\Data\Temp\Kala\</OutputPath>
+   <IntermediateOutputPath>C:\Data\Temp\Kala\</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Forms9Patch" Version="2.2.6" />
     <PackageReference Include="Microcharts" Version="0.7.1" />
     <PackageReference Include="Microcharts.Forms" Version="0.7.1" />
     <PackageReference Include="Microsoft.AppCenter" Version="3.1.0" />

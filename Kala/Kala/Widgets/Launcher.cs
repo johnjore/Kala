@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
-using DrawShape;
 using Newtonsoft.Json.Linq;
 using Plugin.Logger;
+using FFImageLoading.Svg.Forms;
 
 namespace Kala
 {
@@ -23,7 +23,8 @@ namespace Kala
                 Grid Widget_Grid = new Grid
                 {
                     RowDefinitions = new RowDefinitionCollection {
-                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                        new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                        new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
                     },
                     ColumnDefinitions = new ColumnDefinitionCollection {
                         new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
@@ -33,40 +34,44 @@ namespace Kala
                     BackgroundColor = App.Config.CellColor,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
                     VerticalOptions = LayoutOptions.FillAndExpand,
+                    Padding = new Thickness(0, 0, 0, 10),
                 };
 
                 //Header
-                Widget_Grid.Children.Add(new Label
+                Widget_Grid.Children.Add(new Forms9Patch.Label
                 {
-                    Text = header,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                    Text = header.Replace("\"", " "),
+                    FontSize = 100,
                     TextColor = App.Config.TextColor,
                     BackgroundColor = App.Config.CellColor,
                     HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Start
+                    VerticalTextAlignment = TextAlignment.Start,
+                    LineBreakMode = LineBreakMode.NoWrap,
+                    Lines = 1,
+                    AutoFit = Forms9Patch.AutoFit.Width,
                 }, 0, 0);
 
                 //Circle
-                Widget_Grid.Children.Add(new ShapeView()
+                SvgCachedImage svg = new SvgCachedImage
                 {
-                    ShapeType = ShapeType.Circle,
-                    StrokeColor = App.Config.ValueColor,
-                    Color = App.Config.ValueColor,
-                    StrokeWidth = 10.0f,
-                    Scale = 2,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                }, 0, 0);
+                    DownsampleToViewSize = false,
+                    CacheDuration = TimeSpan.FromMilliseconds(1000),
+                    Aspect = Aspect.AspectFit,
+                    BitmapOptimizations = false,
+                    Source = SvgImageSource.FromSvgString(@"<svg viewBox=""0 0 100 100""><circle cx=""50"" cy=""50"" r=""50"" fill=""" + App.Config.ValueColor.ToHex().ToString() + @""" /></svg>"),
+                    VerticalOptions = LayoutOptions.Center,
+                };
+                Widget_Grid.Children.Add(svg, 0, 1);
 
                 //Image
                 Widget_Grid.Children.Add(new Image
                 {
                     Source = widgetKeyValuePairs["icon"],
-                    Aspect = Aspect.AspectFill,
+                    Aspect = Aspect.AspectFit,
                     BackgroundColor = Color.Transparent,
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }, 0, 0);
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                }, 0, 1);
 
                 //Button must be last to be added to work
                 Button launcherButton = new Button
@@ -76,7 +81,8 @@ namespace Kala
                     BackgroundColor = Color.Transparent,
                     StyleId = widgetKeyValuePairs["url"] //StyleID is not used on buttons                    
                 };
-                Widget_Grid.Children.Add(launcherButton, 0, 0);
+                Widget_Grid.Children.Add(launcherButton, 0, 1, 0, 2);
+
                 launcherButton.Clicked += OnLauncherButtonClicked;
                 CrossLogger.Current.Debug("Launcher", "Button ID: " + launcherButton.Id + " created.");
 

@@ -88,7 +88,7 @@ namespace Kala
                             {
                                 //If not clearing the cache, image does not refresh
                                 ImageService.Instance.InvalidateCacheAsync(CacheType.All);
-                                image.ReloadImage();
+                                img.ReloadImage();
                             }
                             catch (Exception ex)
                             {
