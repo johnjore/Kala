@@ -17,6 +17,18 @@ jobs:
     inputs:
       restoreSolution: '**/*.sln'
 
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'Secrets.xml'
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: $(Agent.TempDirectory)
+      contents: Secrets.xml 
+      targetFolder: Kala\Kala.Droid\Resources\values
+      cleanTargetFolder: false
+      overWrite: true
+  
   - task: XamarinAndroid@1
     inputs:
       projectFile: '**/*droid*.csproj'
