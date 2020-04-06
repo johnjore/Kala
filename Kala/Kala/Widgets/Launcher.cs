@@ -55,11 +55,9 @@ namespace Kala
                 SvgCachedImage svg = new SvgCachedImage
                 {
                     DownsampleToViewSize = false,
-                    CacheDuration = TimeSpan.FromMilliseconds(1000),
                     Aspect = Aspect.AspectFit,
                     BitmapOptimizations = false,
                     Source = SvgImageSource.FromSvgString(@"<svg viewBox=""0 0 100 100""><circle cx=""50"" cy=""50"" r=""50"" fill=""" + App.Config.ValueColor.ToHex().ToString() + @""" /></svg>"),
-                    VerticalOptions = LayoutOptions.Center,
                 };
                 Widget_Grid.Children.Add(svg, 0, 1);
 
