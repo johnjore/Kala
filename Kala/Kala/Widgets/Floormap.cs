@@ -81,7 +81,6 @@ namespace Kala
                     CacheDuration = TimeSpan.FromMilliseconds(1000),
                     Aspect = Aspect.AspectFit,
                     BitmapOptimizations = false,
-                    Source = SvgImageSource.FromSvgString(svgString)
                 };
                 w_grid.Children.Add(svg, 0, 0);
 

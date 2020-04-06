@@ -33,7 +33,7 @@ namespace Kala
                 };
                 map.UiSettings.MyLocationButtonEnabled = false;
                 ItemMaps.Add(map);
-                
+               
                 //Items in Map widget
                 List<Models.Sitemap.Widget3> items = data.ToObject<List<Models.Sitemap.Widget3>>();
                 CrossLogger.Current.Debug("Map", "Items: " + items.Count.ToString());

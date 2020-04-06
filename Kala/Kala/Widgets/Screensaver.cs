@@ -12,7 +12,7 @@ namespace Kala
 {
     public partial class Widgets : ContentPage
     {
-        static Random random = new Random();       
+        static readonly Random random = new Random();       
         static Label l_clock;
         static bool active = false;
         static CachedImage image = null;

@@ -19,7 +19,6 @@ namespace Kala
             Microsoft.AppCenter.Analytics.Analytics.TrackEvent("Create Image Widget");
             CrossLogger.Current.Debug("Image", "Creating Image Widget");
 
-            Aspect aspect = Aspect.AspectFit;
 
             try
             {
@@ -27,6 +26,7 @@ namespace Kala
                 CrossLogger.Current.Debug("Image", "URL: " + item.Url);
 
                 //Aspect ratio
+                Aspect aspect = Aspect.AspectFit;
                 switch (straspect.ToLower())
                 {
                     case "fill":
@@ -39,7 +39,7 @@ namespace Kala
                         aspect = Aspect.AspectFit;
                         break;
                 }
-
+                
                 var img = new CachedImage()
                 {
                     DownsampleToViewSize = false,
@@ -88,7 +88,7 @@ namespace Kala
                             {
                                 //If not clearing the cache, image does not refresh
                                 ImageService.Instance.InvalidateCacheAsync(CacheType.All);
-                                image.ReloadImage();
+                                img.ReloadImage();
                             }
                             catch (Exception ex)
                             {

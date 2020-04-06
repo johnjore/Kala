@@ -1,17 +1,39 @@
 # Xamarin.Android
-# https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
-  
 jobs:
 
 - job: Android
   pool:
-    vmImage: 'VS2017-Win2016'
+    vmImage: 'windows-latest'
+
   variables:
     buildConfiguration: 'Release'
     outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
   steps:
-  - task: NuGetToolInstaller@0
+  - task: android-manifest-version@1
+    inputs:
+      sourcePath: 'Kala\Kala.Droid\Properties\AndroidManifest.xml'
+      versionCodeOption: 'buildid'
+      versionCode: '$(Build.BuildId)'
+      versionCodeOffset: '1'
+      versionName: '2.0.$(Build.BuildId)'
+      printFile: true
+
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'Secrets.xml'
+
+  - task: CopyFiles@1
+    inputs:
+      sourceFolder: $(Agent.TempDirectory)
+      contents: Secrets.xml
+      targetFolder: Kala\Kala.Droid\Resources\values
+      cleanTargetFolder: false
+      overWrite: true
+
+  - task: NuGetToolInstaller@1
+    inputs:
+     versionSpec: '5.x'
 
   - task: NuGetCommand@2
     inputs:
@@ -25,9 +47,11 @@ jobs:
 
   - task: AndroidSigning@3
     inputs:
-      apksign: false
-      zipalign: false
-      apkFiles: '$(outputDirectory)/*.apk'
+      apkFiles: '$(outputDirectory)\*.apk'
+      apksignerKeystoreFile: 'Kala.keystore'
+      apksignerKeystorePassword: '$(Keystore_Password)'
+      apksignerKeystoreAlias: 'Kala'
+      apksignerKeyPassword: '$(Keystore_Password)'
 
   - task: PublishBuildArtifacts@1
     inputs:
