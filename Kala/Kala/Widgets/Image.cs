@@ -44,7 +44,7 @@ namespace Kala
                 {
                     DownsampleToViewSize = false,
                     CacheDuration = TimeSpan.FromMilliseconds(1000),
-                    //Aspect = aspect,
+                    Aspect = aspect,
                     RetryCount = 999,
                     RetryDelay = 2000,
                     BitmapOptimizations = true,
