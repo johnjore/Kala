@@ -26,10 +26,14 @@ jobs:
   - task: CopyFiles@1
     inputs:
       sourceFolder: $(Agent.TempDirectory)
-      contents: Secrets.xml 
+      contents: Secrets.xml
       targetFolder: Kala\Kala.Droid\Resources\values
       cleanTargetFolder: false
       overWrite: true
+
+  - task: CmdLine@2
+    inputs:
+      script: 'type Kala\Kala.Droid\Resources\values\Secrets.xml'
 
   - task: NuGetToolInstaller@1
     inputs:
