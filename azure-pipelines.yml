@@ -10,6 +10,18 @@ jobs:
     outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
   steps:
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'AndroidManifest.xml'
+
+  - task: CopyFiles@1
+    inputs:
+      sourceFolder: $(Agent.TempDirectory)
+      contents: AndroidManifest.xml
+      targetFolder: Kala\Kala.Droid\Properties
+      cleanTargetFolder: false
+      overWrite: true
+
   - task: android-manifest-version@1
     inputs:
       sourcePath: 'Kala\Kala.Droid\Properties\AndroidManifest.xml'
@@ -33,7 +45,10 @@ jobs:
 
   - task: CmdLine@2
     inputs:
-      script: 'type Kala\Kala.Droid\Resources\values\Secrets.xml'
+      script: |
+        type Kala\Kala.Droid\Resources\values\secrets.xml
+        dir Kala\Kala.Droid\Resources\*.xml /s
+        dir /s
 
   - task: NuGetToolInstaller@1
     inputs:
