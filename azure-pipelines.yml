@@ -41,7 +41,7 @@ jobs:
 
   - task: XamarinAndroid@1
     inputs:
-      projectFile: '**/*droid*.csproj'
+      projectFile: '**/hajk.csproj'
       outputDirectory: '$(outputDirectory)'
       configuration: '$(buildConfiguration)'
 
